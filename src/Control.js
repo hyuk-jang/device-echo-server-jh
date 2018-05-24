@@ -3,45 +3,75 @@ const _ = require('lodash');
 const {BU} = require('base-util-jh');
 const net = require('net');
 
-
-const Model = require('./Model');
-
-
 require('./format/defaultDefine');
 
+/** @type {Array.<{id: constructorSocket, instance: Control}>} */
+let instanceList = [];
 class Control {
   /**
-   * @param {{port: number, protocol_info:Array.<protocol_info>}} config 
+   * @param {number} port 
    */
-  constructor(config) {
-    this.port = config.port;
+  constructor(port) {
+    this.port = port;
 
 
-    this.model = new Model();
+    let foundInstance = _.find(instanceList, instanceInfo => {
+      return _.isEqual(instanceInfo.id, this.port);
+    });
+
+    if(_.isEmpty(foundInstance)){
+      instanceList.push({id: this.port, instance: this});
+      this.deviceModelList = [];
+      this.setInit();
+    } else {
+      return foundInstance.instance;
+    }
   }
 
-  init() {
+  /**
+   * 장치를 세팅
+   * @param {Array.<protocol_info>} protocolList 
+   */
+  attachDevice(protocolList){
+    try {
+      protocolList.forEach(protocol_info => {
+        const path = `./${protocol_info.mainCategory}/${protocol_info.subCategory}/EchoServer`;
+        const DeviceProtocolConverter = require(path);
+        // BU.CLIN(DeviceProtocolConverter, 4);
+        let protocolConverter = new DeviceProtocolConverter(protocol_info);
+
+        const foundIt = _.find(this.deviceModelList, deviceModel => _.isEqual(protocolConverter, deviceModel));
+        _.isEmpty(foundIt) && this.deviceModelList.push(protocolConverter);
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  setInit() {
     const server = net.createServer((socket) => {
       // socket.end('goodbye\n');
       console.log(`client is Connected ${this.port}`);
 
-      /**
-       * 
-       */
       socket.on('data', data => {
-        /** @type {xbeeApi_0x10} */
-        let parseData =  JSON.parse(data.toString());
         // parseData.data = Buffer.from(parseData.data);
-        BU.CLI(`P: ${this.port}Received Data: `, parseData);
-        // return socket.write('this.is.my.socket\r\ngogogogo' + this.port);
-        let returnData = this.model.onData(parseData);
-        BU.CLI(returnData);
+        BU.CLI(`P: ${this.port}\tReceived Data: `, data);
+
+        // 응답 받을 데이터 배열
+        let receiveDataList = [];
+        this.deviceModelList.forEach(deviceModel => {
+          // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
+          receiveDataList.push(deviceModel.onData(data));
+        });
+        // BU.CLI(receiveDataList);
+        // 응답받지 않은 데이터는 undefined가 들어가므로 이를 제거하고 유효한 데이터 1개를 가져옴
+        const returnData = _(receiveDataList).reject(receiveData => _.isUndefined(receiveData)).head();
 
         // 약간의 지연 시간을 둠 (30ms)
         setTimeout(() => {
-          // socket.write('hi');
-          socket.write(JSON.stringify(returnData));
-        }, 500);
+          let returnValue = Buffer.isBuffer(returnData) ? returnData : JSON.stringify(returnData);
+          socket.write(returnValue);
+        }, 100);
       });
 
     }).on('error', (err) => {
