@@ -14,7 +14,6 @@ class Model extends BaseModel.Inverter {
     // 국번 세팅
     let dialing = _.get(protocol_info, 'deviceId');
 
-    console.trace(protocol_info);
     this.dialing = Buffer.isBuffer(dialing) ? dialing : this.makeMsg2Buffer(dialing);
 
     this.BASE = this.baseFormat;
