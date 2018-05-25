@@ -81,9 +81,9 @@ class EchoServer extends Model {
       Buffer.from('017'),
       this.dialing,
       this.DELIMETER,
-      this.convertNumToBuf(this.BASE.sysIsSingle ? 1 : 3),
+      this.convertNumToBuf(this.BASE.sysIsSingle ? 1 : 3, 1),
       this.DELIMETER,
-      this.convertNumToBuf(_.round(this.BASE.sysCapaKw * 10)),
+      this.convertNumToBuf(_.round(this.BASE.sysCapaKw * 10), 4),
       this.DELIMETER,
       this.convertNumToBuf(_.round(this.BASE.sysLineVoltage), 3),
       this.DELIMETER
@@ -99,11 +99,11 @@ class EchoServer extends Model {
       Buffer.from('120'),
       this.dialing,
       this.DELIMETER,
-      this.convertNumToBuf(_.round(this.BASE.pvVol)),
+      this.convertNumToBuf(_.round(this.BASE.pvVol), 3),
       this.DELIMETER,
-      this.convertNumToBuf(_.round(this.BASE.pvAmp * 10)),
+      this.convertNumToBuf(_.round(this.BASE.pvAmp * 10), 4),
       this.DELIMETER,
-      this.convertNumToBuf(_.round(this.BASE.pvKw * pvCurrentScale), 3),
+      this.convertNumToBuf(_.round(this.BASE.pvKw * pvCurrentScale), 4),
       this.DELIMETER
     ];
 
@@ -136,11 +136,11 @@ class EchoServer extends Model {
       Buffer.from('321'),
       this.dialing,
       this.DELIMETER,
-      this.convertNumToBuf(_.round(this.BASE.gridRAmp * 10)),
+      this.convertNumToBuf(_.round(this.BASE.gridRAmp * 10), 4),
       this.DELIMETER,
-      this.convertNumToBuf(_.round(this.BASE.gridSAmp * 10)),
+      this.convertNumToBuf(_.round(this.BASE.gridSAmp * 10), 4),
       this.DELIMETER,
-      this.convertNumToBuf(_.round(this.BASE.gridTAmp * 10)),
+      this.convertNumToBuf(_.round(this.BASE.gridTAmp * 10), 4),
       this.DELIMETER,
     ];
 
@@ -155,7 +155,7 @@ class EchoServer extends Model {
       Buffer.from('419'),
       this.dialing,
       this.DELIMETER,
-      this.convertNumToBuf(_.round(this.BASE.powerGridKw * pvCurrentScale)),
+      this.convertNumToBuf(_.round(this.BASE.powerGridKw * pvCurrentScale), 4),
       this.DELIMETER,
       this.convertNumToBuf(_.round(this.BASE.powerCpKwh), 7),
       this.DELIMETER
@@ -222,9 +222,9 @@ class EchoServer extends Model {
     case 'ST1':
       return this.makePv();
     case 'ST2':
-      return this.makeGridAmp();
-    case 'ST3':
       return this.makeGridVol();
+    case 'ST3':
+      return this.makeGridAmp();
     case 'ST4':
       return this.makePower();
     case 'ST6':

@@ -30,19 +30,26 @@ class Control {
 
   /**
    * 장치를 세팅
-   * @param {Array.<protocol_info>} protocolList 
+   * @param {Array.<protocol_info>|protocol_info} protocol_info 
    */
-  attachDevice(protocolList){
+  attachDevice(protocol_info){
     try {
-      protocolList.forEach(protocol_info => {
-        const path = `./${protocol_info.mainCategory}/${protocol_info.subCategory}/EchoServer`;
-        const DeviceProtocolConverter = require(path);
-        // BU.CLIN(DeviceProtocolConverter, 4);
-        let protocolConverter = new DeviceProtocolConverter(protocol_info);
+      if(_.isArray(protocol_info)){
+        protocol_info.forEach(currentItem => {
+          this.attachDevice(currentItem);
+        });
+        return;
+      }
+      BU.CLI(protocol_info);
+      // protocol_info.forEach(protocol_info => {
+      const path = `./${protocol_info.mainCategory}/${protocol_info.subCategory}/EchoServer`;
+      const DeviceProtocolConverter = require(path);
+      // BU.CLIN(DeviceProtocolConverter, 4);
+      let protocolConverter = new DeviceProtocolConverter(protocol_info);
 
-        const foundIt = _.find(this.deviceModelList, deviceModel => _.isEqual(protocolConverter, deviceModel));
-        _.isEmpty(foundIt) && this.deviceModelList.push(protocolConverter);
-      });
+      const foundIt = _.find(this.deviceModelList, deviceModel => _.isEqual(protocolConverter, deviceModel));
+      _.isEmpty(foundIt) && this.deviceModelList.push(protocolConverter);
+      // });
     } catch (error) {
       throw error;
     }
@@ -70,6 +77,7 @@ class Control {
         // 약간의 지연 시간을 둠 (30ms)
         setTimeout(() => {
           let returnValue = Buffer.isBuffer(returnData) ? returnData : JSON.stringify(returnData);
+          BU.CLI(returnValue);
           socket.write(returnValue);
         }, 100);
       });
