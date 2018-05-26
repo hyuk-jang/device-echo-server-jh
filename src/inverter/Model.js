@@ -16,7 +16,7 @@ class Model extends BaseModel.Inverter {
 
     this.dialing = this.makeMsg2Buffer(dialing);
 
-    this.BASE = Object.assign({}, this.baseFormat);
+    this.BASE = BaseModel.Inverter.BASE_MODEL;
   }
   
   reload(){
