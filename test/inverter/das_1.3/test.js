@@ -30,7 +30,7 @@ function testConstruct() {
     subCategory: 'das_1.3',
     option: true
   }];
-  let control = new Control(7777);
+  let control = new Control(9000);
 
   control.attachDevice(deviceList);
 
@@ -40,47 +40,53 @@ function testConstruct() {
   }
 
 
-  const Socket = require('net');
-
-  let client = Socket.createConnection(7777);
 
 
-  client.on('data', data => {
-    BU.CLI(data.toString());
-  });
+
+  function startTest() {
+    const Socket = require('net');
+
+    let client = Socket.createConnection(9000);
+  
+  
+    client.on('data', data => {
+      BU.CLI(data.toString());
+    });
+    // Sytem
+    setTimeout(() => {
+      client.write('^P001MOD');
+    }, 100);
+
+    // PV
+    setTimeout(() => {
+      client.write('^P002ST1');
+    }, 200);
+
+    // GRID VOL
+    setTimeout(() => {
+      client.write('^P002ST2');
+    }, 300);
+
+    // GRID AMP
+    setTimeout(() => {
+      client.write('^P001ST3');
+    }, 400);
+
+    // POWER
+    setTimeout(() => {
+      client.write('^P001ST4');
+    }, 500);
+
+    // OPERATION
+    setTimeout(() => {
+      client.write('^P002ST6');
+    }, 600);
+
+  }
+}
 
   
-  // Sytem
-  setTimeout(() => {
-    client.write('^P001MOD');
-  }, 100);
-
-  // PV
-  setTimeout(() => {
-    client.write('^P002ST1');
-  }, 200);
-
-  // GRID VOL
-  setTimeout(() => {
-    client.write('^P002ST2');
-  }, 300);
-
-  // GRID AMP
-  setTimeout(() => {
-    client.write('^P001ST3');
-  }, 400);
-
-  // POWER
-  setTimeout(() => {
-    client.write('^P001ST4');
-  }, 500);
-
-  // OPERATION
-  setTimeout(() => {
-    client.write('^P002ST6');
-  }, 600);
-
-}
+ 
 
 testConstruct();
 

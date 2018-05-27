@@ -174,7 +174,8 @@ class EchoServer extends Model {
       this.DELIMETER,
       this.convertNumToBuf(this.BASE.operIsRun ? 0 : 1, 1),
       this.DELIMETER,
-      this.convertNumToBuf(_.random(0, 9), 1),
+      this.convertNumToBuf(2, 1),
+      // this.convertNumToBuf(_.random(0, 9), 1),
       this.DELIMETER,
     ];
 
@@ -215,7 +216,7 @@ class EchoServer extends Model {
     ]));
 
     // 모델 데이터 변화
-    this.reload();
+    BU.CLI(this.BASE);
     switch (cmd.toString()) {
     case 'MOD':
       return this.makeSystem();
@@ -232,6 +233,8 @@ class EchoServer extends Model {
     default:
       break;
     }
+
+    
   }
 
 }

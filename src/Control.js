@@ -62,7 +62,7 @@ class Control {
 
       socket.on('data', data => {
         // parseData.data = Buffer.from(parseData.data);
-        BU.CLI(`P: ${this.port}\tReceived Data: `, data);
+        // BU.CLI(`P: ${this.port}\tReceived Data: `, data);
 
         // 응답 받을 데이터 배열
         let receiveDataList = [];
@@ -77,7 +77,7 @@ class Control {
         // 약간의 지연 시간을 둠 (30ms)
         setTimeout(() => {
           let returnValue = Buffer.isBuffer(returnData) ? returnData : JSON.stringify(returnData);
-          BU.CLI(returnValue);
+          // BU.CLI(returnValue);
           socket.write(returnValue);
         }, 100);
       });
