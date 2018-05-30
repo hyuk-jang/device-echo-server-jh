@@ -1,6 +1,6 @@
 {
-  "name": "jsdoc",
-  "version": "1.0.0",
+  "name": "device-echo-server-jh",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "directories": {
