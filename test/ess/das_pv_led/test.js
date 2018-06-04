@@ -16,8 +16,8 @@ function testConstruct() {
    */
   const deviceList = [{
     deviceId: '000',
-    mainCategory: 'inverter',
-    subCategory: 'das_1.3',
+    mainCategory: 'ess',
+    subCategory: 'das_pv_led',
     protocolOptionInfo: {
       hasTrackingData: true
     },
@@ -26,8 +26,8 @@ function testConstruct() {
     }
   }, {
     deviceId: '002',
-    mainCategory: 'inverter',
-    subCategory: 'das_1.3',
+    mainCategory: 'ess',
+    subCategory: 'das_pv_led',
     protocolOptionInfo: {
       hasTrackingData: true
     },
@@ -36,8 +36,8 @@ function testConstruct() {
     }
   }, {
     deviceId: '002',
-    mainCategory: 'inverter',
-    subCategory: 'das_1.3',
+    mainCategory: 'ess',
+    subCategory: 'das_pv_led',
     protocolOptionInfo: {
       hasTrackingData: true
     },
@@ -99,6 +99,21 @@ function startTest() {
   setTimeout(() => {
     client.write('^P002ST6');
   }, 600);
+
+  // OPERATION
+  setTimeout(() => {
+    client.write('^P002ST7');
+  }, 700);
+
+  // OPERATION
+  setTimeout(() => {
+    client.write('^P002ST8');
+  }, 800);
+
+  // OPERATION
+  setTimeout(() => {
+    client.write('^P002ST9');
+  }, 900);
 
 } 
  

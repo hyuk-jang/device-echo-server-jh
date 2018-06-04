@@ -16,7 +16,7 @@ class EchoServer extends Model {
   constructor(protocol_info) {
     super(protocol_info);
 
-    this.isKwGnd = _.get(protocol_info, 'option') === true ? true : false;
+    this.isKwGnd = _.get(protocol_info, 'option.isUseKw')=== true ? true : false;
     
     // 기존에 객체에 생성되어 있는지 체크
     let foundInstance = _.find(instanceList, instanceInfo => {
@@ -94,7 +94,7 @@ class EchoServer extends Model {
   }
 
   makePv(){
-    let pvCurrentScale = this.isKwGnd ? 10 : 1000;
+    let currentScale = this.isKwGnd ? 10 : 1000;
     let dataBody = [
       Buffer.from('120'),
       this.dialing,
@@ -103,7 +103,7 @@ class EchoServer extends Model {
       this.DELIMETER,
       this.convertNumToBuf(_.round(this.BASE.pvAmp * 10), 4),
       this.DELIMETER,
-      this.convertNumToBuf(_.round(this.BASE.pvKw * pvCurrentScale), 4),
+      this.convertNumToBuf(_.round(this.BASE.pvKw * currentScale), 4),
       this.DELIMETER
     ];
 
@@ -150,12 +150,12 @@ class EchoServer extends Model {
 
 
   makePower(){
-    let pvCurrentScale = this.isKwGnd ? 10 : 1000;
+    let currentScale = this.isKwGnd ? 10 : 1000;
     let dataBody = [
       Buffer.from('419'),
       this.dialing,
       this.DELIMETER,
-      this.convertNumToBuf(_.round(this.BASE.powerGridKw * pvCurrentScale), 4),
+      this.convertNumToBuf(_.round(this.BASE.powerGridKw * currentScale), 4),
       this.DELIMETER,
       this.convertNumToBuf(_.round(this.BASE.powerCpKwh), 7),
       this.DELIMETER
@@ -172,10 +172,10 @@ class EchoServer extends Model {
       this.DELIMETER,
       this.convertNumToBuf(this.BASE.operIsError, 1),
       this.DELIMETER,
-      this.convertNumToBuf(this.BASE.operIsRun ? 0 : 1, 1),
+      this.convertNumToBuf(_.random(0, 6), 1),
       this.DELIMETER,
-      this.convertNumToBuf(2, 1),
-      // this.convertNumToBuf(_.random(0, 9), 1),
+      // this.convertNumToBuf(2, 1),
+      this.convertNumToBuf(_.random(0, 9), 1),
       this.DELIMETER,
     ];
 
@@ -184,6 +184,67 @@ class EchoServer extends Model {
   }
 
 
+  makeBattery(){
+    let currentScale = this.isKwGnd ? 10 : 1000;
+    let dataBody = [
+      Buffer.from('741'),
+      this.dialing,
+      this.DELIMETER,
+      this.convertNumToBuf(this.BASE.batteryVol, 3),
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.batteryAmp * 10), 4),
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.batteryChargingKw * currentScale), 4),
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.batteryDischargingKw * currentScale), 4),
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.batteryTotalChargingKw), 7),
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.batteryTotalDischargingKw), 7),
+      this.DELIMETER,
+    ];
+
+    let resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
+    return Buffer.concat([resBuf, this.calcChecksum(dataBody)]);
+  }
+
+  makeLed(){
+    // BU.CLI('makeLed');
+    let currentScale = this.isKwGnd ? 10 : 1000;
+    let dataBody = [
+      Buffer.from('828'),
+      this.dialing,
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.ledDcVol), 3),
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.ledDcAmp * 10), 4),
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.ledUsingKw * currentScale), 4),
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.ledTotalUsingKwh), 7),
+      this.DELIMETER,
+    ];
+
+    BU.CLI(this.BASE);
+    let resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
+    return Buffer.concat([resBuf, this.calcChecksum(dataBody)]);
+  }
+
+  makeInput(){
+    let currentScale = this.isKwGnd ? 10 : 1000;
+    let dataBody = [
+      Buffer.from('919'),
+      this.dialing,
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.inputLineKw * currentScale), 4),
+      this.DELIMETER,
+      this.convertNumToBuf(_.round(this.BASE.inputLineTotalKwh), 7),
+      this.DELIMETER,
+    ];
+
+    let resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
+    return Buffer.concat([resBuf, this.calcChecksum(dataBody)]);
+  }
 
 
   /**
@@ -191,7 +252,6 @@ class EchoServer extends Model {
    * @param {Buffer} bufData 
    */
   onData(bufData){
-    // BU.CLI('bufData', bufData);
     let SOP = Buffer.from([_.head(bufData)]);
 
     // SOP 일치 여부 체크
@@ -205,11 +265,8 @@ class EchoServer extends Model {
       this.HEADER_INFO.BYTE.CODE
     ]), _.subtract(bufData.length, this.HEADER_INFO.BYTE.CMD));
 
-    // BU.CLI('bufData', bufData);
-
     // 국번 일치 여부 체크(다르다면 응답하지 않음)
     if(!_.isEqual(dialing, this.dialing)){
-      // BU.CLIS(dialing, this.dialing);
       return;
     }
 
@@ -220,7 +277,7 @@ class EchoServer extends Model {
     ]));
 
     // 모델 데이터 변화
-    // BU.CLI(cmd.toString());
+    // BU.CLI(this.BASE);
     switch (cmd.toString()) {
     case 'MOD':
       return this.makeSystem();
@@ -234,6 +291,12 @@ class EchoServer extends Model {
       return this.makePower();
     case 'ST6':
       return this.makeOperation();
+    case 'ST7':
+      return this.makeBattery();
+    case 'ST8':
+      return this.makeLed();
+    case 'ST9':
+      return this.makeInput();
     default:
       break;
     }

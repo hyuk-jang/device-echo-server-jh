@@ -14,6 +14,8 @@ class Control {
   constructor(port) {
     this.port = port;
 
+    this.returnData;
+
 
     let foundInstance = _.find(instanceList, instanceInfo => {
       return _.isEqual(instanceInfo.id, this.port);
@@ -40,7 +42,7 @@ class Control {
         });
         return;
       }
-      BU.CLI(protocol_info);
+      // BU.CLI(protocol_info);
       // protocol_info.forEach(protocol_info => {
       const path = `./${protocol_info.mainCategory}/${protocol_info.subCategory}/EchoServer`;
       const DeviceProtocolConverter = require(path);
@@ -62,7 +64,7 @@ class Control {
 
       socket.on('data', data => {
         // parseData.data = Buffer.from(parseData.data);
-        // BU.CLI(`P: ${this.port}\tReceived Data: `, data);
+        BU.CLI(`P: ${this.port}\tReceived Data: `, data);
 
         // 응답 받을 데이터 배열
         let receiveDataList = [];
@@ -72,11 +74,12 @@ class Control {
         });
         // BU.CLI(receiveDataList);
         // 응답받지 않은 데이터는 undefined가 들어가므로 이를 제거하고 유효한 데이터 1개를 가져옴
-        const returnData = _(receiveDataList).reject(receiveData => _.isUndefined(receiveData)).head();
+        this.returnData = _(receiveDataList).reject(receiveData => _.isUndefined(receiveData)).head();
 
         // 약간의 지연 시간을 둠 (30ms)
         setTimeout(() => {
-          let returnValue = Buffer.isBuffer(returnData) ? returnData : JSON.stringify(returnData);
+          BU.CLI(this.returnData.toString());
+          let returnValue = Buffer.isBuffer(this.returnData) ? this.returnData : JSON.stringify(this.returnData);
           // BU.CLI(returnValue);
           socket.write(returnValue);
         }, 100);
