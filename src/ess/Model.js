@@ -29,6 +29,7 @@ class Model extends BaseModel.Inverter {
     this.BASE.pvAmp = _.random(0.3, 7.7);
     this.BASE.pvVol = _.random(160.1, 190.1);
     this.BASE.pvKw = _.multiply(_.multiply(this.BASE.pvAmp, this.BASE.pvVol), 0.001) ;
+    this.BASE.pvKwh = _.multiply(_.multiply(this.BASE.pvAmp, this.BASE.pvVol), 0.001) * _.random(10, 15) ;
     this.BASE.gridLf = _.random(59.7, 60.5);
     this.BASE.gridRAmp = _.multiply(this.BASE.pvAmp, _.random(0.8, 0.99));
     this.BASE.gridRsVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1.0));

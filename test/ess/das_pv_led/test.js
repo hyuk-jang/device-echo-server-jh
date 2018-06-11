@@ -73,47 +73,47 @@ function startTest() {
   // Sytem
   setTimeout(() => {
     client.write('^P000MOD');
-  }, 100);
+  }, 300);
 
   // PV
   setTimeout(() => {
     client.write('^P002ST1');
-  }, 200);
+  }, 600);
 
   // GRID VOL
   setTimeout(() => {
     client.write('^P002ST2');
-  }, 300);
+  }, 900);
 
   // GRID AMP
   setTimeout(() => {
     client.write('^P000ST3');
-  }, 400);
+  }, 1200);
 
   // POWER
   setTimeout(() => {
     client.write('^P000ST4');
-  }, 500);
+  }, 1500);
 
   // OPERATION
   setTimeout(() => {
     client.write('^P002ST6');
-  }, 600);
+  }, 1800);
 
   // OPERATION
   setTimeout(() => {
     client.write('^P002ST7');
-  }, 700);
+  }, 2100);
 
   // OPERATION
   setTimeout(() => {
     client.write('^P002ST8');
-  }, 800);
+  }, 2400);
 
   // OPERATION
   setTimeout(() => {
     client.write('^P002ST9');
-  }, 900);
+  }, 2700);
 
 } 
  

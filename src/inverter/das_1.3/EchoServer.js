@@ -97,6 +97,7 @@ class EchoServer extends Model {
     let pvCurrentScale = this.isKwGnd ? 10 : 1000;
     let dataBody = [
       Buffer.from('120'),
+      // Buffer.from('128'),
       this.dialing,
       this.DELIMETER,
       this.convertNumToBuf(_.round(this.BASE.pvVol), 3),
@@ -104,7 +105,9 @@ class EchoServer extends Model {
       this.convertNumToBuf(_.round(this.BASE.pvAmp * 10), 4),
       this.DELIMETER,
       this.convertNumToBuf(_.round(this.BASE.pvKw * pvCurrentScale), 4),
-      this.DELIMETER
+      this.DELIMETER,
+      // this.convertNumToBuf(_.round(this.BASE.powerCpKwh / _.random(0.1, 0.2)), 7),
+      // this.DELIMETER
     ];
 
     let resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
