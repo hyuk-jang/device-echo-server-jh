@@ -3,8 +3,6 @@ const _ = require('lodash');
 const {BU} = require('base-util-jh');
 const net = require('net');
 
-require('./format/defaultDefine');
-
 /** @type {Array.<{id: constructorSocket, instance: Control}>} */
 let instanceList = [];
 class Control {
@@ -17,6 +15,7 @@ class Control {
     this.returnData;
 
 
+    // 싱글톤 패턴으로 생성
     let foundInstance = _.find(instanceList, instanceInfo => {
       return _.isEqual(instanceInfo.id, this.port);
     });
