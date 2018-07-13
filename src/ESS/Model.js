@@ -13,7 +13,7 @@ class Model extends BaseModel.Inverter {
     // 국번 세팅
     let dialing = _.get(protocol_info, 'deviceId');
 
-    this.dialing = this.makeMsg2Buffer(dialing);
+    this.dialing = this.protocolConverter.makeMsg2Buffer(dialing);
 
     this.BASE = BaseModel.ESS.BASE_MODEL;
     this.BASE.powerCpKwh = 100; // 100 kWh 부터 시작
@@ -57,7 +57,7 @@ class Model extends BaseModel.Inverter {
     this.BASE.batteryChargingKw = _.round(_.multiply(_.multiply(this.BASE.batteryVol, this.BASE.batteryAmp), 0.001), 4);
     this.BASE.batteryDischargingKw = _.round(_.multiply(_.multiply(this.BASE.batteryVol, this.BASE.batteryAmp), 0.001), 4) ;
     this.BASE.batteryTotalChargingKw = _.round(_.multiply(this.BASE.powerCpKwh, _.random(0.8, 0.99)), 3);
-    this.BASE.batteryTotalDischargingKw = _.round(_.multiply(this.BASE.powerCpKwh, _.random(0.8, 0.99)), 3);
+    this.BASE.totalPVGeneratingPowerKwh = _.round(_.multiply(this.BASE.powerCpKwh, _.random(0.8, 0.99)), 3);
     this.BASE.ledDcVol = _.random(160.1, 190.1);
     this.BASE.ledDcAmp = _.random(0.3, 7.7);
     this.BASE.ledUsingKw = _.round(_.multiply(_.multiply(this.BASE.ledDcVol, this.BASE.ledDcAmp), 0.001), 4);
