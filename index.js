@@ -8,10 +8,6 @@ module.exports = Control;
 if (require !== undefined && require.main === module) {
   console.log('__main__');
 
-
-
-
-
   process.on('uncaughtException', function (err) {
     // BU.debugConsole();
     console.error(err.stack);
