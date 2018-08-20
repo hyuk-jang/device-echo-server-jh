@@ -1,20 +1,19 @@
-'use strict';
 const _ = require('lodash');
 
-const {BaseModel} =  require('../../../device-protocol-converter-jh');
+const {BaseModel} = require('../../../device-protocol-converter-jh');
 
 class Model extends BaseModel.Inverter {
   /**
    * protocol_info.option --> true: 3.3kW, any: 600W
-   * @param {protocol_info} protocol_info
+   * @param {protocol_info} protocolInfo
    */
-  constructor(protocol_info) {
+  constructor(protocolInfo) {
     super();
 
     // 국번 세팅
-    let dialing = _.get(protocol_info, 'deviceId');
+    const dialing = _.get(protocolInfo, 'deviceId');
 
-    this.dialing = this.makeMsg2Buffer(dialing);
+    this.dialing = this.protocolConverter.makeMsg2Buffer(dialing);
 
     this.BASE = BaseModel.Inverter.BASE_MODEL;
     this.BASE.powerCpKwh = 100; // 100 kWh 부터 시작
@@ -25,11 +24,11 @@ class Model extends BaseModel.Inverter {
       this.reload();
     }, 10000);
   }
-  
-  reload(){
+
+  reload() {
     this.BASE.pvAmp = _.random(0.3, 7.7);
     this.BASE.pvVol = _.random(160.1, 190.1);
-    this.BASE.pvKw = _.multiply(_.multiply(this.BASE.pvAmp, this.BASE.pvVol), 0.001) ;
+    this.BASE.pvKw = _.multiply(_.multiply(this.BASE.pvAmp, this.BASE.pvVol), 0.001);
     this.BASE.gridLf = _.random(59.7, 60.5);
     this.BASE.gridRAmp = _.multiply(this.BASE.pvAmp, _.random(0.8, 0.99));
     this.BASE.gridRsVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1.0));
@@ -50,12 +49,10 @@ class Model extends BaseModel.Inverter {
     this.BASE.powerCpKwh += _.random(0.1, 1);
     this.BASE.powerDailyKwh = _.sum([10, this.index]);
     this.BASE.powerPvKw = this.BASE.pvKw;
-    this.BASE.powerGridKw = _.divide(_.multiply(this.BASE.gridRAmp,this.BASE.gridRsVol), 1000);
-    this.BASE.powerPf = _.multiply(_.divide(this.BASE.powerGridKw, this.BASE.powerPvKw), 100) ;
+    this.BASE.powerGridKw = _.divide(_.multiply(this.BASE.gridRAmp, this.BASE.gridRsVol), 1000);
+    this.BASE.powerPf = _.multiply(_.divide(this.BASE.powerGridKw, this.BASE.powerPvKw), 100);
 
-    this.index++;
+    this.index += 1;
   }
-
-
 }
 module.exports = Model;

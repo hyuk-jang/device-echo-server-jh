@@ -30,6 +30,7 @@
     "prettier": "^1.14.2"
   },
   "dependencies": {
-    "base-util-jh": "^1.1.13"
+    "base-util-jh": "^1.1.13",
+    "lodash": "^4.17.10"
   }
 }
