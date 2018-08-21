@@ -1,49 +1,49 @@
-const {
-  BU
-} = require('base-util-jh');
+const {BU} = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 
 require('../../../../default-intelligence');
 
-
-
 function testConstruct() {
   const Control = require('../../../src/Control');
   /**
-   * @type {Array.<protocol_info>}
+   * @type {protocol_info[]}
    */
-  const deviceList = [{
-    deviceId: '000',
-    mainCategory: 'inverter',
-    subCategory: 'das_1.3',
-    protocolOptionInfo: {
-      hasTrackingData: true
+  const deviceList = [
+    {
+      deviceId: '000',
+      mainCategory: 'inverter',
+      subCategory: 'das_1.3',
+      protocolOptionInfo: {
+        hasTrackingData: true,
+      },
+      option: {
+        isUseKw: false,
+      },
     },
-    option: {
-      isUseKw: false
-    }
-  }, {
-    deviceId: '002',
-    mainCategory: 'inverter',
-    subCategory: 'das_1.3',
-    protocolOptionInfo: {
-      hasTrackingData: true
+    {
+      deviceId: '001',
+      mainCategory: 'inverter',
+      subCategory: 'das_1.3',
+      protocolOptionInfo: {
+        hasTrackingData: true,
+      },
+      option: {
+        isUseKw: true,
+      },
     },
-    option: {
-      isUseKw: true
-    }
-  }, {
-    deviceId: '002',
-    mainCategory: 'inverter',
-    subCategory: 'das_1.3',
-    protocolOptionInfo: {
-      hasTrackingData: true
+    {
+      deviceId: '001',
+      mainCategory: 'inverter',
+      subCategory: 'das_1.3',
+      protocolOptionInfo: {
+        hasTrackingData: true,
+      },
+      option: {
+        isUseKw: true,
+      },
     },
-    option: {
-      isUseKw: true
-    }
-  }];
-  let control = new Control(9000);
+  ];
+  const control = new Control(9000);
 
   control.attachDevice(deviceList);
 
@@ -51,19 +51,12 @@ function testConstruct() {
   if (control.deviceModelList.length !== 2) {
     throw new Error(`expect ${2}\t res: ${control.deviceModelList.length}`);
   }
-
-
-
-
-
-
 }
 
 function startTest() {
   const socketClient = require('net');
 
-  let client = socketClient.createConnection(9000);
-
+  const client = socketClient.createConnection(9000);
 
   client.on('data', data => {
     BU.CLI(data.toString());
@@ -97,23 +90,19 @@ function startTest() {
   setTimeout(() => {
     client.write('^P002ST6');
   }, 600);
-
-} 
- 
+}
 
 testConstruct();
-startTest();
+// startTest();
 
-
-process.on('uncaughtException', function (err) {
+process.on('uncaughtException', err => {
   // BU.debugConsole();
   console.error(err.stack);
   console.log(err.message);
   console.log('Node NOT Exiting...');
 });
 
-
-process.on('unhandledRejection', function (err) {
+process.on('unhandledRejection', err => {
   // BU.debugConsole();
   console.error(err.stack);
   console.log(err.message);

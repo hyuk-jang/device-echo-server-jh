@@ -184,7 +184,7 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    // BU.CLI('bufData', bufData);
+    BU.CLI('bufData', bufData);
     const SOP = Buffer.from([_.head(bufData)]);
 
     // SOP 일치 여부 체크
@@ -202,7 +202,7 @@ class EchoServer extends Model {
 
     // 국번 일치 여부 체크(다르다면 응답하지 않음)
     if (!_.isEqual(dialing, this.dialing)) {
-      // BU.CLIS(dialing, this.dialing);
+      BU.CLIS(dialing, this.dialing);
       return;
     }
 
