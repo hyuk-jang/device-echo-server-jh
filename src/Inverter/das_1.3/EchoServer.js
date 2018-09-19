@@ -184,6 +184,7 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
+    this.reload();
     bufData = this.peelFrameMSg(bufData)
     const SOP = Buffer.from([_.head(bufData)]);
 
