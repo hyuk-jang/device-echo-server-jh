@@ -63,7 +63,7 @@ class EchoServer extends Model {
     _.forEach(strChecksum, str => {
       let num = _.toNumber(str);
       // 문자라면 A~Z --> 10~35로 변환
-      num = isNaN(num) ? _.head(Buffer.from(str)) - 55 : num;
+      num = _.isNaN(num) ? _.head(Buffer.from(str)) - 55 : num;
       calcChecksum += num;
     });
 
@@ -85,7 +85,7 @@ class EchoServer extends Model {
     ];
 
     const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return Buffer.concat([resBuf, this.calcChecksum(dataBody)]);
+    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)])) ;
   }
 
   makePv() {
@@ -106,7 +106,7 @@ class EchoServer extends Model {
     ];
 
     const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return Buffer.concat([resBuf, this.calcChecksum(dataBody)]);
+    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)])) ;
   }
 
   makeGridVol() {
@@ -125,7 +125,7 @@ class EchoServer extends Model {
     ];
 
     const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return Buffer.concat([resBuf, this.calcChecksum(dataBody)]);
+    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
   }
 
   makeGridAmp() {
@@ -142,7 +142,7 @@ class EchoServer extends Model {
     ];
 
     const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return Buffer.concat([resBuf, this.calcChecksum(dataBody)]);
+    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
   }
 
   makePower() {
@@ -158,7 +158,7 @@ class EchoServer extends Model {
     ];
 
     const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return Buffer.concat([resBuf, this.calcChecksum(dataBody)]);
+    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
   }
 
   makeOperation() {
@@ -176,7 +176,7 @@ class EchoServer extends Model {
     ];
 
     const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return Buffer.concat([resBuf, this.calcChecksum(dataBody)]);
+    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
   }
 
   /**
@@ -184,7 +184,7 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    BU.CLI('bufData', bufData);
+    bufData = this.peelFrameMSg(bufData)
     const SOP = Buffer.from([_.head(bufData)]);
 
     // SOP 일치 여부 체크

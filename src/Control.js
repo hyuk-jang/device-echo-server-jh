@@ -85,6 +85,7 @@ class Control {
               ? this.returnData
               : JSON.stringify(this.returnData);
             BU.CLI(returnValue);
+            if (returnValue === undefined) return;
             socket.write(returnValue);
           }, 100);
         });

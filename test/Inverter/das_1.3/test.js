@@ -1,16 +1,16 @@
 const {BU} = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
+const Control = require('../../../src/Control');
 
 require('../../../../default-intelligence');
 
 function testConstruct() {
-  const Control = require('../../../src/Control');
   /**
    * @type {protocol_info[]}
    */
   const deviceList = [
     {
-      deviceId: '000',
+      deviceId: '001',
       mainCategory: 'inverter',
       subCategory: 'das_1.3',
       protocolOptionInfo: {
@@ -32,7 +32,7 @@ function testConstruct() {
       },
     },
     {
-      deviceId: '001',
+      deviceId: '002',
       mainCategory: 'inverter',
       subCategory: 'das_1.3',
       protocolOptionInfo: {

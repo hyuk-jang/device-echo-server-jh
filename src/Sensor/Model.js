@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const {BU} = require('base-util-jh');
+
 const {BaseModel} = require('../../../device-protocol-converter-jh');
 
 class Model extends BaseModel.Inverter {
@@ -13,7 +13,6 @@ class Model extends BaseModel.Inverter {
     // 국번 세팅
     const dialing = _.get(protocolInfo, 'deviceId');
 
-    this.protocolInfo = protocolInfo;
     this.dialing = this.protocolConverter.makeMsg2Buffer(dialing);
 
     this.BASE = BaseModel.Inverter.BASE_MODEL;
@@ -54,24 +53,6 @@ class Model extends BaseModel.Inverter {
     this.BASE.powerPf = _.multiply(_.divide(this.BASE.powerGridKw, this.BASE.powerPvKw), 100);
 
     this.index += 1;
-  }
-
-  /**
-   * passiveClient를 사용할 경우 전송 Frame을 씌워서 보내야하므로 DPC에 frame을 씌워줄 것을 요청
-   * passiveClient를 사용하지 않을 경우 원본 데이터 반환
-   * @param {Buffer} msg 인버터 프로토콜에 따른 실제 데이터
-   */
-  wrapFrameMsg(msg) {
-    return BaseModel.defaultWrapper.wrapFrameMsg(this.protocolInfo, msg);
-  }
-
-  /**
-   * passiveClient를 사용할 경우 전송 Frame을 씌워서 보내므로 해당 Frame을 해제하고 실제 데이터 추출하여 반환
-   * passiveClient를 사용하지 않을 경우 원본 데이터 반환
-   * @param {Buffer} msg 인버터 프로토콜에 따른 실제 데이터
-   */
-  peelFrameMSg(msg) {
-    return BaseModel.defaultWrapper.peelFrameMsg(this.protocolInfo, msg);
   }
 }
 module.exports = Model;
