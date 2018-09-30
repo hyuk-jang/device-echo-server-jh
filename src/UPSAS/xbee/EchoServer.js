@@ -4,228 +4,236 @@ const {BU} = require('base-util-jh');
 
 const Model = require('../Model');
 
-/** @type {Array.<{id: Buffer, instance: EchoServer}>} */
-const instanceList = [];
 class EchoServer extends Model {
   /**
    * protocol_info.option --> true: 3.3kW, any: 600W
    * @param {protocol_info} protocolInfo
+   * @param {mDeviceMap} deviceMap
    */
-  constructor(protocolInfo) {
-    super(protocolInfo);
+  constructor(protocolInfo, deviceMap) {
+    super(protocolInfo, deviceMap);
 
-    this.isKwGnd = _.get(protocolInfo, 'option') === true;
-
-    // 기존에 객체에 생성되어 있는지 체크
-    const foundInstance = _.find(instanceList, instanceInfo =>
-      _.isEqual(instanceInfo.id, this.dialing),
-    );
-
-    // 없다면 신규로 생성
-    if (_.isEmpty(foundInstance)) {
-      instanceList.push({id: this.dialing, instance: this});
-    } else {
-      return foundInstance.instance;
-    }
-
-    this.SOP = Buffer.from('^');
-    this.DELIMETER = Buffer.from(',');
-    this.REQ_CODE = Buffer.from('P');
-    this.RES_CODE = Buffer.from('D');
-
-    this.RES_HEAD = [this.SOP, this.RES_CODE];
-
-    this.HEADER_INFO = {
-      BYTE: {
-        SOP: 1,
-        CODE: 1,
-        ADDR: 1,
-        LENGTH: 2,
-        ID: 3,
-        CHECKSUM: 2,
-        CMD: 3,
-      },
-    };
+    this.init();
+    BU.CLI(this.nodeList);
   }
 
   /**
-   * 체크섬 구해서 반환
-   * @param {Array.<Buffer>} dataBodyBufList
-   * @return
+   * 장치들의 초기값을 설정
    */
-  calcChecksum(dataBodyBufList) {
-    const bodyBuf = Buffer.concat(dataBodyBufList);
-    const strChecksum = this.protocolConverter
-      .returnBufferExceptDelimiter(bodyBuf, this.DELIMETER.toString())
-      .toString();
-
-    let calcChecksum = 0;
-    _.forEach(strChecksum, str => {
-      let num = _.toNumber(str);
-      // 문자라면 A~Z --> 10~35로 변환
-      num = _.isNaN(num) ? _.head(Buffer.from(str)) - 55 : num;
-      calcChecksum += num;
+  init() {
+    this.nodeList.forEach(nodeInfo => {
+      switch (nodeInfo.defId) {
+        case this.device.WATER_DOOR.KEY:
+        case this.device.GATE_VALVE.KEY:
+          nodeInfo.data = this.device.WATER_DOOR.STATUS.CLOSE;
+          break;
+        case this.device.VALVE.KEY:
+          nodeInfo.data = this.device.VALVE.STATUS.CLOSE;
+          break;
+        case this.device.PUMP.KEY:
+          nodeInfo.data = this.device.PUMP.STATUS.OFF;
+          break;
+        case this.device.BRINE_TEMPERATURE.KEY:
+        case this.device.MODULE_FRONT_TEMPERATURE.KEY:
+        case this.device.MODULE_REAR_TEMPERATURE.KEY:
+          nodeInfo.data = _.random(15.1, 45.9);
+          break;
+        case this.device.WATER_LEVEL.KEY:
+          nodeInfo.data = _.random(0.0, 12.9);
+          break;
+        case this.device.SALINITY.KEY:
+          nodeInfo.data = _.random(0.0, 15.0);
+          break;
+        default:
+          break;
+      }
     });
-
-    return this.protocolConverter.convertNumToBuf(calcChecksum, 2);
   }
 
-  // 시스템 메시지 반환
-  makeSystem() {
-    const dataBody = [
-      Buffer.from('017'),
-      this.dialing,
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.BASE.sysIsSingle ? 1 : 3, 1),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.sysCapaKw * 10), 4),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.sysLineVoltage), 3),
-      this.DELIMETER,
-    ];
+  /**
+   * 수문 제어 요청이 들어왔을 경우
+   * @param {string} cmd
+   * @param {detailNodeInfo} nodeInfo
+   */
+  controlWaterDoor(cmd, nodeInfo) {
+    const DEVICE = this.device.WATER_DOOR;
+    const CLOSE = _.get(_.head(DEVICE.COMMAND.CLOSE), 'cmd');
+    const OPEN = _.get(_.head(DEVICE.COMMAND.OPEN), 'cmd');
 
-    const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)])) ;
+    // 요청 명령이 닫는 명령이라면
+    if (cmd === CLOSE) {
+      // 현재 상태가 열려있는 상태라면
+      if (nodeInfo.data === DEVICE.STATUS.OPEN) {
+        // 닫는 상태로 변경
+        nodeInfo.data = DEVICE.STATUS.CLOSING;
+        setTimeout(() => {
+          nodeInfo.data = DEVICE.STATUS.CLOSE;
+        }, 5000);
+      }
+    } else if (cmd === OPEN) {
+      // 현재 상태가 닫혀있다면
+      if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
+        // 여는 상태로 변경
+        nodeInfo.data = DEVICE.STATUS.OPENING;
+        setTimeout(() => {
+          nodeInfo.data = DEVICE.STATUS.OPEN;
+        }, 5000);
+      }
+    }
   }
 
-  makePv() {
-    const pvCurrentScale = this.isKwGnd ? 10 : 1000;
-    const dataBody = [
-      Buffer.from('120'),
-      // Buffer.from('128'),
-      this.dialing,
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.pvVol), 3),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.pvAmp * 10), 4),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.pvKw * pvCurrentScale), 4),
-      this.DELIMETER,
-      // this.protocolConverter.convertNumToBuf(_.round(this.BASE.powerCpKwh / _.random(0.1, 0.2)), 7),
-      // this.DELIMETER
-    ];
+  /**
+   * 밸브 제어 요청이 들어왔을 경우
+   * @param {string} cmd
+   * @param {detailNodeInfo} nodeInfo
+   */
+  controlValve(cmd, nodeInfo) {
+    const DEVICE = this.device.VALVE;
+    const CLOSE = _.get(_.head(DEVICE.COMMAND.CLOSE), 'cmd');
+    const OPEN = _.get(_.head(DEVICE.COMMAND.OPEN), 'cmd');
 
-    const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)])) ;
+    // 요청 명령이 닫는 명령이라면
+    if (cmd === CLOSE) {
+      // 현재 상태가 열려있는 상태라면
+      if (nodeInfo.data === DEVICE.STATUS.OPEN) {
+        // 닫는 상태로 변경
+        nodeInfo.data = DEVICE.STATUS.CLOSING;
+        setTimeout(() => {
+          nodeInfo.data = DEVICE.STATUS.CLOSE;
+        }, 5000);
+      }
+    } else if (cmd === OPEN) {
+      // 현재 상태가 닫혀있다면
+      if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
+        // 여는 상태로 변경
+        nodeInfo.data = DEVICE.STATUS.OPENING;
+        setTimeout(() => {
+          nodeInfo.data = DEVICE.STATUS.OPEN;
+        }, 5000);
+      }
+    }
   }
 
-  makeGridVol() {
-    const dataBody = [
-      Buffer.from('222'),
-      this.dialing,
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridRsVol), 3),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridStVol), 3),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridTrVol), 3),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridLf * 10), 3),
-      this.DELIMETER,
-    ];
+  /**
+   * 펌프 제어 요청이 들어왔을 경우
+   * @param {string} cmd
+   * @param {detailNodeInfo} nodeInfo
+   */
+  controlPump(cmd, nodeInfo) {
+    const DEVICE = this.device.PUMP;
+    const OFF = _.get(_.head(DEVICE.COMMAND.OFF), 'cmd');
+    const ON = _.get(_.head(DEVICE.COMMAND.ON), 'cmd');
 
-    const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
+    // 요청 명령이 닫는 명령이라면
+    if (cmd === OFF) {
+      // 현재 상태가 열려있는 상태라면
+      if (nodeInfo.data === DEVICE.STATUS.ON) {
+        // 닫는 상태로 변경
+        setTimeout(() => {
+          nodeInfo.data = DEVICE.STATUS.OFF;
+        }, 5000);
+      }
+    } else if (cmd === ON) {
+      // 현재 상태가 닫혀있다면
+      if (nodeInfo.data === DEVICE.STATUS.OFF) {
+        // 여는 상태로 변경
+        setTimeout(() => {
+          nodeInfo.data = DEVICE.STATUS.ON;
+        }, 5000);
+      }
+    }
   }
 
-  makeGridAmp() {
-    const dataBody = [
-      Buffer.from('321'),
-      this.dialing,
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridRAmp * 10), 4),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridSAmp * 10), 4),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridTAmp * 10), 4),
-      this.DELIMETER,
-    ];
+  /**
+   * @param {detailNodeInfo} nodeInfo
+   * @param {detailNodeInfo[]} nodeList
+   */
+  getWaterDoor(nodeInfo, nodeList) {
+    const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x31]);
 
-    const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
-  }
+    const DEVICE = this.device.WATER_DOOR;
+    let deviceHex;
+    switch (nodeInfo.data) {
+      case DEVICE.STATUS.STOP:
+        deviceHex = [0x30, 0x30];
+        break;
+      case DEVICE.STATUS.OPEN:
+        deviceHex = [0x30, 0x32];
+        break;
+      case DEVICE.STATUS.CLOSING:
+        deviceHex = [0x30, 0x33];
+        break;
+      case DEVICE.STATUS.CLOSE:
+        deviceHex = [0x30, 0x34];
+        break;
+      case DEVICE.STATUS.OPENING:
+        deviceHex = [0x30, 0x35];
+        break;
+      default:
+        break;
+    }
 
-  makePower() {
-    const pvCurrentScale = this.isKwGnd ? 10 : 1000;
-    const dataBody = [
-      Buffer.from('419'),
-      this.dialing,
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.powerGridKw * pvCurrentScale), 4),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.powerCpKwh), 7),
-      this.DELIMETER,
-    ];
+    // 염도 센서 값
+    const waterLevelNode = _.find(nodeList, {defId: this.device.WATER_LEVEL.KEY});
+    const salinityNode = _.find(nodeList, {defId: this.device.SALINITY.KEY});
 
-    const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
-  }
+    let waterLevelBuf;
+    if (_.isEmpty(waterLevelNode)) {
+      waterLevelBuf = this.protocolConverter.convertNumToBuf(0, 2);
+    } else {
+      waterLevelBuf = this.protocolConverter.convertNumToBuf(_.round(waterLevelNode.data * 10), 2);
+    }
 
-  makeOperation() {
-    const dataBody = [
-      Buffer.from('612'),
-      this.dialing,
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.BASE.operIsError, 1),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.BASE.operIsRun ? 0 : 1, 1),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(2, 1),
-      // this.protocolConverter.convertNumToBuf(_.random(0, 9), 1),
-      this.DELIMETER,
-    ];
+    let salinityBuf;
+    if (_.isEmpty(salinityNode)) {
+      salinityBuf = this.protocolConverter.convertNumToBuf(0, 4);
+    } else {
+      salinityBuf = this.protocolConverter.convertNumToBuf(_.round(salinityNode.data * 10), 4);
+    }
 
-    const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
+    // Level: 2, Salinity: 4, Batter: 4
+    return Buffer.concat([
+      bufHeader,
+      Buffer.from(deviceHex),
+      waterLevelBuf,
+      salinityBuf,
+      Buffer.from([0x31, 0x30, 0x2e, 0x32]),
+    ]);
   }
 
   /**
    *
-   * @param {Buffer} bufData
+   * @param {xbeeApi_0x10} xbeeApi0x10
    */
-  onData(bufData) {
+  onData(xbeeApi0x10) {
     this.reload();
-    bufData = this.peelFrameMSg(bufData)
-    const SOP = Buffer.from([_.head(bufData)]);
+    xbeeApi0x10 = this.peelFrameMSg(xbeeApi0x10);
 
-    // SOP 일치 여부 체크
-    if (!_.isEqual(SOP, Buffer.from('^'))) {
-      throw new Error(`Not Matching SOP\n expect: ${this.SOP}\t res: ${SOP}`);
-    }
+    const foundDataLogger = this.findDataLogger(xbeeApi0x10.destination64);
 
-    // check Length (SOP, CODE, ADDRESS 제외)
-    const dialing = bufData.slice(
-      _.sum([this.HEADER_INFO.BYTE.SOP, this.HEADER_INFO.BYTE.CODE]),
-      _.subtract(bufData.length, this.HEADER_INFO.BYTE.CMD),
-    );
+    const foundNodeList = foundDataLogger.nodeList.map(nodeId => _.find(this.nodeList, {nodeId}));
 
-    // BU.CLI('bufData', bufData);
-
-    // 국번 일치 여부 체크(다르다면 응답하지 않음)
-    if (!_.isEqual(dialing, this.dialing)) {
-      BU.CLIS(dialing, this.dialing);
-      return;
-    }
-
-    const cmd = bufData.slice(
-      _.sum([this.HEADER_INFO.BYTE.SOP, this.HEADER_INFO.BYTE.CODE, this.HEADER_INFO.BYTE.ID]),
-    );
-
-    // 모델 데이터 변화
-    // BU.CLI(cmd.toString());
-    switch (cmd.toString()) {
-      case 'MOD':
-        return this.makeSystem();
-      case 'ST1':
-        return this.makePv();
-      case 'ST2':
-        return this.makeGridVol();
-      case 'ST3':
-        return this.makeGridAmp();
-      case 'ST4':
-        return this.makePower();
-      case 'ST6':
-        return this.makeOperation();
+    let findDevice;
+    let returnValue;
+    // 찾은 데이터로거 접두사로 판별
+    switch (foundDataLogger.prefix) {
+      case 'D_G':
+        findDevice = _.find(foundNodeList, {classId: this.device.WATER_DOOR.KEY});
+        this.controlWaterDoor(xbeeApi0x10.data, findDevice);
+        returnValue = this.getWaterDoor(foundNodeList, findDevice);
+        break;
+      case 'D_V':
+        findDevice = _.find(foundNodeList, {classId: this.device.VALVE.KEY});
+        this.controlWaterDoor(xbeeApi0x10.data, findDevice);
+        break;
+      case 'D_GV':
+        findDevice = _.find(foundNodeList, {classId: this.device.GATE_VALVE.KEY});
+        this.controlWaterDoor(xbeeApi0x10.data, findDevice);
+        break;
+      case 'D_P':
+        findDevice = _.find(foundNodeList, {classId: this.device.PUMP.KEY});
+        this.controlWaterDoor(xbeeApi0x10.data, findDevice);
+        break;
       default:
         break;
     }
@@ -258,3 +266,23 @@ if (require !== undefined && require.main === module) {
   msg = echoServer.makeOperation();
   BU.CLI(msg.toString());
 }
+
+/**
+ * @typedef {Object} detailNodeInfo
+ * @property {string} classId
+ * @property {string} className
+ * @property {string} defId
+ * @property {string} defName
+ * @property {number} isSensor
+ * @property {string} nodeId
+ * @property {*} data
+ */
+
+/**
+ * @typedef {Object} detailDataloggerIInfo
+ * @property {string} className
+ * @property {string} prefix
+ * @property {string} dataLoggerId
+ * @property {string} serialNumber
+ * @property {string[]} nodeList
+ */

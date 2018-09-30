@@ -6,6 +6,15 @@ module.exports = Control;
 if (require !== undefined && require.main === module) {
   console.log('__main__');
 
+  const control = new Control(9000);
+  control.attachDevice(
+    {
+      mainCategory: 'UPSAS',
+      subCategory: 'xbee',
+    },
+    control.mapListInfo.UPSAS.muan6kW,
+  );
+
   process.on('uncaughtException', err => {
     // BU.debugConsole();
     console.error(err);

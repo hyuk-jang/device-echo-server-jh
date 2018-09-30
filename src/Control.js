@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const {BU} = require('base-util-jh');
 const net = require('net');
+const mapListInfo = require('./mapList');
 
 /** @type {Array.<{id: constructorSocket, instance: Control}>} */
 const instanceList = [];
@@ -12,6 +13,7 @@ class Control {
     this.port = port;
 
     this.returnData;
+    this.mapListInfo = mapListInfo;
 
     // 싱글톤 패턴으로 생성
     const foundInstance = _.find(instanceList, instanceInfo =>
@@ -30,12 +32,13 @@ class Control {
   /**
    * 장치를 세팅
    * @param {protocol_info[]|protocol_info} protocolInfo
+   * @param {mDeviceMap=} deviceMap SITE 단위를 사용할 경우 해당 프로토콜에서 사용될 MapImg ID
    */
-  attachDevice(protocolInfo) {
+  attachDevice(protocolInfo, deviceMap) {
     try {
       if (_.isArray(protocolInfo)) {
         protocolInfo.forEach(currentItem => {
-          this.attachDevice(currentItem);
+          this.attachDevice(currentItem, deviceMap);
         });
         return;
       }
@@ -44,7 +47,7 @@ class Control {
       const path = `./${protocolInfo.mainCategory}/${protocolInfo.subCategory}/EchoServer`;
       const DeviceProtocolConverter = require(path);
       // BU.CLIN(DeviceProtocolConverter, 4);
-      const protocolConverter = new DeviceProtocolConverter(protocolInfo);
+      const protocolConverter = new DeviceProtocolConverter(protocolInfo, deviceMap);
 
       const foundIt = _.find(this.deviceModelList, deviceModel =>
         _.isEqual(protocolConverter, deviceModel),
