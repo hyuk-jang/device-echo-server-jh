@@ -1,8 +1,11 @@
 const _ = require('lodash');
 
+const moment = require('moment');
 const {BU} = require('base-util-jh');
 
 const Model = require('../Model');
+
+const {MainConverter, BaseModel} = require('../../../../device-protocol-converter-jh');
 
 class EchoServer extends Model {
   /**
@@ -20,6 +23,8 @@ class EchoServer extends Model {
 
     this.normalDeviceOperTime = 500;
     this.pumpDeviceOperTime = 1000;
+
+    this.dataIndexList = [];
   }
 
   /**
@@ -28,7 +33,6 @@ class EchoServer extends Model {
   init() {
     const {
       CO2,
-      DEFAULT,
       IS_RAIN,
       LUX,
       OUTSIDE_AIR_REH,
@@ -87,12 +91,136 @@ class EchoServer extends Model {
 
   /**
    *
-   * @param {*} bufData
+   * @param {dataLoggerInfo} dataLogger
+   * @param {Buffer} bufData
+   */
+  readInputRegister(dataLogger, bufData) {
+    const registerAddr = bufData.readInt16BE(2);
+    const dataLength = bufData.readInt16BE(4);
+
+    /** @type {detailNodeInfo[]} */
+    const foundNodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, {nodeId}));
+    // BU.CLI(foundNodeList);
+
+    const ModelFP = BaseModel.FarmParallel;
+
+    const protocolList = [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+        key: ModelFP.BASE_KEY.lux,
+        scale: 0.1,
+        fixed: 1,
+      },
+      {
+        key: ModelFP.BASE_KEY.solar,
+        scale: 0.1,
+        fixed: 1,
+      },
+      {
+        key: ModelFP.BASE_KEY.soilTemperature,
+        scale: 0.1,
+        fixed: 1,
+      },
+      {
+        key: ModelFP.BASE_KEY.soilReh,
+        scale: 0.1,
+        fixed: 1,
+      },
+      {
+        key: ModelFP.BASE_KEY.co2,
+        scale: 0.1,
+        fixed: 1,
+      },
+      {
+        key: ModelFP.BASE_KEY.soilWaterValue,
+        scale: 0.1,
+        fixed: 1,
+      },
+      {
+        key: ModelFP.BASE_KEY.outsideAirTemperature,
+        scale: 0.1,
+        fixed: 1,
+      },
+      {
+        key: ModelFP.BASE_KEY.outsideAirReh,
+        scale: 0.1,
+        fixed: 1,
+      },
+      {
+        key: ModelFP.BASE_KEY.windSpeed,
+        scale: 0.1,
+        fixed: 1,
+      },
+      {
+        key: ModelFP.BASE_KEY.windDirection,
+      },
+      {
+        key: ModelFP.BASE_KEY.r1,
+        scale: 0.1,
+        fixed: 1,
+      },
+      {
+        key: ModelFP.BASE_KEY.isRain,
+      },
+    ];
+
+    const dataHeader = [
+      moment().format('YYYY'),
+      moment().format('MM'),
+      moment().format('DD'),
+      moment().format('HH'),
+      moment().format('mm'),
+      moment().format('ss'),
+    ];
+
+    const dataLoggerData = protocolList.map((protocolInfo, index) => {
+      const nodeInfo = _.find(foundNodeList, {defId: protocolInfo.key});
+      if (_.isUndefined(nodeInfo)) {
+        return parseInt(_.nth(dataHeader, index), 0);
+      }
+      if (_.isNumber(protocolInfo.scale)) {
+        nodeInfo.data = _.round(_.divide(nodeInfo.data, protocolInfo.scale));
+      }
+      return nodeInfo.data;
+    });
+
+    return dataLoggerData.slice(registerAddr, _.sum([registerAddr, dataLength]));
+  }
+
+  /**
+   *
+   * @param {Buffer} bufData
    */
   onData(bufData) {
-    BU.CLI(bufData);
-    // BU.CLI(xbeeApi0x10);
-    const returnValue = '';
+    // Frame을 쓴다면 벗겨냄
+    bufData = this.peelFrameMSg(bufData);
+
+    let returnValue;
+
+    const slaveAddr = bufData.readIntBE(0, 1);
+    const fnCode = bufData.readIntBE(1, 1);
+
+    // BU.CLIS(slaveAddr, fnCode);
+    // BU.CLI(this.dataLoggerList);
+    // slaveAddr를 기준으로 dataLogger 찾음
+    const foundDataLogger = this.findDataLogger(slaveAddr);
+
+    switch (fnCode) {
+      case 4:
+        returnValue = this.readInputRegister(foundDataLogger, bufData);
+        break;
+
+      default:
+        break;
+    }
+
+    returnValue = this.wrapFrameMsg(returnValue);
+
     return returnValue;
   }
 }
@@ -104,47 +232,25 @@ if (require !== undefined && require.main === module) {
 
   const mapList = require('../../mapList');
 
-  const echoServer = new EchoServer(
-    {
-      deviceId: '001',
-      mainCategory: 'FarmParallel',
-      subCategory: 'dmTech',
-    },
-    mapList.FP.yungSanPo,
-  );
+  const protocolInfo = {
+    deviceId: '001',
+    mainCategory: 'FarmParallel',
+    subCategory: 'dmTech',
+  };
+
+  const echoServer = new EchoServer(protocolInfo, mapList.FP.yungSanPo);
+
+  const mainConverter = new MainConverter(protocolInfo);
+  mainConverter.setProtocolConverter();
+  BU.CLI(echoServer.device.DEFAULT.COMMAND.STATUS);
+  let cmdList = mainConverter.generationCommand(echoServer.device.DEFAULT.COMMAND.STATUS);
+  let result = echoServer.onData(_.head(cmdList).data);
+  BU.CLI(result);
+  cmdList = mainConverter.generationCommand(echoServer.device.LUX.COMMAND.STATUS);
+  result = echoServer.onData(_.head(cmdList).data);
+  BU.CLI(result);
 
   echoServer.reload();
-  // 수문
-  let msg = echoServer.onData({
-    destination64: '0013A20040F7ACC8',
-    data: '@cgo',
-  });
-
-  // 밸브
-  msg = echoServer.onData({
-    destination64: '0013A20040F7B47F',
-    data: '@cvo',
-  });
-
-  // 게이트형 밸브
-  msg = echoServer.onData({
-    destination64: '0013A20040F7AB81',
-    data: '@cvo',
-  });
-  BU.CLI(msg.toString());
-
-  // 펌프
-  msg = echoServer.onData({
-    destination64: '0013A20040F7B446',
-    data: '@cpo',
-  });
-
-  // 육상 모듈
-  msg = echoServer.onData({
-    destination64: '0013A20040F7AB86',
-    data: '@sts',
-  });
-  BU.CLI(msg.toString());
 }
 
 /**
@@ -166,3 +272,19 @@ if (require !== undefined && require.main === module) {
  * @property {string} serialNumber
  * @property {string[]} nodeList
  */
+
+// const DEVICE = this.model.device;
+// const pickIndex = [
+//   DEVICE.LUX.KEY,
+//   DEVICE.SOLAR.KEY,
+//   DEVICE.SOIL_TEMPERATURE.KEY,
+//   DEVICE.SOIL_REH.KEY,
+//   DEVICE.CO2.KEY,
+//   DEVICE.SOIL_WATER_VALUE.KEY,
+//   DEVICE.OUTSIDE_AIR_TEMPERATURE.KEY,
+//   DEVICE.OUTSIDE_AIR_REH.KEY,
+//   DEVICE.WIND_SPEED.KEY,
+//   DEVICE.WIND_DIRECTRION.KEY,
+//   DEVICE.R1.KEY,
+//   DEVICE.IS_RAIN.KEY,
+// ];

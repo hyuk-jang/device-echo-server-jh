@@ -74,7 +74,7 @@ class AbstModel {
 
   /**
    *
-   * @param {string} dataloggerSerialNumber
+   * @param {string|number} dataloggerSerialNumber
    */
   findDataLogger(dataloggerSerialNumber) {
     return _.find(this.dataLoggerList, {serialNumber: dataloggerSerialNumber});

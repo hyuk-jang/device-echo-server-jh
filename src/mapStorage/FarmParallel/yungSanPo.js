@@ -1,5 +1,3 @@
-require('../../../../default-intelligence');
-
 /**
  * @type {mDeviceMap}
  */
@@ -99,18 +97,44 @@ const map = {
         target_name: '센서 Board DL',
         dataLoggerDeviceList: [
           {
-            serial_number: '1',
+            serial_number: 1,
             target_code: '001',
             dccId: 'DCC_002',
             dpcId: 'DPC_001',
-            nodeList: [''],
+            nodeList: [
+              'T_S_001',
+              'T_OA_001',
+              'RH_S_001',
+              'RH_OA_001',
+              'W_S_001',
+              'W_D_001',
+              'SL_001',
+              'RF1_001',
+              'IR_001',
+              'CO2_001',
+              'LX_001',
+              'WV_S_001',
+            ],
           },
           {
-            serial_number: '2',
+            serial_number: 2,
             target_code: '002',
             dccId: 'DCC_002',
             dpcId: 'DPC_001',
-            nodeList: [''],
+            nodeList: [
+              'T_S_002',
+              'T_OA_002',
+              'RH_S_002',
+              'RH_OA_002',
+              'W_S_002',
+              'W_D_002',
+              'SL_002',
+              'RF1_002',
+              'IR_002',
+              'CO2_002',
+              'LX_002',
+              'WV_S_002',
+            ],
           },
         ],
       },
@@ -121,11 +145,11 @@ const map = {
         target_name: '온도',
         is_sensor: 1,
         data_unit: '℃',
-        description: '섭씨',
+        description: '섭씨: 1 atm에서의 물의 어는점을 0도, 끓는점을 100도로 정한 온도',
         defList: [
           {
             target_id: 'soilTemperature',
-            target_prefix: 'ST',
+            target_prefix: 'T_S',
             target_name: '토양 온도',
             nodeList: [
               {
@@ -140,7 +164,7 @@ const map = {
           },
           {
             target_id: 'outsideAirTemperature',
-            target_prefix: 'OAT',
+            target_prefix: 'T_OA',
             target_name: '외기 온도',
             nodeList: [
               {
@@ -159,12 +183,12 @@ const map = {
         target_id: 'reh',
         target_name: '습도',
         is_sensor: 1,
-        data_unit: '%',
-        description: '백분율',
+        data_unit: '%RH',
+        description: '공기 중에 포함되어 있는 수증기의 양 또는 비율을 나타내는 단위',
         defList: [
           {
             target_id: 'soilReh',
-            target_prefix: 'SR',
+            target_prefix: 'RH_S',
             target_name: '토양 습도',
             nodeList: [
               {
@@ -179,7 +203,7 @@ const map = {
           },
           {
             target_id: 'outsideAirReh',
-            target_prefix: 'OAR',
+            target_prefix: 'RH_OA',
             target_name: '외기 습도',
             nodeList: [
               {
@@ -203,7 +227,7 @@ const map = {
         defList: [
           {
             target_id: 'windSpeed',
-            target_prefix: 'WS',
+            target_prefix: 'W_S',
             nodeList: [
               {
                 target_code: '001',
@@ -226,7 +250,7 @@ const map = {
         defList: [
           {
             target_id: 'windDirection',
-            target_prefix: 'WD',
+            target_prefix: 'W_D',
             nodeList: [
               {
                 target_code: '001',
@@ -272,7 +296,7 @@ const map = {
         defList: [
           {
             target_id: 'r1',
-            target_prefix: 'R1',
+            target_prefix: 'RF1',
             target_name: '시간당 강우량',
             nodeList: [
               {
@@ -374,7 +398,7 @@ const map = {
         defList: [
           {
             target_id: 'soilWaterValue',
-            target_prefix: 'SWV',
+            target_prefix: 'WV_S',
             target_name: '토양 수분 값',
             nodeList: [
               {
@@ -408,170 +432,59 @@ const map = {
     ],
   },
   realtionInfo: {
-    placeRelationList: [],
-    brineFlowRelationList: [
+    placeRelationList: [
       {
-        currNodeId: 'P_001',
-        placeIdList: ['RV'],
-        parentNodeIdList: [],
-        childrenNodeIdList: [],
-      },
-      {
-        currNodeId: 'P_002',
-        placeIdList: [],
-        parentNodeIdList: [],
-        childrenNodeIdList: ['V_006'],
-      },
-      {
-        currNodeId: 'P_003',
-        placeIdList: [],
-        parentNodeIdList: [],
-        childrenNodeIdList: ['V_007'],
-      },
-      {
-        currNodeId: 'P_004',
-        placeIdList: ['SEB_2'],
-        parentNodeIdList: [],
-        childrenNodeIdList: [],
-      },
-      {
-        currNodeId: 'P_005',
-        placeIdList: ['SCB'],
-        parentNodeIdList: [],
-        childrenNodeIdList: [],
-      },
-    ],
-    brineFeedRankRelationList: [],
-  },
-  controlInfo: {
-    tempControlList: [
-      {
-        cmdName: '바다 → 저수지',
-        trueList: ['P_001'],
-        falseList: [],
-      },
-      {
-        cmdName: '저수조 → 증발지 1',
-        trueList: ['V_006', 'V_001', 'V_002', 'V_003', 'V_004', 'P_002'],
-        falseList: ['GV_001', 'GV_002', 'GV_003', 'GV_004', 'WD_005'],
-      },
-      {
-        cmdName: '해주 1 → 증발지 1',
-        trueList: ['V_007', 'V_001', 'V_002', 'V_003', 'V_004', 'P_003'],
-        falseList: ['GV_001', 'GV_002', 'GV_003', 'GV_004', 'WD_005'],
-      },
-      {
-        cmdName: '해주 2 → 증발지 2',
-        trueList: ['P_004'],
-        falseList: ['WD_006'],
-      },
-      {
-        cmdName: '해주 2 → 증발지 2, 3, 4',
-        trueList: ['P_004', 'WD_006', 'WD_007'],
-        falseList: ['WD_008'],
-      },
-      {
-        cmdName: '해주 3 → 결정지',
-        trueList: ['P_005'],
-        falseList: ['WD_009'],
-      },
-      {
-        cmdName: '증발지 1 → 해주 1',
-        trueList: ['GV_001', 'GV_002', 'GV_003', 'GV_004', 'WD_005', 'WD_013', 'WD_010'],
-        falseList: ['WD_016'],
-      },
-      {
-        cmdName: '증발지 1 → 해주 2',
-        trueList: ['GV_001', 'GV_002', 'GV_003', 'GV_004', 'WD_005', 'WD_013', 'WD_016', 'WD_011'],
-        falseList: ['WD_010', 'WD_012', 'WD_014', 'WD_015'],
-      },
-      {
-        cmdName: '증발지 2 → 증발지 3',
-        trueList: ['WD_006'],
-        falseList: ['WD_007'],
-      },
-      {
-        cmdName: '증발지 3 → 증발지 4',
-        trueList: ['WD_007'],
-        falseList: ['WD_008'],
-      },
-      {
-        cmdName: '증발지 4 → 해주2',
-        trueList: ['WD_008', 'WD_014', 'WD_011'],
-        falseList: ['WD_012', 'WD_015'],
-      },
-      {
-        cmdName: '증발지 4 → 해주3',
-        trueList: ['WD_008', 'WD_014', 'WD_012'],
-        falseList: ['WD_011', 'WD_015'],
-      },
-      {
-        cmdName: '결정지 → 해주 3',
-        trueList: ['WD_009', 'WD_014', 'WD_012'],
-        falseList: ['WD_011'],
-      },
-      {
-        cmdName: '저수조 → 증발지 1A',
-        trueList: ['V_006', 'V_001', 'P_002'],
-        falseList: ['GV_001'],
-      },
-      {
-        cmdName: '저수조 → 증발지 1B',
-        trueList: ['V_006', 'V_002', 'P_002'],
-        falseList: ['GV_002'],
-      },
-      {
-        cmdName: '저수조 → 증발지 1C',
-        trueList: ['V_006', 'V_003', 'P_002'],
-        falseList: ['GV_003'],
-      },
-      {
-        cmdName: '저수조 → 증발지 1D',
-        trueList: ['V_006', 'V_004', 'P_002'],
-        falseList: ['GV_004'],
-      },
-      {
-        cmdName: '해주 1 → 증발지 1A',
-        trueList: ['V_007', 'V_001', 'P_003'],
-        falseList: ['GV_001'],
-      },
-      {
-        cmdName: '해주 1 → 증발지 1B',
-        trueList: ['V_007', 'V_002', 'P_003'],
-        falseList: ['GV_002'],
-      },
-      {
-        cmdName: '해주 1 → 증발지 1C',
-        trueList: ['V_007', 'V_003', 'P_003'],
-        falseList: ['GV_003'],
-      },
-      {
-        cmdName: '해주 1 → 증발지 1D',
-        trueList: ['V_007', 'V_004', 'P_003'],
-        falseList: ['GV_004'],
-      },
-      {
-        cmdName: '증발지 1A → 해주 1',
-        trueList: ['GV_001', 'WD_013', 'WD_010'],
-        falseList: [],
-      },
-      {
-        cmdName: '증발지 1B → 해주 1',
-        trueList: ['GV_002', 'WD_013', 'WD_010'],
-        falseList: [],
-      },
-      {
-        cmdName: '증발지 1C → 해주 1',
-        trueList: ['GV_003', 'WD_013', 'WD_010'],
-        falseList: [],
-      },
-      {
-        cmdName: '증발지 1D → 해주 1',
-        trueList: ['GV_004', 'WD_013', 'WD_010'],
-        falseList: [],
+        target_id: 'site',
+        target_name: '부지',
+        description: '테스트 부지',
+        defList: [
+          {
+            target_id: 'site',
+            target_prefix: 'SITE',
+            placeList: [
+              {
+                target_code: '1',
+                depth: 1,
+                nodeList: [
+                  'T_S_001',
+                  'T_OA_001',
+                  'RH_S_001',
+                  'RH_OA_001',
+                  'W_S_001',
+                  'W_D_001',
+                  'SL_001',
+                  'RF1_001',
+                  'IR_001',
+                  'CO2_001',
+                  'LX_001',
+                  'WV_S_001',
+                ],
+              },
+              {
+                target_code: '2',
+                depth: 1,
+                nodeList: [
+                  'T_S_002',
+                  'T_OA_002',
+                  'RH_S_002',
+                  'RH_OA_002',
+                  'W_S_002',
+                  'W_D_002',
+                  'SL_002',
+                  'RF1_002',
+                  'IR_002',
+                  'CO2_002',
+                  'LX_002',
+                  'WV_S_002',
+                ],
+              },
+            ],
+          },
+        ],
       },
     ],
   },
+  controlInfo: {},
 };
 
 module.exports = map;
