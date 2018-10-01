@@ -13,21 +13,13 @@ function testConstruct() {
    */
   const deviceList = [
     {
-      mainCategory: 'UPSAS',
-      subCategory: 'xbee',
-    },
-    {
-      mainCategory: 'UPSAS',
-      subCategory: 'xbee',
-    },
-    {
-      mainCategory: 'UPSAS',
-      subCategory: 'xbee',
+      mainCategory: 'FarmParallel',
+      subCategory: 'dmTech',
     },
   ];
   const control = new Control(9000);
 
-  control.attachDevice(deviceList, mapList.UPSAS.muan6kW);
+  control.attachDevice(deviceList, mapList.FP.yungSanPo);
 
   // 2개 장치 구동
   if (control.deviceModelList.length !== 1) {

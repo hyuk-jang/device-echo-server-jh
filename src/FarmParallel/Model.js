@@ -2,7 +2,6 @@ const _ = require('lodash');
 const {BU} = require('base-util-jh');
 
 const {BaseModel} = require('../../../device-protocol-converter-jh');
-
 const AbstModel = require('../Default/AbstModel');
 
 class Model extends AbstModel {
@@ -14,7 +13,7 @@ class Model extends AbstModel {
     super(protocolInfo, deviceMap);
 
     // Intellisense를 위한 device 재정의
-    this.device = new BaseModel.UPSAS(protocolInfo).device;
+    this.device = new BaseModel.FarmParallel(protocolInfo).device;
   }
 }
 module.exports = Model;

@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "base-util-jh": "^1.1.13",
+    "bluebird": "^3.5.2",
     "lodash": "^4.17.10"
   }
 }

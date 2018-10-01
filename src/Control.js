@@ -87,7 +87,7 @@ class Control {
             const returnValue = Buffer.isBuffer(this.returnData)
               ? this.returnData
               : JSON.stringify(this.returnData);
-            BU.CLI(returnValue);
+            // BU.CLI(returnValue);
             if (returnValue === undefined) return;
             socket.write(returnValue);
           }, 100);
