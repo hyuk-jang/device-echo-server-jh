@@ -85,7 +85,7 @@ class EchoServer extends Model {
     ];
 
     const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)])) ;
+    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
   }
 
   makePv() {
@@ -106,7 +106,7 @@ class EchoServer extends Model {
     ];
 
     const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
-    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)])) ;
+    return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
   }
 
   makeGridVol() {
@@ -184,8 +184,10 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
+    BU.CLI(bufData);
     this.reload();
-    bufData = this.peelFrameMSg(bufData)
+    bufData = this.peelFrameMSg(bufData);
+    BU.CLI(bufData);
     const SOP = Buffer.from([_.head(bufData)]);
 
     // SOP 일치 여부 체크
@@ -199,7 +201,7 @@ class EchoServer extends Model {
       _.subtract(bufData.length, this.HEADER_INFO.BYTE.CMD),
     );
 
-    // BU.CLI('bufData', bufData);
+    BU.CLI('bufData', bufData);
 
     // 국번 일치 여부 체크(다르다면 응답하지 않음)
     if (!_.isEqual(dialing, this.dialing)) {

@@ -186,6 +186,7 @@ class EchoServer extends Model {
       if (_.isNumber(protocolInfo.scale)) {
         nodeInfo.data = _.round(_.divide(nodeInfo.data, protocolInfo.scale));
       }
+      // BU.CLI(_.pick(nodeInfo, ['defId', 'data']));
       return nodeInfo.data;
     });
 
@@ -197,10 +198,12 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
+    BU.CLI(bufData);
     // Frame을 쓴다면 벗겨냄
     bufData = this.peelFrameMSg(bufData);
+    BU.CLI(bufData);
 
-    let returnValue;
+    let dataList;
 
     const slaveAddr = bufData.readIntBE(0, 1);
     const fnCode = bufData.readIntBE(1, 1);
@@ -212,16 +215,32 @@ class EchoServer extends Model {
 
     switch (fnCode) {
       case 4:
-        returnValue = this.readInputRegister(foundDataLogger, bufData);
+        dataList = this.readInputRegister(foundDataLogger, bufData);
         break;
 
       default:
         break;
     }
 
-    returnValue = this.wrapFrameMsg(returnValue);
+    // BU.CLI(dataList.length);
+    // Modbus Header 구성
+    const mbapHeader = Buffer.concat([
+      Buffer.from([slaveAddr, fnCode]),
+      this.protocolConverter.convertNumToHxToBuf(dataList.length, 2),
+    ]);
+    // BU.CLI(mbapHeader);
+    // 장치 데이터 Hi-Lo 형태로 변환
+    const bufferDataList = dataList.map(data =>
+      this.protocolConverter.convertNumToHxToBuf(data, 2),
+    );
 
-    return returnValue;
+    // MBAP Header 붙임
+    bufferDataList.unshift(mbapHeader);
+
+    // Wrapping 처리
+    const returnBuffer = this.wrapFrameMsg(Buffer.concat(bufferDataList));
+
+    return returnBuffer;
   }
 }
 module.exports = EchoServer;
@@ -250,7 +269,7 @@ if (require !== undefined && require.main === module) {
   result = echoServer.onData(_.head(cmdList).data);
   BU.CLI(result);
 
-  echoServer.reload();
+  // echoServer.reload();
 }
 
 /**

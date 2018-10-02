@@ -1,4 +1,5 @@
 const Promise = require('bluebird');
+const _ = require('lodash');
 const {BU} = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 const Control = require('../../../src/Control');
@@ -7,6 +8,16 @@ require('../../../../default-intelligence');
 
 const mapList = require('../../../src/mapList');
 
+const {MainConverter} = require('../../../../device-protocol-converter-jh');
+
+const EchoServer = require('../../../src/FarmParallel/dmTech/EchoServer');
+
+/** @type {MainConverter} */
+let mainConverter;
+/** @type {Control} */
+let control;
+/** @type {EchoServer} */
+let echoServer;
 function testConstruct() {
   /**
    * @type {protocol_info[]}
@@ -15,9 +26,23 @@ function testConstruct() {
     {
       mainCategory: 'FarmParallel',
       subCategory: 'dmTech',
+      deviceId: 1,
     },
+    // {
+    //   mainCategory: 'FarmParallel',
+    //   subCategory: 'dmTech',
+    //   deviceId: 2,
+    // },
   ];
-  const control = new Control(9000);
+  control = new Control(9000);
+  BU.CLI(_.head(deviceList));
+  echoServer = new EchoServer(_.head(deviceList), mapList.FP.yungSanPo);
+  mainConverter = new MainConverter({
+    mainCategory: 'FarmParallel',
+    subCategory: 'dmTech',
+    deviceId: 1,
+  });
+  mainConverter.setProtocolConverter();
 
   control.attachDevice(deviceList, mapList.FP.yungSanPo);
 
@@ -36,27 +61,27 @@ async function startTest() {
     BU.CLI(data.toString());
   });
 
-  /** @type {xbeeApi_0x10} */
-  const writeMsg = {
-    destination64: '0013A20040F7ACC8',
-    data: '@cgo',
-  };
+  // BU.CLI(mainConverter);
+  // BU.CLI(echoServer);
+  BU.CLI(echoServer.device);
+  let cmdList = mainConverter.generationCommand(echoServer.device.DEFAULT.COMMAND.STATUS);
+  let writeMsg = _.head(cmdList).data;
+  BU.CLI(writeMsg);
 
-  // Socket SErver 접속 기다림
+  // Socket Server 접속 기다림
   await Promise.delay(10);
 
-  // 수문 개방 요청
-  client.write(JSON.stringify(writeMsg));
+  client.write(writeMsg);
 
   await Promise.delay(1000);
-
-  writeMsg.data = '@sts';
-  // 개방 상태 확인
-  client.write(JSON.stringify(writeMsg));
+  cmdList = mainConverter.generationCommand(echoServer.device.LUX.COMMAND.STATUS);
+  writeMsg = _.head(cmdList).data;
+  BU.CLI(writeMsg);
+  client.write(writeMsg);
 }
 
 testConstruct();
-// startTest();
+startTest();
 
 process.on('uncaughtException', err => {
   // BU.debugConsole();
