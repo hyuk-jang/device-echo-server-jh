@@ -55,21 +55,22 @@ class EchoServer extends Model {
           nodeInfo.data = _.random(0, 1);
           break;
         case LUX.KEY:
-          nodeInfo.data = _.random(0, 30);
+          nodeInfo.data = _.random(0, 130);
           break;
         case OUTSIDE_AIR_REH.KEY:
         case SOIL_REH.KEY:
           nodeInfo.data = _.random(30, 95);
           break;
+        // 40 도를 올림
         case OUTSIDE_AIR_TEMPERATURE.KEY:
         case SOIL_TEMPERATURE.KEY:
-          nodeInfo.data = _.random(15, 35);
+          nodeInfo.data = _.random(55, 75);
           break;
         case R1.KEY:
-          nodeInfo.data = _.random(0, 35);
+          nodeInfo.data = _.random(0, 10);
           break;
         case SOIL_WATER_VALUE.KEY:
-          nodeInfo.data = _.random(0, 50);
+          nodeInfo.data = _.random(40, 50);
           break;
         case SOLAR.KEY:
           nodeInfo.data = _.random(0, 1000);
@@ -78,7 +79,7 @@ class EchoServer extends Model {
           nodeInfo.data = _.random(0, 360);
           break;
         case WIND_SPEED.KEY:
-          nodeInfo.data = _.random(0, 20);
+          nodeInfo.data = _.random(20, 30);
           break;
         case WRITE_DATE.KEY:
           nodeInfo.data = new Date();

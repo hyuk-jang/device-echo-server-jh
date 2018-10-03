@@ -79,7 +79,7 @@ class SocketClient extends AbstController {
    * @param {Buffer} bufData
    */
   dataParser(bufData) {
-    BU.CLI(bufData);
+    BU.CLI(bufData.toString());
     // const fnCode = bufData.readIntBE(1, 1);
     const CMD = String.fromCharCode(bufData.readIntBE(1, 1));
     BU.CLI(CMD);
@@ -277,10 +277,10 @@ class SocketServer {
                 this.currentMsg = _.get(_.nth(this.inverterDcData, this.inverterIndexCMD), 'data');
                 BU.CLI('인버터 데이터 요청 메시지 전송', this.currentMsg);
                 socket.write(this.currentMsg);
+              } else {
+                BU.CLI('인증, FP, Inverter 데이터 측정 테스트 완료. 수고했다.');
               }
             }
-
-            BU.CLI('인증, FP, Inverter 데이터 측정 테스트 완료. 수고했다.');
           } catch (error) {
             BU.logFile(error);
             throw error;
@@ -336,8 +336,6 @@ async function startTestSocketClientCommunication() {
 // 데이터 통신 테스트
 startTestSocketClientCommunication();
 
-
-
 // SocketClient 구동 하고자 할 경우
 
 // new SocketClient({
@@ -358,6 +356,5 @@ process.on('unhandledRejection', err => {
   console.log(err.message);
   console.log('Node NOT Exiting...');
 });
-
 
 module.exports = SocketClient;

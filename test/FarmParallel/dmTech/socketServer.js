@@ -18,7 +18,7 @@ let mainConverter;
 let control;
 /** @type {EchoServer} */
 let echoServer;
-function testConstruct() {
+function operationServer() {
   /**
    * @type {protocol_info[]}
    */
@@ -26,6 +26,7 @@ function testConstruct() {
     {
       mainCategory: 'FarmParallel',
       subCategory: 'dmTech',
+      wrapperCategory: 'default',
       deviceId: 1,
     },
     // {
@@ -40,6 +41,7 @@ function testConstruct() {
   mainConverter = new MainConverter({
     mainCategory: 'FarmParallel',
     subCategory: 'dmTech',
+    wrapperCategory: 'default',
     deviceId: 1,
   });
   mainConverter.setProtocolConverter();
@@ -58,13 +60,13 @@ async function startTest() {
   const client = socketClient.createConnection(9000);
 
   client.on('data', data => {
-    BU.CLI(data.toString());
+    BU.CLI(data);
   });
 
   // BU.CLI(mainConverter);
   // BU.CLI(echoServer);
   BU.CLI(echoServer.device);
-  let cmdList = mainConverter.generationCommand(echoServer.device.DEFAULT.COMMAND.STATUS);
+  let cmdList = mainConverter.generationCommand({key: echoServer.device.DEFAULT.KEY, value: 2});
   let writeMsg = _.head(cmdList).data;
   BU.CLI(writeMsg);
 
@@ -74,13 +76,13 @@ async function startTest() {
   client.write(writeMsg);
 
   await Promise.delay(1000);
-  cmdList = mainConverter.generationCommand(echoServer.device.LUX.COMMAND.STATUS);
+  cmdList = mainConverter.generationCommand({key: echoServer.device.LUX.KEY, value: 2});
   writeMsg = _.head(cmdList).data;
   BU.CLI(writeMsg);
   client.write(writeMsg);
 }
 
-testConstruct();
+operationServer();
 startTest();
 
 process.on('uncaughtException', err => {

@@ -93,7 +93,7 @@ function startTest() {
 }
 
 testConstruct();
-// startTest();
+startTest();
 
 process.on('uncaughtException', err => {
   // BU.debugConsole();
