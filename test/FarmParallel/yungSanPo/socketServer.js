@@ -10,7 +10,7 @@ const mapList = require('../../../src/mapList');
 
 const {MainConverter} = require('../../../../device-protocol-converter-jh');
 
-const EchoServer = require('../../../src/FarmParallel/dmTech/EchoServer');
+const EchoServer = require('../../../src/FarmParallel/yungSanPo/EchoServer');
 
 /** @type {MainConverter} */
 let mainConverter;
@@ -25,15 +25,10 @@ function operationServer() {
   const deviceList = [
     {
       mainCategory: 'FarmParallel',
-      subCategory: 'dmTech',
-      wrapperCategory: 'default',
+      subCategory: 'yungSanPo',
+      // wrapperCategory: 'default',
       deviceId: 1,
     },
-    // {
-    //   mainCategory: 'FarmParallel',
-    //   subCategory: 'dmTech',
-    //   deviceId: 2,
-    // },
   ];
   control = new Control(9000);
   BU.CLI(_.head(deviceList));

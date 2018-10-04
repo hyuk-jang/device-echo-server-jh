@@ -23,11 +23,11 @@ class EchoServer extends Model {
   /**
    *
    * @param {dataLoggerInfo} dataLogger
-   * @param {Buffer} bufData
+   * @param {modbusReadFormat} modbusData
    */
-  readInputRegister(dataLogger, bufData) {
-    const registerAddr = bufData.readInt16BE(2);
-    const dataLength = bufData.readInt16BE(4);
+  readInputRegister(dataLogger, modbusData) {
+    const registerAddr = modbusData.address;
+    const {dataLength} = modbusData;
 
     /** @type {detailNodeInfo[]} */
     const foundNodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, {nodeId}));
@@ -131,17 +131,32 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    BU.CLI(bufData.toString(), bufData);
-    // Frame을 쓴다면 벗겨냄
+    BU.CLI(bufData);
+    // frame을 쓰고 있다면 벗겨냄
     const convertedBufData = this.peelFrameMSg(bufData);
-    BU.CLI(convertedBufData);
+    // Buffer를 문자로 변경
+    const strData = convertedBufData.toString();
+    /** @type {modbusReadFormat} */
+    let modbusData;
+    // JSON 형식인지 체크
+    if (BU.IsJsonString(strData)) {
+      const jsonData = JSON.parse(strData);
+      _.forEach(jsonData, (v, k) => {
+        if (_.get(v, 'type') === 'Buffer') {
+          jsonData[k] = Buffer.from(v);
+        }
+      });
+      modbusData = jsonData;
+    }
+    // Frame을 쓴다면 벗겨냄
+    BU.CLI(modbusData);
 
     let dataList;
 
-    const slaveAddr = convertedBufData.readIntBE(0, 1);
-    const fnCode = convertedBufData.readIntBE(1, 1);
+    const slaveAddr = modbusData.unitId;
+    const {fnCode} = modbusData;
 
-    // BU.CLIS(slaveAddr, fnCode);
+    BU.CLIS(slaveAddr, fnCode);
     // BU.CLI(this.dataLoggerList);
     // slaveAddr를 기준으로 dataLogger 찾음
     const foundDataLogger = this.findDataLogger(slaveAddr);
