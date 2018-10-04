@@ -49,37 +49,37 @@ class EchoServer extends Model {
     this.nodeList.forEach(nodeInfo => {
       switch (nodeInfo.defId) {
         case CO2.KEY:
-          nodeInfo.data = _.random(300, 500);
+          nodeInfo.data = _.random(300, 500, true);
           break;
         case IS_RAIN.KEY:
           nodeInfo.data = _.random(0, 1);
           break;
         case LUX.KEY:
-          nodeInfo.data = _.random(0, 130);
+          nodeInfo.data = _.random(0, 130, true);
           break;
         case OUTSIDE_AIR_REH.KEY:
         case SOIL_REH.KEY:
-          nodeInfo.data = _.random(30, 95);
+          nodeInfo.data = _.random(30, 95, true);
           break;
         // 40 도를 올림
         case OUTSIDE_AIR_TEMPERATURE.KEY:
         case SOIL_TEMPERATURE.KEY:
-          nodeInfo.data = _.random(55, 75);
+          nodeInfo.data = _.random(55, 75, true);
           break;
         case R1.KEY:
-          nodeInfo.data = _.random(0, 10);
+          nodeInfo.data = _.random(0, 10, true);
           break;
         case SOIL_WATER_VALUE.KEY:
-          nodeInfo.data = _.random(40, 50);
+          nodeInfo.data = _.random(40, 50, true);
           break;
         case SOLAR.KEY:
-          nodeInfo.data = _.random(0, 1000);
+          nodeInfo.data = _.random(0, 1000, true);
           break;
         case WIND_DIRECTRION.KEY:
           nodeInfo.data = _.random(0, 360);
           break;
         case WIND_SPEED.KEY:
-          nodeInfo.data = _.random(20, 30);
+          nodeInfo.data = _.random(20, 30, true);
           break;
         case WRITE_DATE.KEY:
           nodeInfo.data = new Date();
@@ -114,13 +114,9 @@ class EchoServer extends Model {
       {},
       {
         key: ModelFP.BASE_KEY.lux,
-        scale: 0.1,
-        fixed: 1,
       },
       {
         key: ModelFP.BASE_KEY.solar,
-        scale: 0.1,
-        fixed: 1,
       },
       {
         key: ModelFP.BASE_KEY.soilTemperature,
@@ -134,8 +130,6 @@ class EchoServer extends Model {
       },
       {
         key: ModelFP.BASE_KEY.co2,
-        scale: 0.1,
-        fixed: 1,
       },
       {
         key: ModelFP.BASE_KEY.soilWaterValue,
@@ -153,12 +147,12 @@ class EchoServer extends Model {
         fixed: 1,
       },
       {
+        key: ModelFP.BASE_KEY.windDirection,
+      },
+      {
         key: ModelFP.BASE_KEY.windSpeed,
         scale: 0.1,
         fixed: 1,
-      },
-      {
-        key: ModelFP.BASE_KEY.windDirection,
       },
       {
         key: ModelFP.BASE_KEY.r1,
@@ -179,17 +173,25 @@ class EchoServer extends Model {
       moment().format('ss'),
     ];
 
+    const nodeDataList = [];
+    let calcData;
     const dataLoggerData = protocolList.map((protocolInfo, index) => {
       const nodeInfo = _.find(foundNodeList, {defId: protocolInfo.key});
       if (_.isUndefined(nodeInfo)) {
         return parseInt(_.nth(dataHeader, index), 0);
       }
+      calcData = nodeInfo.data;
       if (_.isNumber(protocolInfo.scale)) {
-        nodeInfo.data = _.round(_.divide(nodeInfo.data, protocolInfo.scale));
+        calcData = _.round(_.divide(calcData, protocolInfo.scale));
+      } else {
+        calcData = _.round(calcData);
       }
+
+      nodeDataList.push(_.pick(nodeInfo, ['defId', 'data']));
       // BU.CLI(_.pick(nodeInfo, ['defId', 'data']));
-      return nodeInfo.data;
+      return calcData;
     });
+    BU.CLI(nodeDataList);
 
     return dataLoggerData.slice(registerAddr, _.sum([registerAddr, dataLength]));
   }
@@ -201,13 +203,13 @@ class EchoServer extends Model {
   onData(bufData) {
     BU.CLI(bufData);
     // Frame을 쓴다면 벗겨냄
-    bufData = this.peelFrameMSg(bufData);
-    BU.CLI(bufData);
+    const convertedBufData = this.peelFrameMSg(bufData);
+    // BU.CLI(convertedBufData);
 
     let dataList;
 
-    const slaveAddr = bufData.readIntBE(0, 1);
-    const fnCode = bufData.readIntBE(1, 1);
+    const slaveAddr = convertedBufData.readIntBE(0, 1);
+    const fnCode = convertedBufData.readIntBE(1, 1);
 
     // BU.CLIS(slaveAddr, fnCode);
     // BU.CLI(this.dataLoggerList);
@@ -216,7 +218,7 @@ class EchoServer extends Model {
 
     switch (fnCode) {
       case 4:
-        dataList = this.readInputRegister(foundDataLogger, bufData);
+        dataList = this.readInputRegister(foundDataLogger, convertedBufData);
         break;
 
       default:
@@ -240,7 +242,6 @@ class EchoServer extends Model {
 
     // Wrapping 처리
     const returnBuffer = this.wrapFrameMsg(Buffer.concat(bufferDataList));
-
     return returnBuffer;
   }
 }

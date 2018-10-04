@@ -243,9 +243,9 @@ class SocketServer {
 
               const baseModel = new BaseModel.Inverter(protocolInverter);
 
-              const requestInverterMsg = this.converterInverter.generationCommand(
-                baseModel.device.DEFAULT.COMMAND.STATUS,
-              );
+              const requestInverterMsg = this.converterInverter.generationCommand({
+                key: baseModel.device.DEFAULT.KEY,
+              });
               BU.CLI(requestInverterMsg);
 
               this.inverterDcData = requestInverterMsg;

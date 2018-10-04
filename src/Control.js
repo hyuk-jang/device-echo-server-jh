@@ -69,25 +69,28 @@ class Control {
           // parseData.data = Buffer.from(parseData.data);
           BU.CLI(`P: ${this.port}\tReceived Data: `, data.toString());
 
+          // BU.CLI(data);
           // 응답 받을 데이터 배열
           const receiveDataList = [];
           this.deviceModelList.forEach(deviceModel => {
             // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
             receiveDataList.push(deviceModel.onData(data));
           });
+          // BU.CLI(data);
           // BU.CLI(receiveDataList);
           // 응답받지 않은 데이터는 undefined가 들어가므로 이를 제거하고 유효한 데이터 1개를 가져옴
           this.returnData = _(receiveDataList)
             .reject(receiveData => _.isUndefined(receiveData))
             .head();
 
+          // BU.CLI(data);
           // 약간의 지연 시간을 둠 (30ms)
           setTimeout(() => {
             // BU.CLI(this.returnData);
             const returnValue = Buffer.isBuffer(this.returnData)
               ? this.returnData
               : JSON.stringify(this.returnData);
-            // BU.CLI(returnValue);
+            BU.CLI(returnValue.length, returnValue);
             if (returnValue === undefined) return;
             socket.write(returnValue);
           }, 100);

@@ -1,9 +1,9 @@
 const Promise = require('bluebird');
+const net = require('net');
 const _ = require('lodash');
 const {BU} = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 const Control = require('../../../src/Control');
-
 require('../../../../default-intelligence');
 
 const mapList = require('../../../src/mapList');
@@ -55,9 +55,7 @@ function operationServer() {
 }
 
 async function startTest() {
-  const socketClient = require('net');
-
-  const client = socketClient.createConnection(9000);
+  const client = net.createConnection(9000);
 
   client.on('data', data => {
     BU.CLI(data);
@@ -65,7 +63,7 @@ async function startTest() {
 
   // BU.CLI(mainConverter);
   // BU.CLI(echoServer);
-  BU.CLI(echoServer.device);
+  // BU.CLI(echoServer.device);
   let cmdList = mainConverter.generationCommand({key: echoServer.device.DEFAULT.KEY, value: 2});
   let writeMsg = _.head(cmdList).data;
   BU.CLI(writeMsg);
@@ -83,7 +81,7 @@ async function startTest() {
 }
 
 operationServer();
-startTest();
+// startTest();
 
 process.on('uncaughtException', err => {
   // BU.debugConsole();
