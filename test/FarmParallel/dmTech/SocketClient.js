@@ -58,7 +58,7 @@ class SocketClient extends AbstController {
    */
   setEchoServerFP(protocolInfo, deviceMap) {
     this.echoServerFP = new EchoServerFP(protocolInfo, deviceMap);
-    // this.echoServerFP = new EchoServerFP(protocolInfo, mapList.FP.yungSanPo);
+    // this.echoServerFP = new EchoServerFP(protocolInfo, mapList.FP.YeongSanPo);
   }
 
   /**
@@ -328,7 +328,7 @@ async function startTestSocketClientCommunication() {
     port: 9000,
     uuid: '001',
   });
-  socketClient.setEchoServerFP(protocolFP, mapList.FP.yungSanPo);
+  socketClient.setEchoServerFP(protocolFP, mapList.FP.YeongSanPo);
   socketClient.setEchoServerInverter(protocolInverter);
   socketClient.connect();
 }

@@ -6,6 +6,6 @@ module.exports = {
     muan6kW: require('./mapStorage/UPSAS/muan6kW'),
   },
   FP: {
-    yungSanPo: require('./mapStorage/FarmParallel/yungSanPo'),
+    YeongSanPo: require('./mapStorage/FarmParallel/YeongSanPo'),
   },
 };

@@ -13,7 +13,7 @@ module.exports = [
         wrapperCategory: 'default',
         deviceId: 1,
       },
-      deviceMap: mapList.FP.yungSanPo,
+      deviceMap: mapList.FP.YeongSanPo,
     },
     inverter: {
       protocolInfo: {
@@ -36,7 +36,7 @@ module.exports = [
         wrapperCategory: 'default',
         deviceId: 1,
       },
-      deviceMap: mapList.FP.yungSanPo,
+      deviceMap: mapList.FP.YeongSanPo,
     },
     inverter: {
       protocolInfo: {

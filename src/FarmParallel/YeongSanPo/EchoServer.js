@@ -1,11 +1,11 @@
 const _ = require('lodash');
 
 const moment = require('moment');
-const {BU} = require('base-util-jh');
+const { BU } = require('base-util-jh');
 
 const Model = require('../Model');
 
-const {MainConverter, BaseModel} = require('../../../../device-protocol-converter-jh');
+const { MainConverter, BaseModel } = require('../../../../device-protocol-converter-jh');
 
 class EchoServer extends Model {
   /**
@@ -26,11 +26,12 @@ class EchoServer extends Model {
    * @param {modbusReadFormat} modbusData
    */
   readInputRegister(dataLogger, modbusData) {
+    // BU.CLIS(dataLogger, modbusData);
     const registerAddr = modbusData.address;
-    const {dataLength} = modbusData;
+    const { dataLength } = modbusData;
 
     /** @type {detailNodeInfo[]} */
-    const foundNodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, {nodeId}));
+    const foundNodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
     // BU.CLI(foundNodeList);
 
     const ModelFP = BaseModel.FarmParallel;
@@ -106,7 +107,7 @@ class EchoServer extends Model {
     const nodeDataList = [];
     let calcData;
     const dataLoggerData = protocolList.map((protocolInfo, index) => {
-      const nodeInfo = _.find(foundNodeList, {defId: protocolInfo.key});
+      const nodeInfo = _.find(foundNodeList, { defId: protocolInfo.key });
       if (_.isUndefined(nodeInfo)) {
         return parseInt(_.nth(dataHeader, index), 0);
       }
@@ -149,44 +150,28 @@ class EchoServer extends Model {
       modbusData = jsonData;
     }
     // Frame을 쓴다면 벗겨냄
-    BU.CLI(modbusData);
-
     let dataList;
+    // BU.CLI(modbusData);
 
     const slaveAddr = modbusData.unitId;
-    const {fnCode} = modbusData;
+    const { fnCode } = modbusData;
 
-    BU.CLIS(slaveAddr, fnCode);
     // BU.CLI(this.dataLoggerList);
     // slaveAddr를 기준으로 dataLogger 찾음
     const foundDataLogger = this.findDataLogger(slaveAddr);
 
     switch (fnCode) {
       case 4:
-        dataList = this.readInputRegister(foundDataLogger, convertedBufData);
+        dataList = this.readInputRegister(foundDataLogger, modbusData);
         break;
 
       default:
         break;
     }
 
-    // BU.CLI(dataList.length);
-    // Modbus Header 구성
-    const mbapHeader = Buffer.concat([
-      Buffer.from([slaveAddr, fnCode]),
-      this.protocolConverter.convertNumToHxToBuf(dataList.length, 2),
-    ]);
-    // BU.CLI(mbapHeader);
-    // 장치 데이터 Hi-Lo 형태로 변환
-    const bufferDataList = dataList.map(data =>
-      this.protocolConverter.convertNumToHxToBuf(data, 2),
-    );
-
-    // MBAP Header 붙임
-    bufferDataList.unshift(mbapHeader);
-
+    // BU.CLI(dataList);
     // Wrapping 처리
-    const returnBuffer = this.wrapFrameMsg(Buffer.concat(bufferDataList));
+    const returnBuffer = this.wrapFrameMsg(dataList);
     return returnBuffer;
   }
 }
@@ -204,7 +189,7 @@ if (require !== undefined && require.main === module) {
     subCategory: 'dmTech',
   };
 
-  const echoServer = new EchoServer(protocolInfo, mapList.FP.yungSanPo);
+  const echoServer = new EchoServer(protocolInfo, mapList.FP.YeongSanPo);
 
   const mainConverter = new MainConverter(protocolInfo);
   mainConverter.setProtocolConverter();

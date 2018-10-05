@@ -1,5 +1,5 @@
 const Promise = require('bluebird');
-const {BU} = require('base-util-jh');
+const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 const Control = require('../../../src/Control');
 
@@ -7,7 +7,7 @@ require('../../../../default-intelligence');
 
 const mapList = require('../../../src/mapList');
 
-function testConstruct() {
+function operationServer() {
   /**
    * @type {protocol_info[]}
    */
@@ -63,7 +63,7 @@ async function startTest() {
   client.write(JSON.stringify(writeMsg));
 }
 
-testConstruct();
+operationServer();
 // startTest();
 
 process.on('uncaughtException', err => {

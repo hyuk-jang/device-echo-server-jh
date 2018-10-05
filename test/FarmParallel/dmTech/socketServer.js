@@ -1,14 +1,14 @@
 const Promise = require('bluebird');
 const net = require('net');
 const _ = require('lodash');
-const {BU} = require('base-util-jh');
+const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 const Control = require('../../../src/Control');
 require('../../../../default-intelligence');
 
 const mapList = require('../../../src/mapList');
 
-const {MainConverter} = require('../../../../device-protocol-converter-jh');
+const { MainConverter } = require('../../../../device-protocol-converter-jh');
 
 const EchoServer = require('../../../src/FarmParallel/dmTech/EchoServer');
 
@@ -37,11 +37,11 @@ function operationServer() {
   ];
   control = new Control(9000);
   BU.CLI(_.head(deviceList));
-  echoServer = new EchoServer(_.head(deviceList), mapList.FP.yungSanPo);
+  echoServer = new EchoServer(_.head(deviceList), mapList.FP.YeongSanPo);
   mainConverter = new MainConverter(_.head(deviceList));
   mainConverter.setProtocolConverter();
 
-  control.attachDevice(deviceList, mapList.FP.yungSanPo);
+  control.attachDevice(deviceList, mapList.FP.YeongSanPo);
 
   // 2개 장치 구동
   if (control.deviceModelList.length !== 1) {
@@ -59,7 +59,7 @@ async function startTest() {
   // BU.CLI(mainConverter);
   // BU.CLI(echoServer);
   // BU.CLI(echoServer.device);
-  let cmdList = mainConverter.generationCommand({key: echoServer.device.DEFAULT.KEY, value: 2});
+  let cmdList = mainConverter.generationCommand({ key: echoServer.device.DEFAULT.KEY, value: 2 });
   let writeMsg = _.head(cmdList).data;
   BU.CLI(writeMsg);
 
@@ -69,7 +69,7 @@ async function startTest() {
   client.write(writeMsg);
 
   await Promise.delay(1000);
-  cmdList = mainConverter.generationCommand({key: echoServer.device.LUX.KEY, value: 2});
+  cmdList = mainConverter.generationCommand({ key: echoServer.device.LUX.KEY, value: 2 });
   writeMsg = _.head(cmdList).data;
   BU.CLI(writeMsg);
   client.write(writeMsg);

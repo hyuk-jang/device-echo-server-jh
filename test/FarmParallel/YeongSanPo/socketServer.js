@@ -10,7 +10,7 @@ const mapList = require('../../../src/mapList');
 
 const {MainConverter} = require('../../../../device-protocol-converter-jh');
 
-const EchoServer = require('../../../src/FarmParallel/yungSanPo/EchoServer');
+const EchoServer = require('../../../src/FarmParallel/YeongSanPo/EchoServer');
 
 /** @type {MainConverter} */
 let mainConverter;
@@ -25,18 +25,18 @@ function operationServer() {
   const deviceList = [
     {
       mainCategory: 'FarmParallel',
-      subCategory: 'yungSanPo',
+      subCategory: 'YeongSanPo',
       // wrapperCategory: 'default',
       deviceId: 1,
     },
   ];
   control = new Control(9000);
   BU.CLI(_.head(deviceList));
-  echoServer = new EchoServer(_.head(deviceList), mapList.FP.yungSanPo);
+  echoServer = new EchoServer(_.head(deviceList), mapList.FP.YeongSanPo);
   mainConverter = new MainConverter(_.head(deviceList));
   mainConverter.setProtocolConverter();
 
-  control.attachDevice(deviceList, mapList.FP.yungSanPo);
+  control.attachDevice(deviceList, mapList.FP.YeongSanPo);
 
   // 2개 장치 구동
   if (control.deviceModelList.length !== 1) {

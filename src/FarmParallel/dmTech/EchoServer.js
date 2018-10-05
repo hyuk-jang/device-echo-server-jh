@@ -1,11 +1,11 @@
 const _ = require('lodash');
 
 const moment = require('moment');
-const {BU} = require('base-util-jh');
+const { BU } = require('base-util-jh');
 
 const Model = require('../Model');
 
-const {MainConverter, BaseModel} = require('../../../../device-protocol-converter-jh');
+const { MainConverter, BaseModel } = require('../../../../device-protocol-converter-jh');
 
 class EchoServer extends Model {
   /**
@@ -30,7 +30,7 @@ class EchoServer extends Model {
     const dataLength = bufData.readInt16BE(4);
 
     /** @type {detailNodeInfo[]} */
-    const foundNodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, {nodeId}));
+    const foundNodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
     // BU.CLI(foundNodeList);
 
     const ModelFP = BaseModel.FarmParallel;
@@ -106,7 +106,7 @@ class EchoServer extends Model {
     const nodeDataList = [];
     let calcData;
     const dataLoggerData = protocolList.map((protocolInfo, index) => {
-      const nodeInfo = _.find(foundNodeList, {defId: protocolInfo.key});
+      const nodeInfo = _.find(foundNodeList, { defId: protocolInfo.key });
       if (_.isUndefined(nodeInfo)) {
         return parseInt(_.nth(dataHeader, index), 0);
       }
@@ -164,7 +164,7 @@ class EchoServer extends Model {
     // BU.CLI(mbapHeader);
     // 장치 데이터 Hi-Lo 형태로 변환
     const bufferDataList = dataList.map(data =>
-      this.protocolConverter.convertNumToHxToBuf(data, 2),
+      this.protocolConverter.convertNumToHxToBuf(data, 2)
     );
 
     // MBAP Header 붙임
@@ -189,7 +189,7 @@ if (require !== undefined && require.main === module) {
     subCategory: 'dmTech',
   };
 
-  const echoServer = new EchoServer(protocolInfo, mapList.FP.yungSanPo);
+  const echoServer = new EchoServer(protocolInfo, mapList.FP.YeongSanPo);
 
   const mainConverter = new MainConverter(protocolInfo);
   mainConverter.setProtocolConverter();
