@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const {BU} = require('base-util-jh');
+const { BU } = require('base-util-jh');
 const net = require('net');
 const mapListInfo = require('./mapList');
 
@@ -21,7 +21,7 @@ class Control {
     );
 
     if (_.isEmpty(foundInstance)) {
-      instanceList.push({id: this.port, instance: this});
+      instanceList.push({ id: this.port, instance: this });
       this.deviceModelList = [];
       this.setInit();
     } else {

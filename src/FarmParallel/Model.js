@@ -1,7 +1,7 @@
 const _ = require('lodash');
-const {BU} = require('base-util-jh');
+const { BU } = require('base-util-jh');
 
-const {BaseModel} = require('../../../device-protocol-converter-jh');
+const { BaseModel } = require('../../../device-protocol-converter-jh');
 const AbstModel = require('../Default/AbstModel');
 
 class Model extends AbstModel {

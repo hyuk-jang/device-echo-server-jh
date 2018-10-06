@@ -164,7 +164,7 @@ class EchoServer extends Model {
     // BU.CLI(mbapHeader);
     // 장치 데이터 Hi-Lo 형태로 변환
     const bufferDataList = dataList.map(data =>
-      this.protocolConverter.convertNumToHxToBuf(data, 2)
+      this.protocolConverter.convertNumToHxToBuf(data, 2),
     );
 
     // MBAP Header 붙임

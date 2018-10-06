@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const {BU} = require('base-util-jh');
+const { BU } = require('base-util-jh');
 
 const Model = require('../Model');
 
@@ -119,10 +119,10 @@ class EchoServer extends Model {
       if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
         // 여는 상태로 변경
         nodeInfo.data = DEVICE.STATUS.OPENING;
-        BU.CLI(nodeInfo)
+        BU.CLI(nodeInfo);
         setTimeout(() => {
           nodeInfo.data = DEVICE.STATUS.OPEN;
-          BU.CLI(nodeInfo)
+          BU.CLI(nodeInfo);
         }, this.normalDeviceOperTime);
       }
     }
@@ -190,8 +190,8 @@ class EchoServer extends Model {
     // BU.CLI(deviceHex);
 
     // 염도 센서 값
-    const nodeWL = _.find(nodeList, {defId: this.device.WATER_LEVEL.KEY});
-    const nodeS = _.find(nodeList, {defId: this.device.SALINITY.KEY});
+    const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
+    const nodeS = _.find(nodeList, { defId: this.device.SALINITY.KEY });
 
     let tempData;
 
@@ -240,9 +240,9 @@ class EchoServer extends Model {
         break;
     }
 
-    const nodeWL = _.find(nodeList, {defId: this.device.WATER_LEVEL.KEY});
-    const nodeBT = _.find(nodeList, {defId: this.device.BRINE_TEMPERATURE.KEY});
-    const nodeMRT = _.find(nodeList, {defId: this.device.MODULE_REAR_TEMPERATURE.KEY});
+    const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
+    const nodeBT = _.find(nodeList, { defId: this.device.BRINE_TEMPERATURE.KEY });
+    const nodeMRT = _.find(nodeList, { defId: this.device.MODULE_REAR_TEMPERATURE.KEY });
 
     let tempData;
 
@@ -296,9 +296,9 @@ class EchoServer extends Model {
         break;
     }
 
-    const nodeWL = _.find(nodeList, {defId: this.device.WATER_LEVEL.KEY});
-    const nodeBT = _.find(nodeList, {defId: this.device.BRINE_TEMPERATURE.KEY});
-    const nodeMRT = _.find(nodeList, {defId: this.device.MODULE_REAR_TEMPERATURE.KEY});
+    const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
+    const nodeBT = _.find(nodeList, { defId: this.device.BRINE_TEMPERATURE.KEY });
+    const nodeMRT = _.find(nodeList, { defId: this.device.MODULE_REAR_TEMPERATURE.KEY });
 
     let tempData;
     // 수위 : 200 - 현재 수위
@@ -355,8 +355,8 @@ class EchoServer extends Model {
     const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x35]);
     const deviceHex = [0x30, 0x30];
 
-    const nodeWL = _.find(nodeList, {defId: this.device.WATER_LEVEL.KEY});
-    const nodeMRTList = _.filter(nodeList, {defId: this.device.MODULE_REAR_TEMPERATURE.KEY});
+    const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
+    const nodeMRTList = _.filter(nodeList, { defId: this.device.MODULE_REAR_TEMPERATURE.KEY });
 
     let tempData;
 
@@ -408,7 +408,7 @@ class EchoServer extends Model {
     }
 
     // BU.CLI(foundDataLogger.nodeList)
-    const foundNodeList = foundDataLogger.nodeList.map(nodeId => _.find(this.nodeList, {nodeId}));
+    const foundNodeList = foundDataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
     // BU.CLI(foundNodeList);
 
     let findDevice;
@@ -416,22 +416,22 @@ class EchoServer extends Model {
     // 찾은 데이터로거 접두사로 판별
     switch (foundDataLogger.prefix) {
       case 'D_G':
-        findDevice = _.find(foundNodeList, {defId: this.device.WATER_DOOR.KEY});
+        findDevice = _.find(foundNodeList, { defId: this.device.WATER_DOOR.KEY });
         this.controlWaterDoor(xbeeApi0x10.data, findDevice);
         dataLoggerData = this.getWaterDoor(findDevice, foundNodeList);
         break;
       case 'D_V':
-        findDevice = _.find(foundNodeList, {defId: this.device.VALVE.KEY});
+        findDevice = _.find(foundNodeList, { defId: this.device.VALVE.KEY });
         this.controlValve(xbeeApi0x10.data, findDevice);
         dataLoggerData = this.getValve(findDevice, foundNodeList);
         break;
       case 'D_GV':
-        findDevice = _.find(foundNodeList, {defId: this.device.GATE_VALVE.KEY});
+        findDevice = _.find(foundNodeList, { defId: this.device.GATE_VALVE.KEY });
         this.controlValve(xbeeApi0x10.data, findDevice);
         dataLoggerData = this.getGateValve(findDevice, foundNodeList);
         break;
       case 'D_P':
-        findDevice = _.find(foundNodeList, {defId: this.device.PUMP.KEY});
+        findDevice = _.find(foundNodeList, { defId: this.device.PUMP.KEY });
         this.controlPump(xbeeApi0x10.data, findDevice);
         dataLoggerData = this.getPump(findDevice, foundNodeList);
         break;

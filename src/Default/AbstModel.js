@@ -1,8 +1,8 @@
 const _ = require('lodash');
-const {BU} = require('base-util-jh');
-const {BaseModel} = require('../../../device-protocol-converter-jh');
+const { BU } = require('base-util-jh');
+const { BaseModel } = require('../../../device-protocol-converter-jh');
 
-const {ESS, FarmParallel, Inverter, UPSAS} = BaseModel;
+const { ESS, FarmParallel, Inverter, UPSAS } = BaseModel;
 
 const commonUtils = require('../util/common');
 
@@ -21,7 +21,7 @@ class AbstModel {
 
     // 없다면 신규로 생성
     if (_.isEmpty(foundInstance)) {
-      instanceList.push({id: this.deviceMap, instance: this});
+      instanceList.push({ id: this.deviceMap, instance: this });
     } else {
       return foundInstance.instance;
     }
@@ -77,7 +77,7 @@ class AbstModel {
    * @param {string|number} dataloggerSerialNumber
    */
   findDataLogger(dataloggerSerialNumber) {
-    return _.find(this.dataLoggerList, {serialNumber: dataloggerSerialNumber});
+    return _.find(this.dataLoggerList, { serialNumber: dataloggerSerialNumber });
   }
 
   /**

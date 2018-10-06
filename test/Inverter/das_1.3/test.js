@@ -1,4 +1,4 @@
-const {BU} = require('base-util-jh');
+const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 const Control = require('../../../src/Control');
 

@@ -1,4 +1,5 @@
 const Promise = require('bluebird');
+const net = require('net');
 const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 const Control = require('../../../src/Control');
@@ -36,9 +37,7 @@ function operationServer() {
 }
 
 async function startTest() {
-  const socketClient = require('net');
-
-  const client = socketClient.createConnection(9000);
+  const client = net.createConnection(9000);
 
   client.on('data', data => {
     BU.CLI(data.toString());

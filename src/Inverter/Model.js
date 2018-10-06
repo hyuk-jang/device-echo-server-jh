@@ -1,6 +1,6 @@
 const _ = require('lodash');
-const {BU} = require('base-util-jh');
-const {BaseModel} = require('../../../device-protocol-converter-jh');
+const { BU } = require('base-util-jh');
+const { BaseModel } = require('../../../device-protocol-converter-jh');
 
 class Model extends BaseModel.Inverter {
   /**

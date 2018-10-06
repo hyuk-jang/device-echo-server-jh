@@ -1,13 +1,13 @@
 const net = require('net');
 const eventToPromise = require('event-to-promise');
 const _ = require('lodash');
-const {BU} = require('base-util-jh');
+const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 require('../../../../default-intelligence');
 
 const mapList = require('../../../src/mapList');
 
-const {MainConverter, BaseModel} = require('../../../../device-protocol-converter-jh');
+const { MainConverter, BaseModel } = require('../../../../device-protocol-converter-jh');
 
 const EchoServerFP = require('../../../src/FarmParallel/dmTech/EchoServer');
 const EchoServerInverter = require('../../../src/Inverter/das_1.3/EchoServer');

@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-const {BU} = require('base-util-jh');
+const { BU } = require('base-util-jh');
 
 const Model = require('../Model');
 
@@ -23,7 +23,7 @@ class EchoServer extends Model {
 
     // 없다면 신규로 생성
     if (_.isEmpty(foundInstance)) {
-      instanceList.push({id: this.dialing, instance: this});
+      instanceList.push({ id: this.dialing, instance: this });
     } else {
       return foundInstance.instance;
     }
@@ -239,7 +239,7 @@ module.exports = EchoServer;
 if (require !== undefined && require.main === module) {
   console.log('__main__');
 
-  const echoServer = new EchoServer({deviceId: '001', subCategory: 'das_1.3', option: true});
+  const echoServer = new EchoServer({ deviceId: '001', subCategory: 'das_1.3', option: true });
 
   echoServer.reload();
   let msg = echoServer.makeSystem();
