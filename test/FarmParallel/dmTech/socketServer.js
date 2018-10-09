@@ -18,35 +18,25 @@ let mainConverter;
 let control;
 /** @type {EchoServer} */
 let echoServer;
-function operationServer() {
-  /**
-   * @type {protocol_info[]}
-   */
-  const deviceList = [
-    {
-      mainCategory: 'FarmParallel',
-      subCategory: 'dmTech',
-      wrapperCategory: 'default',
-      deviceId: 1,
-    },
-    // {
-    //   mainCategory: 'FarmParallel',
-    //   subCategory: 'dmTech',
-    //   deviceId: 2,
-    // },
-  ];
-  control = new Control(9000);
-  BU.CLI(_.head(deviceList));
-  echoServer = new EchoServer(_.head(deviceList), mapList.FP.YeongSanPo);
-  mainConverter = new MainConverter(_.head(deviceList));
+
+const protocolInfo = {
+  mainCategory: 'FarmParallel',
+  subCategory: 'dmTech',
+  wrapperCategory: 'default',
+  deviceId: 1,
+};
+
+/**
+ *
+ * @param {{deviceMap: mDeviceMap, socketPort: number, protocolInfo: protocol_info}} serverInfo
+ */
+function operationServer(serverInfo) {
+  control = new Control(serverInfo.socketPort);
+  echoServer = new EchoServer(serverInfo.protocolInfo, serverInfo.deviceMap);
+  mainConverter = new MainConverter(serverInfo.protocolInfo);
   mainConverter.setProtocolConverter();
 
-  control.attachDevice(deviceList, mapList.FP.YeongSanPo);
-
-  // 2개 장치 구동
-  if (control.deviceModelList.length !== 1) {
-    throw new Error(`expect ${1}\t res: ${control.deviceModelList.length}`);
-  }
+  control.attachDevice(serverInfo.protocolInfo, serverInfo.deviceMap);
 }
 
 async function startTest() {
@@ -75,8 +65,13 @@ async function startTest() {
   client.write(writeMsg);
 }
 
-operationServer();
+// operationServer({ deviceMap: mapList.FP.YeongSanPo, socketPort: 9000, protocolInfo });
 // startTest();
+
+// MultiTest
+for (let index = 9000; index < 9002; index++) {
+  operationServer({ deviceMap: mapList.FP.YeongSanPo, socketPort: index, protocolInfo });
+}
 
 process.on('uncaughtException', err => {
   // BU.debugConsole();
