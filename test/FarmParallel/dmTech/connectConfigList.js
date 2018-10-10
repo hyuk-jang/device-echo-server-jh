@@ -3,7 +3,7 @@ const mapList = require('../../../src/mapList');
 module.exports = [
   {
     connectInfo: {
-      port: 9000,
+      port: 8888,
       uuid: '001',
     },
     fp: {
@@ -26,7 +26,7 @@ module.exports = [
   },
   {
     connectInfo: {
-      port: 9000,
+      port: 8888,
       uuid: '002',
     },
     fp: {

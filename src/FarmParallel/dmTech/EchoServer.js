@@ -141,10 +141,11 @@ class EchoServer extends Model {
     const slaveAddr = convertedBufData.readIntBE(0, 1);
     const fnCode = convertedBufData.readIntBE(1, 1);
 
-    // BU.CLIS(slaveAddr, fnCode);
+    BU.CLIS(slaveAddr, fnCode);
     // BU.CLI(this.dataLoggerList);
     // slaveAddr를 기준으로 dataLogger 찾음
     const foundDataLogger = this.findDataLogger(slaveAddr);
+    // BU.CLI(foundDataLogger);
 
     switch (fnCode) {
       case 4:

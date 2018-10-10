@@ -49,6 +49,8 @@ class SocketClient extends AbstController {
     this.protocolConverter = BaseModel.defaultModule.protocolConverter;
     // socket Client의 인증 여부
     this.hasCertification = false;
+
+    this.setInit();
   }
 
   /**
@@ -333,8 +335,6 @@ async function startTestSocketClientCommunication() {
   socketClient.connect();
 }
 
-// 데이터 통신 테스트
-startTestSocketClientCommunication();
 
 // SocketClient 구동 하고자 할 경우
 
@@ -342,6 +342,30 @@ startTestSocketClientCommunication();
 //   port: 9000,
 //   uuid: '001',
 // });
+
+// if __main process
+if (require !== undefined && require.main === module) {
+  console.log('__main__');
+  // const config = require('./src/config');
+  // 데이터 통신 테스트
+  startTestSocketClientCommunication();
+
+  // controller.selectMap();
+
+  // process.on('uncaughtException', err => {
+  //   // BU.debugConsole();
+  //   BU.CLI(err);
+  //   console.log('Node NOT Exiting...');
+  // });
+
+  // process.on('unhandledRejection', err => {
+  //   // BU.debugConsole();
+  //   BU.CLI(err);
+  //   console.log('Node NOT Exiting...');
+  // });
+}
+
+
 
 process.on('uncaughtException', err => {
   // BU.debugConsole();
