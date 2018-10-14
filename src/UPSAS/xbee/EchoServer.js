@@ -446,9 +446,9 @@ class EchoServer extends Model {
     dataLoggerData = this.wrapFrameMsg(dataLoggerData);
     // BU.CLI('dataLoggerData', dataLoggerData)
 
-    /** @type {xbeeApi_0x10} */
+    /** @type {xbeeApi_0x8B} */
     const returnValue = {
-      destination64: xbeeApi0x10.destination64,
+      remote64: xbeeApi0x10.destination64,
       type: 0x90,
       data: dataLoggerData,
     };

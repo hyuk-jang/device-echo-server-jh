@@ -335,7 +335,6 @@ async function startTestSocketClientCommunication() {
   socketClient.connect();
 }
 
-
 // SocketClient 구동 하고자 할 경우
 
 // new SocketClient({
@@ -364,8 +363,6 @@ if (require !== undefined && require.main === module) {
   //   console.log('Node NOT Exiting...');
   // });
 }
-
-
 
 process.on('uncaughtException', err => {
   // BU.debugConsole();

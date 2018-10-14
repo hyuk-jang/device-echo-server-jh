@@ -29,6 +29,7 @@ class Model extends AbstModel {
       R1,
       SOIL_REH,
       SOIL_TEMPERATURE,
+      PV_REAR_TEMPERATURE,
       SOIL_WATER_VALUE,
       SOLAR,
       WIND_DIRECTRION,
@@ -53,6 +54,7 @@ class Model extends AbstModel {
         // 40 도를 올림
         case OUTSIDE_AIR_TEMPERATURE.KEY:
         case SOIL_TEMPERATURE.KEY:
+        case PV_REAR_TEMPERATURE.KEY:
           nodeInfo.data = _.random(55, 75, true);
           break;
         case R1.KEY:

@@ -29,6 +29,8 @@ class EchoServer extends Model {
     const registerAddr = bufData.readInt16BE(2);
     const dataLength = bufData.readInt16BE(4);
 
+    BU.CLIS(registerAddr, dataLength);
+
     /** @type {detailNodeInfo[]} */
     const foundNodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
     // BU.CLI(foundNodeList);
@@ -46,7 +48,7 @@ class EchoServer extends Model {
         key: ModelFP.BASE_KEY.lux,
       },
       {
-        key: ModelFP.BASE_KEY.solar,
+        key: ModelFP.BASE_KEY.horizontalSolar,
       },
       {
         key: ModelFP.BASE_KEY.soilTemperature,
@@ -92,23 +94,28 @@ class EchoServer extends Model {
       {
         key: ModelFP.BASE_KEY.isRain,
       },
+      {
+        key: ModelFP.BASE_KEY.pvRearTemperature,
+        scale: 0.1,
+        fixed: 1,
+      },
     ];
 
-    const dataHeader = [
-      moment().format('YYYY'),
-      moment().format('MM'),
-      moment().format('DD'),
-      moment().format('HH'),
-      moment().format('mm'),
-      moment().format('ss'),
-    ];
+    // const dataHeader = [
+    //   moment().format('YYYY'),
+    //   moment().format('MM'),
+    //   moment().format('DD'),
+    //   moment().format('HH'),
+    //   moment().format('mm'),
+    //   moment().format('ss'),
+    // ];
 
     const nodeDataList = [];
     let calcData;
     const dataLoggerData = protocolList.map((protocolInfo, index) => {
       const nodeInfo = _.find(foundNodeList, { defId: protocolInfo.key });
       if (_.isUndefined(nodeInfo)) {
-        return parseInt(_.nth(dataHeader, index), 0);
+        return 0;
       }
       calcData = nodeInfo.data;
       if (_.isNumber(protocolInfo.scale)) {
@@ -160,7 +167,7 @@ class EchoServer extends Model {
     // Modbus Header 구성
     const mbapHeader = Buffer.concat([
       Buffer.from([slaveAddr, fnCode]),
-      this.protocolConverter.convertNumToHxToBuf(dataList.length, 2),
+      this.protocolConverter.convertNumToHxToBuf(dataList.length, 1),
     ]);
     // BU.CLI(mbapHeader);
     // 장치 데이터 Hi-Lo 형태로 변환
