@@ -81,10 +81,10 @@ class SocketClient extends AbstController {
    * @param {Buffer} bufData
    */
   dataParser(bufData) {
-    BU.CLI(bufData.toString());
+    // BU.CLI(bufData.toString());
     // const fnCode = bufData.readIntBE(1, 1);
     const CMD = String.fromCharCode(bufData.readIntBE(1, 1));
-    BU.CLI(CMD);
+    // BU.CLI(CMD);
 
     let returnValue;
     switch (CMD) {
@@ -116,6 +116,7 @@ class SocketClient extends AbstController {
     const client = net.createConnection(this.configInfo.port, this.configInfo.host);
 
     client.on('data', data => {
+      BU.CLI(this.configInfo.uuid, data);
       const returnBuffer = this.dataParser(data);
       BU.CLI(returnBuffer);
 
@@ -366,15 +367,13 @@ if (require !== undefined && require.main === module) {
 
 process.on('uncaughtException', err => {
   // BU.debugConsole();
-  console.error(err.stack);
-  console.log(err.message);
+  BU.CLI(err);
   console.log('Node NOT Exiting...');
 });
 
 process.on('unhandledRejection', err => {
   // BU.debugConsole();
-  console.error(err.stack);
-  console.log(err.message);
+  console.errBU.CLI(err);
   console.log('Node NOT Exiting...');
 });
 

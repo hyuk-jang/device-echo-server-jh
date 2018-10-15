@@ -17,7 +17,6 @@ class EchoServer extends Model {
     super(protocolInfo, deviceMap);
 
     this.init();
-    // BU.CLI(this.nodeList);
   }
 
   /**
@@ -138,7 +137,7 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    BU.CLI(bufData.toString(), bufData);
+    BU.CLIS(this.protocolInfo, bufData);
     // Frame을 쓴다면 벗겨냄
     const convertedBufData = this.peelFrameMSg(bufData);
     BU.CLI(convertedBufData);
@@ -153,6 +152,11 @@ class EchoServer extends Model {
     // slaveAddr를 기준으로 dataLogger 찾음
     const foundDataLogger = this.findDataLogger(slaveAddr);
     // BU.CLI(foundDataLogger);
+
+    if (_.isUndefined(foundDataLogger)) {
+      BU.CLI(this.deviceMap.setInfo.mainInfo);
+      return false;
+    }
 
     switch (fnCode) {
       case 4:

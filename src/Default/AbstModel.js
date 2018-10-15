@@ -16,12 +16,12 @@ class AbstModel {
   constructor(protocolInfo, deviceMap) {
     // 기존에 객체에 생성되어 있는지 체크
     const foundInstance = _.find(instanceList, instanceInfo =>
-      _.isEqual(instanceInfo.id, this.deviceMap),
+      _.isEqual(instanceInfo.id, deviceMap),
     );
 
     // 없다면 신규로 생성
     if (_.isEmpty(foundInstance)) {
-      instanceList.push({ id: this.deviceMap, instance: this });
+      instanceList.push({ id: deviceMap, instance: this });
     } else {
       return foundInstance.instance;
     }
