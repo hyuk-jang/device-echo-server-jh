@@ -3,7 +3,7 @@ const mapList = require('../../../src/mapList');
 module.exports = [
   {
     connectInfo: {
-      port: 8888,
+      port: 9000,
       uuid: '001',
     },
     fp: {
@@ -13,7 +13,7 @@ module.exports = [
         wrapperCategory: 'default',
         deviceId: 1,
       },
-      deviceMap: mapList.FP.YeongSanPo,
+      deviceMap: mapList.FP.Naju,
     },
     inverter: {
       protocolInfo: {
@@ -26,7 +26,7 @@ module.exports = [
   },
   {
     connectInfo: {
-      port: 8888,
+      port: 9000,
       uuid: '002',
     },
     fp: {
@@ -36,7 +36,7 @@ module.exports = [
         wrapperCategory: 'default',
         deviceId: 1,
       },
-      deviceMap: mapList.FP.YeongSanPo,
+      deviceMap: mapList.FP.Gangjin,
     },
     inverter: {
       protocolInfo: {

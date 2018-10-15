@@ -31,7 +31,8 @@ class Model extends AbstModel {
       SOIL_TEMPERATURE,
       PV_REAR_TEMPERATURE,
       SOIL_WATER_VALUE,
-      SOLAR,
+      HORIZONTAL_SOLAR,
+      INCLINED_SOLAR,
       WIND_DIRECTRION,
       WIND_SPEED,
       WRITE_DATE,
@@ -63,7 +64,8 @@ class Model extends AbstModel {
         case SOIL_WATER_VALUE.KEY:
           nodeInfo.data = _.random(40, 50, true);
           break;
-        case SOLAR.KEY:
+        case HORIZONTAL_SOLAR.KEY:
+        case INCLINED_SOLAR.KEY:
           nodeInfo.data = _.random(0, 1000, true);
           break;
         case WIND_DIRECTRION.KEY:

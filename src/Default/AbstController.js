@@ -15,7 +15,7 @@ class AbstController {
     this.hasConnect;
     this.connectTimer;
     // 장치 재접속 인터벌
-    this.connectIntervalTime = 1000 * 5;
+    this.connectIntervalTime = 1000 * 30;
 
     // TEST
     this.requestConnectCount = 0;

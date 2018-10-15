@@ -22,7 +22,7 @@ let echoServer;
 const protocolInfo = {
   mainCategory: 'FarmParallel',
   subCategory: 'dmTech',
-  // wrapperCategory: 'default',
+  wrapperCategory: 'default',
   deviceId: 1,
 };
 

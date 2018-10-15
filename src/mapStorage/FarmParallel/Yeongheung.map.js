@@ -70,6 +70,7 @@ const map = {
           subType: '',
           host: 'localhost',
           port: 9000,
+          hasPassive: true,
         },
       },
       {
@@ -79,6 +80,7 @@ const map = {
           subType: 'rtu',
           baudRate: 9600,
           port: 'COM3',
+          hasPassive: true,
         },
       },
     ],
@@ -88,6 +90,7 @@ const map = {
         protocol_info: {
           mainCategory: 'FarmParallel',
           subCategory: 'dmTech',
+          wrapperCategory: 'default',
         },
       },
     ],
@@ -232,8 +235,7 @@ const map = {
         target_id: 'wd',
         target_name: '풍향',
         is_sensor: 1,
-        data_unit: '°',
-        description: '바람이 불어오는 방향을 360 각도로 표현',
+        description: '풍향 0~7 (북, 북동, 동, 남동, 남, 남서, 서, 북서)',
         defList: [
           {
             target_id: 'windDirection',
@@ -425,13 +427,13 @@ const map = {
             description: '33kW급',
             nodeList: [
               {
-                target_code: '001',
+                target_code: '014',
               },
               {
-                target_code: '002',
+                target_code: '015',
               },
               {
-                target_code: '003',
+                target_code: '016',
               },
             ],
           },
@@ -452,16 +454,19 @@ const map = {
             target_prefix: 'IVT',
             placeList: [
               {
-                target_code: '001',
-                nodeList: ['kW_I_001'],
+                target_code: '014',
+                target_name: '일반 구조물',
+                nodeList: ['kW_I_014'],
               },
               {
-                target_code: '002',
-                nodeList: ['kW_I_002'],
+                target_code: '015',
+                target_name: '태양광 구조물',
+                nodeList: ['kW_I_015'],
               },
               {
-                target_code: '003',
-                nodeList: ['kW_I_003'],
+                target_code: '016',
+                target_name: '외부',
+                nodeList: ['kW_I_016'],
               },
             ],
           },

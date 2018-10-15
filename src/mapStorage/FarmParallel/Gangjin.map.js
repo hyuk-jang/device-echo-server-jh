@@ -70,6 +70,7 @@ const map = {
           subType: '',
           host: 'localhost',
           port: 9000,
+          hasPassive: true,
         },
       },
       {
@@ -79,6 +80,7 @@ const map = {
           subType: 'rtu',
           baudRate: 9600,
           port: 'COM3',
+          hasPassive: true,
         },
       },
     ],
@@ -88,6 +90,7 @@ const map = {
         protocol_info: {
           mainCategory: 'FarmParallel',
           subCategory: 'dmTech',
+          wrapperCategory: 'default',
         },
       },
     ],
@@ -219,8 +222,7 @@ const map = {
         target_id: 'wd',
         target_name: '풍향',
         is_sensor: 1,
-        data_unit: '°',
-        description: '바람이 불어오는 방향을 360 각도로 표현',
+        description: '풍향 0~7 (북, 북동, 동, 남동, 남, 남서, 서, 북서)',
         defList: [
           {
             target_id: 'windDirection',
@@ -400,7 +402,7 @@ const map = {
             description: '33kW급',
             nodeList: [
               {
-                target_code: '001',
+                target_code: '008',
               },
             ],
           },
@@ -421,8 +423,9 @@ const map = {
             target_prefix: 'IVT',
             placeList: [
               {
-                target_code: '001',
-                nodeList: ['kW_I_001'],
+                target_code: '008',
+                target_name: '외부',
+                nodeList: ['kW_I_008'],
               },
             ],
           },
@@ -439,8 +442,8 @@ const map = {
             target_name: '태양광',
             placeList: [
               {
-                target_name: '008',
-                target_code: '하부',
+                target_code: '008',
+                target_name: '하부',
                 chart_color: '#0b7285',
                 chart_sort_rank: 8,
                 nodeList: ['LX_008', 'S_H_008', 'CO2_008', 'WV_S_008', 'T_S_008', 'RH_S_008'],
