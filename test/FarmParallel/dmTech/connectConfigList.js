@@ -45,4 +45,48 @@ module.exports = [
       },
     },
   },
+  {
+    connectInfo: {
+      port: 9000,
+      uuid: '003',
+    },
+    fp: {
+      protocolInfo: {
+        mainCategory: 'FarmParallel',
+        subCategory: 'dmTech',
+        wrapperCategory: 'default',
+        deviceId: '3',
+      },
+      deviceMap: mapList.FP.Boseong,
+    },
+    inverter: {
+      protocolInfo: {
+        mainCategory: 'Inverter',
+        subCategory: 'das_1.3',
+        wrapperCategory: 'default',
+      },
+    },
+  },
+  {
+    connectInfo: {
+      port: 9000,
+      uuid: '004',
+    },
+    fp: {
+      protocolInfo: {
+        mainCategory: 'FarmParallel',
+        subCategory: 'dmTech',
+        wrapperCategory: 'default',
+        deviceId: '4',
+      },
+      deviceMap: mapList.FP.Ochang,
+    },
+    inverter: {
+      protocolInfo: {
+        mainCategory: 'Inverter',
+        subCategory: 'das_1.3',
+        wrapperCategory: 'default',
+      },
+    },
+  },
 ];

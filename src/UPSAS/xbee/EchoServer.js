@@ -82,11 +82,11 @@ class EchoServer extends Model {
       // 현재 상태가 닫혀있다면
       if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
         // 여는 상태로 변경
-        BU.CLI('여는 상태로 변경');
-        BU.CLI(nodeInfo.data);
+        // BU.CLI('여는 상태로 변경');
+        // BU.CLI(nodeInfo.data);
         nodeInfo.data = DEVICE.STATUS.OPENING;
         setTimeout(() => {
-          BU.CLI('열림');
+          // BU.CLI('열림');
           nodeInfo.data = DEVICE.STATUS.OPEN;
         }, this.normalDeviceOperTime);
       }

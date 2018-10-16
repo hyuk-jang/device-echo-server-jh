@@ -1,17 +1,19 @@
+const net = require('net');
+
 const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 const Control = require('../../../src/Control');
 
 require('../../../../default-intelligence');
 
-function testConstruct() {
+function operationServer() {
   /**
    * @type {protocol_info[]}
    */
   const deviceList = [
     {
       deviceId: '001',
-      mainCategory: 'inverter',
+      mainCategory: 'Inverter',
       subCategory: 'das_1.3',
       protocolOptionInfo: {
         hasTrackingData: true,
@@ -22,7 +24,7 @@ function testConstruct() {
     },
     {
       deviceId: '001',
-      mainCategory: 'inverter',
+      mainCategory: 'Inverter',
       subCategory: 'das_1.3',
       protocolOptionInfo: {
         hasTrackingData: true,
@@ -33,7 +35,7 @@ function testConstruct() {
     },
     {
       deviceId: '002',
-      mainCategory: 'inverter',
+      mainCategory: 'Inverter',
       subCategory: 'das_1.3',
       protocolOptionInfo: {
         hasTrackingData: true,
@@ -54,9 +56,7 @@ function testConstruct() {
 }
 
 function startTest() {
-  const socketClient = require('net');
-
-  const client = socketClient.createConnection(9000);
+  const client = net.createConnection(9000);
 
   client.on('data', data => {
     BU.CLI(data.toString());
@@ -92,8 +92,8 @@ function startTest() {
   }, 600);
 }
 
-testConstruct();
-startTest();
+operationServer();
+// startTest();
 
 process.on('uncaughtException', err => {
   // BU.debugConsole();
