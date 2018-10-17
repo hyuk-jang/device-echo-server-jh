@@ -15,6 +15,7 @@ function operationServer() {
       deviceId: '001',
       mainCategory: 'Inverter',
       subCategory: 'das_1.3',
+      wrapperCategory: 'default',
       protocolOptionInfo: {
         hasTrackingData: true,
       },
@@ -26,6 +27,7 @@ function operationServer() {
       deviceId: '001',
       mainCategory: 'Inverter',
       subCategory: 'das_1.3',
+      wrapperCategory: 'default',
       protocolOptionInfo: {
         hasTrackingData: true,
       },
@@ -37,6 +39,43 @@ function operationServer() {
       deviceId: '002',
       mainCategory: 'Inverter',
       subCategory: 'das_1.3',
+      wrapperCategory: 'default',
+      protocolOptionInfo: {
+        hasTrackingData: true,
+      },
+      option: {
+        isUseKw: true,
+      },
+    },
+    {
+      deviceId: '003',
+      mainCategory: 'Inverter',
+      subCategory: 'das_1.3',
+      wrapperCategory: 'default',
+      protocolOptionInfo: {
+        hasTrackingData: true,
+      },
+      option: {
+        isUseKw: true,
+      },
+    },
+    {
+      deviceId: '004',
+      mainCategory: 'Inverter',
+      subCategory: 'das_1.3',
+      wrapperCategory: 'default',
+      protocolOptionInfo: {
+        hasTrackingData: true,
+      },
+      option: {
+        isUseKw: true,
+      },
+    },
+    {
+      deviceId: '005',
+      mainCategory: 'Inverter',
+      subCategory: 'das_1.3',
+      wrapperCategory: 'default',
       protocolOptionInfo: {
         hasTrackingData: true,
       },
@@ -50,8 +89,8 @@ function operationServer() {
   control.attachDevice(deviceList);
 
   // 2개 장치 구동
-  if (control.deviceModelList.length !== 2) {
-    throw new Error(`expect ${2}\t res: ${control.deviceModelList.length}`);
+  if (control.deviceModelList.length !== 5) {
+    throw new Error(`expect ${5}\t res: ${control.deviceModelList.length}`);
   }
 }
 
