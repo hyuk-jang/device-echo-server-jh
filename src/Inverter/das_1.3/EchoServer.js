@@ -184,14 +184,15 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    // BU.CLI(this.dialing, bufData);
+    BU.CLI(this.dialing, bufData);
     this.reload();
     bufData = this.peelFrameMSg(bufData);
     const SOP = Buffer.from([_.head(bufData)]);
 
     // SOP 일치 여부 체크
     if (!_.isEqual(SOP, Buffer.from('^'))) {
-      throw new Error(`Not Matching SOP\n expect: ${this.SOP}\t res: ${SOP}`);
+      BU.CLI(`Not Matching SOP\n expect: ${this.SOP}\t res: ${SOP}`);
+      return;
     }
 
     // check Length (SOP, CODE, ADDRESS 제외)

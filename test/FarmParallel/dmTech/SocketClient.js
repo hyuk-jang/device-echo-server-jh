@@ -93,6 +93,7 @@ class SocketClient extends AbstController {
         returnValue = this.defaultWrapper.wrapFrameMsg(protocolFP, returnValue);
         break;
       case 'I':
+        BU.CLIN(this.echoServerInverter);
         returnValue = this.echoServerInverter.onData(bufData);
         break;
       case 'S':
@@ -119,8 +120,9 @@ class SocketClient extends AbstController {
       BU.CLI(this.configInfo.uuid, data);
       const returnBuffer = this.dataParser(data);
       BU.CLI(returnBuffer);
-
-      client.write(returnBuffer);
+      if (returnBuffer !== undefined) {
+        client.write(returnBuffer);
+      }
     });
 
     client.on('close', err => {
