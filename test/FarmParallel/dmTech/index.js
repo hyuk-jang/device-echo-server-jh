@@ -5,5 +5,5 @@ const SocketClient = require('./SocketClient');
 connectConfigList.forEach(connectConfig => {
   const socketClient = new SocketClient(connectConfig.connectInfo);
   socketClient.setEchoServerFP(connectConfig.fp.protocolInfo, connectConfig.fp.deviceMap);
-  socketClient.setEchoServerInverter(connectConfig.inverter.protocolInfo);
+  socketClient.setEchoServerInverter(connectConfig.inverter.protocolList);
 });

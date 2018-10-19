@@ -46,6 +46,8 @@ class EchoServer extends Model {
         CMD: 3,
       },
     };
+
+    BU.CLI('Das_1.3 Inverter EchoServer Created', this.dialing)
   }
 
   /**

@@ -65,10 +65,13 @@ class SocketClient extends AbstController {
 
   /**
    * FP 에코서버 설정
-   * @param {protocol_info} protocolInfo
+   * @param {protocol_info|protocol_info[]} protocolList
    */
-  setEchoServerInverter(protocolInfo) {
-    this.echoServerInverter = new EchoServerInverter(protocolInfo);
+  setEchoServerInverter(protocolList) {
+    protocolList = Array.isArray(protocolList) ? protocolList : [protocolList];
+    this.echoServerInverterList = protocolList.map(
+      protocolInfo => new EchoServerInverter(protocolInfo),
+    );
   }
 
   /** AbstController 에서 접속 타이머 시작 요청 */
@@ -86,6 +89,8 @@ class SocketClient extends AbstController {
     const CMD = String.fromCharCode(bufData.readIntBE(1, 1));
     // BU.CLI(CMD);
 
+    // 응답 받을 데이터 배열
+    const receiveDataList = [];
     let returnValue;
     switch (CMD) {
       case 'A':
@@ -93,8 +98,17 @@ class SocketClient extends AbstController {
         returnValue = this.defaultWrapper.wrapFrameMsg(protocolFP, returnValue);
         break;
       case 'I':
-        BU.CLIN(this.echoServerInverter);
-        returnValue = this.echoServerInverter.onData(bufData);
+        this.echoServerInverterList.forEach(deviceModel => {
+          // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
+          receiveDataList.push(deviceModel.onData(bufData));
+        });
+        BU.CLI(receiveDataList);
+        // 응답받지 않은 데이터는 undefined가 들어가므로 이를 제거하고 유효한 데이터 1개를 가져옴
+        returnValue = _(receiveDataList)
+          .reject(receiveData => _.isUndefined(receiveData))
+          .head();
+        // BU.CLI(returnValue)
+        returnValue = Buffer.isBuffer(returnValue) ? returnValue : JSON.stringify(returnValue);
         break;
       case 'S':
         returnValue = this.echoServerFP.onData(bufData);

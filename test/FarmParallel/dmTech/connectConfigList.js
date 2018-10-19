@@ -16,12 +16,26 @@ module.exports = [
       deviceMap: mapList.FP.Naju,
     },
     inverter: {
-      protocolInfo: {
-        mainCategory: 'Inverter',
-        subCategory: 'das_1.3',
-        wrapperCategory: 'default',
-        deviceId: '001',
-      },
+      protocolList: [
+        {
+          mainCategory: 'Inverter',
+          subCategory: 'das_1.3',
+          wrapperCategory: 'default',
+          deviceId: '001',
+        },
+        {
+          mainCategory: 'Inverter',
+          subCategory: 'das_1.3',
+          wrapperCategory: 'default',
+          deviceId: '002',
+        },
+        {
+          mainCategory: 'Inverter',
+          subCategory: 'das_1.3',
+          wrapperCategory: 'default',
+          deviceId: '004',
+        },
+      ],
     },
   },
   {
@@ -39,12 +53,14 @@ module.exports = [
       deviceMap: mapList.FP.Gangjin,
     },
     inverter: {
-      protocolInfo: {
-        mainCategory: 'Inverter',
-        subCategory: 'das_1.3',
-        wrapperCategory: 'default',
-        deviceId: '002',
-      },
+      protocolList: [
+        {
+          mainCategory: 'Inverter',
+          subCategory: 'das_1.3',
+          wrapperCategory: 'default',
+          deviceId: '001',
+        },
+      ],
     },
   },
   {
@@ -62,35 +78,37 @@ module.exports = [
       deviceMap: mapList.FP.Boseong,
     },
     inverter: {
-      protocolInfo: {
-        mainCategory: 'Inverter',
-        subCategory: 'das_1.3',
-        wrapperCategory: 'default',
-        deviceId: '003',
-      },
+      protocolList: [
+        {
+          mainCategory: 'Inverter',
+          subCategory: 'das_1.3',
+          wrapperCategory: 'default',
+          deviceId: '001',
+        },
+      ],
     },
   },
-  {
-    connectInfo: {
-      port: 9000,
-      uuid: '004',
-    },
-    fp: {
-      protocolInfo: {
-        mainCategory: 'FarmParallel',
-        subCategory: 'dmTech',
-        wrapperCategory: 'default',
-        deviceId: '4',
-      },
-      deviceMap: mapList.FP.Ochang,
-    },
-    inverter: {
-      protocolInfo: {
-        mainCategory: 'Inverter',
-        subCategory: 'das_1.3',
-        wrapperCategory: 'default',
-        deviceId: '004',
-      },
-    },
-  },
+  // {
+  //   connectInfo: {
+  //     port: 9000,
+  //     uuid: '004',
+  //   },
+  //   fp: {
+  //     protocolInfo: {
+  //       mainCategory: 'FarmParallel',
+  //       subCategory: 'dmTech',
+  //       wrapperCategory: 'default',
+  //       deviceId: '4',
+  //     },
+  //     deviceMap: mapList.FP.Ochang,
+  //   },
+  //   inverter: {
+  //     protocolInfo: {
+  //       mainCategory: 'Inverter',
+  //       subCategory: 'das_1.3',
+  //       wrapperCategory: 'default',
+  //       deviceId: '001',
+  //     },
+  //   },
+  // },
 ];
