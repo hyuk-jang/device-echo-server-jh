@@ -133,8 +133,7 @@ class SocketClient extends AbstController {
     client.on('data', data => {
       BU.CLI(this.configInfo.uuid, data);
       const returnBuffer = this.dataParser(data);
-      BU.CLI(returnBuffer);
-      if (returnBuffer !== undefined) {
+      if (!_.isEmpty(returnBuffer)) {
         client.write(returnBuffer);
       }
     });

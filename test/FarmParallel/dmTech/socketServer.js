@@ -23,7 +23,7 @@ const protocolInfo = {
   mainCategory: 'FarmParallel',
   subCategory: 'dmTech',
   wrapperCategory: 'default',
-  deviceId: 1,
+  deviceId: 16,
 };
 
 /**
@@ -70,7 +70,7 @@ async function startTest() {
 
 // MultiTest
 for (let index = 9000; index < 9002; index++) {
-  operationServer({ deviceMap: mapList.FP.Naju, socketPort: index, protocolInfo });
+  operationServer({ deviceMap: mapList.FP.Yeongheung, socketPort: index, protocolInfo });
 }
 
 process.on('uncaughtException', err => {

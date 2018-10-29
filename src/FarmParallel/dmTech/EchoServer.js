@@ -7,6 +7,8 @@ const Model = require('../Model');
 
 const { MainConverter, BaseModel } = require('../../../../device-protocol-converter-jh');
 
+const protocol = require('./protocol');
+
 class EchoServer extends Model {
   /**
    * protocol_info.option --> true: 3.3kW, any: 600W
@@ -36,69 +38,78 @@ class EchoServer extends Model {
 
     const ModelFP = BaseModel.FarmParallel;
 
-    const protocolList = [
-      {},
-      {},
-      {},
-      {},
-      {},
-      {},
-      {
-        key: ModelFP.BASE_KEY.lux,
-      },
-      {
-        key: ModelFP.BASE_KEY.horizontalSolar,
-      },
-      {
-        key: ModelFP.BASE_KEY.soilTemperature,
-        scale: 0.1,
-        fixed: 1,
-      },
-      {
-        key: ModelFP.BASE_KEY.soilReh,
-        scale: 0.1,
-        fixed: 1,
-      },
-      {
-        key: ModelFP.BASE_KEY.co2,
-      },
-      {
-        key: ModelFP.BASE_KEY.soilWaterValue,
-        scale: 0.1,
-        fixed: 1,
-      },
-      {
-        key: ModelFP.BASE_KEY.outsideAirTemperature,
-        scale: 0.1,
-        fixed: 1,
-      },
-      {
-        key: ModelFP.BASE_KEY.outsideAirReh,
-        scale: 0.1,
-        fixed: 1,
-      },
-      {
-        key: ModelFP.BASE_KEY.windDirection,
-      },
-      {
-        key: ModelFP.BASE_KEY.windSpeed,
-        scale: 0.1,
-        fixed: 1,
-      },
-      {
-        key: ModelFP.BASE_KEY.r1,
-        scale: 0.1,
-        fixed: 1,
-      },
-      {
-        key: ModelFP.BASE_KEY.isRain,
-      },
-      {
-        key: ModelFP.BASE_KEY.pvRearTemperature,
-        scale: 0.1,
-        fixed: 1,
-      },
-    ];
+    // const protocolList = [
+    //   {},
+    //   {},
+    //   {},
+    //   {},
+    //   {},
+    //   {},
+    //   {
+    //     key: ModelFP.BASE_KEY.lux,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.horizontalSolar,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.soilTemperature,
+    //     scale: 0.1,
+    //     fixed: 1,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.soilReh,
+    //     scale: 0.1,
+    //     fixed: 1,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.co2,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.soilWaterValue,
+    //     scale: 0.1,
+    //     fixed: 1,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.outsideAirTemperature,
+    //     scale: 0.1,
+    //     fixed: 1,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.outsideAirReh,
+    //     scale: 0.1,
+    //     fixed: 1,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.windDirection,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.windSpeed,
+    //     scale: 0.1,
+    //     fixed: 1,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.r1,
+    //     scale: 0.1,
+    //     fixed: 1,
+    //   },
+    //   {
+    //     key: ModelFP.BASE_KEY.isRain,
+    //   },
+    // ];
+
+    const { PRT_SITE, HORIZONTAL_SITE, INCLINED_SITE } = protocol(this.protocolInfo.deviceId);
+    let protocolList;
+    // NOTE: DL 001, 003, 005 번은 모듈 뒷면 온도를 재기 위한 테이블을 불러옴
+    const pvRearTempTableList = ['001', '004'];
+    // NOTE: 외기 환경 데이터 로거 번호
+    const horizontalSiteList = ['007', '009', '011', '013', '016'];
+    if (_.includes(pvRearTempTableList, this.protocolInfo.deviceId)) {
+      protocolList = PRT_SITE.decodingDataList;
+    } else if (_.includes(horizontalSiteList, this.protocolInfo.deviceId)) {
+      protocolList = HORIZONTAL_SITE.decodingDataList;
+    } else {
+      protocolList = INCLINED_SITE.decodingDataList;
+    }
 
     // const dataHeader = [
     //   moment().format('YYYY'),
@@ -155,7 +166,7 @@ class EchoServer extends Model {
 
     if (_.isUndefined(foundDataLogger)) {
       BU.CLI(this.deviceMap.setInfo.mainInfo);
-      return false;
+      return;
     }
 
     switch (fnCode) {

@@ -47,7 +47,7 @@ class EchoServer extends Model {
       },
     };
 
-    BU.CLI('Das_1.3 Inverter EchoServer Created', this.dialing)
+    BU.CLI('Das_1.3 Inverter EchoServer Created', this.dialing);
   }
 
   /**
@@ -193,7 +193,7 @@ class EchoServer extends Model {
 
     // SOP 일치 여부 체크
     if (!_.isEqual(SOP, Buffer.from('^'))) {
-      BU.CLI(`Not Matching SOP\n expect: ${this.SOP}\t res: ${SOP}`);
+      BU.CLI(`Not Matching SOP expect: ${this.SOP} res: ${SOP}`);
       return;
     }
 

@@ -104,7 +104,7 @@ const map = {
             target_code: '010',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
-            nodeList: ['LX_010', 'S_H_010', 'CO2_010', 'WV_S_010', 'T_S_010', 'RH_S_010'],
+            nodeList: ['LX_010', 'S_I_010', 'CO2_010', 'WV_S_010', 'T_S_010', 'RH_S_010'],
           },
         ],
       },
@@ -248,9 +248,6 @@ const map = {
             target_prefix: 'S_H',
             nodeList: [
               {
-                target_code: '010',
-              },
-              {
                 target_code: '011',
               },
             ],
@@ -259,7 +256,11 @@ const map = {
             target_id: 'inclinedSolar',
             target_name: '경사 일사량',
             target_prefix: 'S_I',
-            nodeList: [],
+            nodeList: [
+              {
+                target_code: '010',
+              },
+            ],
           },
         ],
       },
@@ -402,7 +403,7 @@ const map = {
             description: '33kW급',
             nodeList: [
               {
-                target_code: '001',
+                target_code: '005',
               },
             ],
           },
@@ -423,9 +424,11 @@ const map = {
             target_prefix: 'IVT',
             placeList: [
               {
-                target_code: '010',
+                target_code: '005',
                 target_name: '외부',
-                nodeList: ['kW_I_010'],
+                chart_color: '#2b8a3e',
+                chart_sort_rank: 5,
+                nodeList: ['kW_I_005', 'S_I_010'],
               },
             ],
           },
@@ -446,7 +449,7 @@ const map = {
                 target_name: '하부',
                 chart_color: '#2b8a3e',
                 chart_sort_rank: 10,
-                nodeList: ['LX_010', 'S_H_010', 'CO2_010', 'WV_S_010', 'T_S_010', 'RH_S_010'],
+                nodeList: ['LX_010', 'S_I_010', 'CO2_010', 'WV_S_010', 'T_S_010', 'RH_S_010'],
               },
             ],
           },

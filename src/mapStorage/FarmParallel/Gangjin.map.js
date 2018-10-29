@@ -104,7 +104,7 @@ const map = {
             target_code: '008',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
-            nodeList: ['LX_008', 'S_H_008', 'CO2_008', 'WV_S_008', 'T_S_008', 'RH_S_008'],
+            nodeList: ['LX_008', 'S_I_008', 'CO2_008', 'WV_S_008', 'T_S_008', 'RH_S_008'],
           },
         ],
       },
@@ -244,12 +244,9 @@ const map = {
         defList: [
           {
             target_id: 'horizontalSolar',
-            target_name: '일사량',
+            target_name: '수평 일사량',
             target_prefix: 'S_H',
             nodeList: [
-              {
-                target_code: '008',
-              },
               {
                 target_code: '009',
               },
@@ -259,7 +256,11 @@ const map = {
             target_id: 'inclinedSolar',
             target_name: '경사 일사량',
             target_prefix: 'S_I',
-            nodeList: [],
+            nodeList: [
+              {
+                target_code: '008',
+              },
+            ],
           },
         ],
       },
@@ -402,7 +403,7 @@ const map = {
             description: '33kW급',
             nodeList: [
               {
-                target_code: '008',
+                target_code: '004',
               },
             ],
           },
@@ -423,9 +424,11 @@ const map = {
             target_prefix: 'IVT',
             placeList: [
               {
-                target_code: '008',
+                target_code: '004',
                 target_name: '외부',
-                nodeList: ['kW_I_008'],
+                chart_color: '#0b7285',
+                chart_sort_rank: 4,
+                nodeList: ['kW_I_004', 'S_I_008'],
               },
             ],
           },
@@ -446,7 +449,7 @@ const map = {
                 target_name: '하부',
                 chart_color: '#0b7285',
                 chart_sort_rank: 8,
-                nodeList: ['LX_008', 'S_H_008', 'CO2_008', 'WV_S_008', 'T_S_008', 'RH_S_008'],
+                nodeList: ['LX_008', 'S_I_008', 'CO2_008', 'WV_S_008', 'T_S_008', 'RH_S_008'],
               },
             ],
           },

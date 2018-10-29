@@ -91,7 +91,7 @@ class Control {
               ? this.returnData
               : JSON.stringify(this.returnData);
             BU.CLI(_.get(returnValue, 'length'), returnValue);
-            if (returnValue === undefined) return;
+            if (_.isEmpty(returnValue) || _.isBoolean(returnValue)) return;
             socket.write(returnValue);
           }, 100);
         });
