@@ -17,13 +17,11 @@ class EchoServer extends Model {
     this.isKwGnd = _.get(protocolInfo, 'option') === true;
 
     // 기존에 객체에 생성되어 있는지 체크
-    const foundInstance = _.find(instanceList, instanceInfo =>
-      _.isEqual(instanceInfo.id, this.dialing),
-    );
+    const foundInstance = _.find(instanceList, instanceInfo => _.eq(instanceInfo.id, protocolInfo));
 
     // 없다면 신규로 생성
     if (_.isEmpty(foundInstance)) {
-      instanceList.push({ id: this.dialing, instance: this });
+      instanceList.push({ id: protocolInfo, instance: this });
     } else {
       return foundInstance.instance;
     }

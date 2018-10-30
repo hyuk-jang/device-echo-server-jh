@@ -1,11 +1,10 @@
 const _ = require('lodash');
 
-const moment = require('moment');
 const { BU } = require('base-util-jh');
 
 const Model = require('../Model');
 
-const { MainConverter, BaseModel } = require('../../../../device-protocol-converter-jh');
+const { MainConverter } = require('../../../../device-protocol-converter-jh');
 
 const protocol = require('./protocol');
 
@@ -30,82 +29,29 @@ class EchoServer extends Model {
     const registerAddr = bufData.readInt16BE(2);
     const dataLength = bufData.readInt16BE(4);
 
-    BU.CLIS(registerAddr, dataLength);
+    // BU.CLIS(registerAddr, dataLength);
 
     /** @type {detailNodeInfo[]} */
     const foundNodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
     // BU.CLI(foundNodeList);
 
-    const ModelFP = BaseModel.FarmParallel;
-
-    // const protocolList = [
-    //   {},
-    //   {},
-    //   {},
-    //   {},
-    //   {},
-    //   {},
-    //   {
-    //     key: ModelFP.BASE_KEY.lux,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.horizontalSolar,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.soilTemperature,
-    //     scale: 0.1,
-    //     fixed: 1,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.soilReh,
-    //     scale: 0.1,
-    //     fixed: 1,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.co2,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.soilWaterValue,
-    //     scale: 0.1,
-    //     fixed: 1,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.outsideAirTemperature,
-    //     scale: 0.1,
-    //     fixed: 1,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.outsideAirReh,
-    //     scale: 0.1,
-    //     fixed: 1,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.windDirection,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.windSpeed,
-    //     scale: 0.1,
-    //     fixed: 1,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.r1,
-    //     scale: 0.1,
-    //     fixed: 1,
-    //   },
-    //   {
-    //     key: ModelFP.BASE_KEY.isRain,
-    //   },
-    // ];
-
     const { PRT_SITE, HORIZONTAL_SITE, INCLINED_SITE } = protocol(this.protocolInfo.deviceId);
+
     let protocolList;
     // NOTE: DL 001, 003, 005 번은 모듈 뒷면 온도를 재기 위한 테이블을 불러옴
-    const pvRearTempTableList = ['001', '004'];
+    const pvRearTempTableList = [1, 4];
     // NOTE: 외기 환경 데이터 로거 번호
-    const horizontalSiteList = ['007', '009', '011', '013', '016'];
-    if (_.includes(pvRearTempTableList, this.protocolInfo.deviceId)) {
+    const horizontalSiteList = [7, 9, 11, 13, 16];
+    let numDeviceId = this.protocolInfo.deviceId;
+    if (Buffer.isBuffer(this.protocolInfo.deviceId)) {
+      numDeviceId = this.protocolInfo.deviceId.readDoubleBE();
+    } else if (_.isString(this.protocolInfo.deviceId)) {
+      numDeviceId = _.toNumber(this.protocolInfo.deviceId);
+    }
+
+    if (_.includes(pvRearTempTableList, numDeviceId)) {
       protocolList = PRT_SITE.decodingDataList;
-    } else if (_.includes(horizontalSiteList, this.protocolInfo.deviceId)) {
+    } else if (_.includes(horizontalSiteList, numDeviceId)) {
       protocolList = HORIZONTAL_SITE.decodingDataList;
     } else {
       protocolList = INCLINED_SITE.decodingDataList;
@@ -138,7 +84,7 @@ class EchoServer extends Model {
       // BU.CLI(_.pick(nodeInfo, ['defId', 'data']));
       return calcData;
     });
-    BU.CLI(nodeDataList);
+    // BU.CLI(nodeDataList);
 
     return dataLoggerData.slice(registerAddr, _.sum([registerAddr, dataLength]));
   }
@@ -148,24 +94,24 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    BU.CLIS(this.protocolInfo, bufData);
+    // BU.CLIS(this.protocolInfo, bufData);
     // Frame을 쓴다면 벗겨냄
     const convertedBufData = this.peelFrameMSg(bufData);
-    BU.CLI(convertedBufData);
+    // BU.CLI(convertedBufData);
 
     let dataList;
 
     const slaveAddr = convertedBufData.readIntBE(0, 1);
     const fnCode = convertedBufData.readIntBE(1, 1);
 
-    BU.CLIS(slaveAddr, fnCode);
+    // BU.CLIS(slaveAddr, fnCode);
     // BU.CLI(this.dataLoggerList);
     // slaveAddr를 기준으로 dataLogger 찾음
     const foundDataLogger = this.findDataLogger(slaveAddr);
     // BU.CLI(foundDataLogger);
 
     if (_.isUndefined(foundDataLogger)) {
-      BU.CLI(this.deviceMap.setInfo.mainInfo);
+      // BU.CLI(this.deviceMap.setInfo.mainInfo);
       return;
     }
 
