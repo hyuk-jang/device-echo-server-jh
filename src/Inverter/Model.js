@@ -53,6 +53,20 @@ class Model extends BaseModel.Inverter {
       0, // 4시
       0, // 5시
       0, // 6시
+      0, // 0시
+      0, // 1시
+      0, // 2시
+      0, // 3시
+      0, // 4시
+      0, // 5시
+      0, // 6시
+      0, // 0시
+      0, // 1시
+      0, // 2시
+      0, // 3시
+      0, // 4시
+      0, // 5시
+      0, // 6시
       31, // 7시
       531, // 8시
       956, // 9시
@@ -93,24 +107,24 @@ class Model extends BaseModel.Inverter {
     const currHourScale = _.divide(currRealSolar, BASE_SOLAR);
 
     this.BASE.pvAmp = _.multiply(this.basePvA, currHourScale);
-    this.BASE.pvVol = _.random(190.1, 210.1);
+    this.BASE.pvVol = _.random(190, 210, true);
     this.BASE.pvKw = _.multiply(_.multiply(this.BASE.pvAmp, this.BASE.pvVol), 0.001);
     this.BASE.gridLf = _.random(59.7, 60.5);
-    this.BASE.gridRAmp = _.multiply(this.BASE.pvAmp, _.random(0.8, 0.99));
-    this.BASE.gridRsVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1.0));
-    this.BASE.gridSAmp = _.multiply(this.BASE.pvAmp, _.random(0.8, 0.99));
-    this.BASE.gridStVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1.0));
-    this.BASE.gridTAmp = _.multiply(this.BASE.pvAmp, _.random(0.8, 0.99));
-    this.BASE.gridTrVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1.0));
+    this.BASE.gridRAmp = _.multiply(this.BASE.pvAmp, _.random(0.9, 1, true));
+    this.BASE.gridRsVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1, true));
+    this.BASE.gridSAmp = _.multiply(this.BASE.pvAmp, _.random(0.9, 1, true));
+    this.BASE.gridStVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1, true));
+    this.BASE.gridTAmp = _.multiply(this.BASE.pvAmp, _.random(0.9, 1, true));
+    this.BASE.gridTrVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1, true));
     this.BASE.operIsError = _.random(0, 1);
     this.BASE.operIsRun = _.random(0, 1);
     this.BASE.operTemperature = _.random(15.1, 36.2);
     this.BASE.operTroubleList = [];
     this.BASE.operWarningList = [];
-    this.BASE.sysCapaKw = _.random(0.5, 20);
-    this.BASE.sysIsSingle = _.random(0, 1);
-    this.BASE.sysLineVoltage = this.BASE.sysIsSingle ? 220 : 380;
-    this.BASE.sysProductYear = _.random(2015, 2018);
+    this.BASE.sysCapaKw = this.amount;
+    this.BASE.sysIsSingle = this.isSingle;
+    this.BASE.sysLineVoltage = this.isSingle ? 220 : 380;
+    this.BASE.sysProductYear = moment().year();
     this.BASE.sysSn = _.random(1, 9);
     this.BASE.powerPvKw = this.BASE.pvKw;
     this.BASE.powerGridKw = _.divide(_.multiply(this.BASE.gridRAmp, this.BASE.gridRsVol), 1000);

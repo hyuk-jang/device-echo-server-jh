@@ -1,7 +1,7 @@
 const net = require('net');
 const eventToPromise = require('event-to-promise');
 const _ = require('lodash');
-const { BU } = require('../../../../base-util-jh');
+const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 require('../../../../default-intelligence');
 
@@ -155,6 +155,7 @@ class SocketClient extends AbstController {
 
     // 에러가 나면 일단 close 이벤트 발생 시킴
     client.on('error', error => {
+      BU.CLI(error);
       this.notifyError(error);
     });
     await eventToPromise.multi(client, ['connect', 'connection', 'open'], ['close', 'error']);

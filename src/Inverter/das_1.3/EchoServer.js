@@ -14,7 +14,8 @@ class EchoServer extends Model {
   constructor(protocolInfo) {
     super(protocolInfo);
 
-    this.isKwGnd = _.get(protocolInfo, 'option') === true;
+    // kW 단위를 사용할 것인지 여부(default kW)
+    this.isKwUnit = _.get(protocolInfo, 'option.isKwUnit', true) === true;
 
     // 기존에 객체에 생성되어 있는지 체크
     const foundInstance = _.find(instanceList, instanceInfo => _.eq(instanceInfo.id, protocolInfo));
@@ -89,7 +90,7 @@ class EchoServer extends Model {
   }
 
   makePv() {
-    const pvCurrentScale = this.isKwGnd ? 10 : 1000;
+    const pvCurrentScale = this.isKwUnit ? 10 : 1000;
     const dataBody = [
       Buffer.from('120'),
       // Buffer.from('128'),
@@ -146,7 +147,7 @@ class EchoServer extends Model {
   }
 
   makePower() {
-    const pvCurrentScale = this.isKwGnd ? 10 : 1000;
+    const pvCurrentScale = this.isKwUnit ? 10 : 1000;
     const dataBody = [
       Buffer.from('419'),
       this.dialing,
@@ -185,7 +186,7 @@ class EchoServer extends Model {
    */
   onData(bufData) {
     // BU.CLI(this.dialing, bufData);
-    BU.CLI(this.BASE)
+    BU.CLI(this.BASE);
     bufData = this.peelFrameMSg(bufData);
     const SOP = Buffer.from([_.head(bufData)]);
 

@@ -120,7 +120,7 @@ class AbstController {
 
   /** 장치와의 연결이 해제되었을 경우 */
   notifyDisconnect() {
-    // BU.CLI('notifyClose');
+    BU.CLI('notifyDisconnect');
     // 장치와의 연결이 계속해제된 상태였다면 이벤트를 보내지 않음
     if (this.hasConnect !== false && _.isEmpty(this.client)) {
       this.hasConnect = false;
