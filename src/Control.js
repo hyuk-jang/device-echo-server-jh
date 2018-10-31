@@ -93,7 +93,7 @@ class Control {
             BU.CLI(_.get(returnValue, 'length'), returnValue);
             if (_.isEmpty(returnValue) || _.isBoolean(returnValue)) return;
             socket.write(returnValue);
-          }, 100);
+          }, 1);
         });
       })
       .on('error', err => {

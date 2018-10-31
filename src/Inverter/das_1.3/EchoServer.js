@@ -184,8 +184,8 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    BU.CLI(this.dialing, bufData);
-    this.reload();
+    // BU.CLI(this.dialing, bufData);
+    BU.CLI(this.BASE)
     bufData = this.peelFrameMSg(bufData);
     const SOP = Buffer.from([_.head(bufData)]);
 
@@ -206,7 +206,7 @@ class EchoServer extends Model {
       return;
     }
 
-    BU.CLI('bufData', bufData);
+    // BU.CLI('bufData', bufData);
 
     const cmd = bufData.slice(
       _.sum([this.HEADER_INFO.BYTE.SOP, this.HEADER_INFO.BYTE.CODE, this.HEADER_INFO.BYTE.ID]),

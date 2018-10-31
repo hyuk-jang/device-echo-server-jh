@@ -22,18 +22,27 @@ module.exports = [
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '001',
+          option: {
+            amount: 33.3,
+          },
         },
         {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '002',
+          option: {
+            amount: 33.3,
+          },
         },
         {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '003',
+          option: {
+            amount: 33.3,
+          },
         },
       ],
     },
@@ -59,6 +68,9 @@ module.exports = [
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '001',
+          option: {
+            amount: 10,
+          },
         },
       ],
     },
@@ -84,6 +96,9 @@ module.exports = [
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '001',
+          option: {
+            amount: 10,
+          },
         },
       ],
     },
@@ -109,18 +124,27 @@ module.exports = [
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '001',
+          option: {
+            amount: 33.3,
+          },
         },
         {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '002',
+          option: {
+            amount: 33.3,
+          },
         },
         {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '003',
+          option: {
+            amount: 33.3,
+          },
         },
       ],
     },
@@ -146,18 +170,27 @@ module.exports = [
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '001',
+          option: {
+            amount: 33.3,
+          },
         },
         {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '002',
+          option: {
+            amount: 33.3,
+          },
         },
         {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
           deviceId: '003',
+          option: {
+            amount: 33.3,
+          },
         },
       ],
     },

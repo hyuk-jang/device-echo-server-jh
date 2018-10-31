@@ -1,7 +1,7 @@
 const net = require('net');
 const eventToPromise = require('event-to-promise');
 const _ = require('lodash');
-const { BU } = require('base-util-jh');
+const { BU } = require('../../../../base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 require('../../../../default-intelligence');
 
@@ -107,7 +107,6 @@ class SocketClient extends AbstController {
         returnValue = _(receiveDataList)
           .reject(receiveData => _.isUndefined(receiveData))
           .head();
-        BU.CLI(returnValue)
         returnValue = Buffer.isBuffer(returnValue) ? returnValue : JSON.stringify(returnValue);
         break;
       case 'S':
@@ -132,10 +131,20 @@ class SocketClient extends AbstController {
 
     client.on('data', data => {
       BU.CLI(this.configInfo.uuid, data);
-      const returnBuffer = this.dataParser(data);
-      if (!_.isEmpty(returnBuffer)) {
-        client.write(returnBuffer);
-      }
+      BU.appendFile(
+        `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(new Date(), '', 2)}.txt`,
+        `onData : ${data}`,
+      ).then(() => {
+        const returnBuffer = this.dataParser(data);
+        if (!_.isEmpty(returnBuffer)) {
+          BU.appendFile(
+            `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(new Date(), '', 2)}.txt`,
+            `writeData : ${returnBuffer}`,
+          ).then(() => {
+            client.write(returnBuffer);
+          });
+        }
+      });
     });
 
     client.on('close', err => {
