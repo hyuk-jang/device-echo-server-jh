@@ -29,8 +29,6 @@ class Model extends BaseModel.Inverter {
     this.BASE.powerCpKwh = 0; // 100 kWh 부터 시작
     this.index = 0;
 
-    BU.CLIN(this, 1);
-
     this.intervalMinute = 1;
     // 누적 발전량에 곱할 가중치
     this.cumulativeScale = this.intervalMinute / 60;
@@ -53,23 +51,9 @@ class Model extends BaseModel.Inverter {
       0, // 4시
       0, // 5시
       0, // 6시
-      0, // 0시
-      0, // 1시
-      0, // 2시
-      0, // 3시
-      0, // 4시
-      0, // 5시
-      0, // 6시
-      0, // 0시
-      0, // 1시
-      0, // 2시
-      0, // 3시
-      0, // 4시
-      0, // 5시
-      0, // 6시
       31, // 7시
       531, // 8시
-      956, // 9시
+      756, // 9시
       1011, // 10시
       1087, // 11시
       1034, // 12시

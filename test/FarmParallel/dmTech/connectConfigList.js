@@ -3,6 +3,7 @@ const mapList = require('../../../src/mapList');
 module.exports = [
   {
     connectInfo: {
+      host: 'fp.smsoft.co.kr',
       port: 8001,
       uuid: '001',
     },

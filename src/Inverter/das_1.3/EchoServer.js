@@ -186,7 +186,7 @@ class EchoServer extends Model {
    */
   onData(bufData) {
     // BU.CLI(this.dialing, bufData);
-    BU.CLI(this.BASE);
+    // BU.CLI(this.BASE);
     bufData = this.peelFrameMSg(bufData);
     const SOP = Buffer.from([_.head(bufData)]);
 
