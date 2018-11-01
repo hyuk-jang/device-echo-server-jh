@@ -26,6 +26,7 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   readInputRegister(dataLogger, bufData) {
+    const slaveAddr = bufData.readIntBE(0, 1);
     const registerAddr = bufData.readInt16BE(2);
     const dataLength = bufData.readInt16BE(4);
 
@@ -42,20 +43,16 @@ class EchoServer extends Model {
     const pvRearTempTableList = [1, 4];
     // NOTE: 외기 환경 데이터 로거 번호
     const horizontalSiteList = [7, 9, 11, 13, 16];
-    let numDeviceId = this.protocolInfo.deviceId;
-    if (Buffer.isBuffer(this.protocolInfo.deviceId)) {
-      numDeviceId = this.protocolInfo.deviceId.readDoubleBE();
-    } else if (_.isString(this.protocolInfo.deviceId)) {
-      numDeviceId = _.toNumber(this.protocolInfo.deviceId);
-    }
 
-    if (_.includes(pvRearTempTableList, numDeviceId)) {
+    if (_.includes(pvRearTempTableList, slaveAddr)) {
       protocolList = PRT_SITE.decodingDataList;
-    } else if (_.includes(horizontalSiteList, numDeviceId)) {
+    } else if (_.includes(horizontalSiteList, slaveAddr)) {
       protocolList = HORIZONTAL_SITE.decodingDataList;
     } else {
       protocolList = INCLINED_SITE.decodingDataList;
     }
+
+    // BU.CLI(this.nodeList);
 
     // const dataHeader = [
     //   moment().format('YYYY'),

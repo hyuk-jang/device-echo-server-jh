@@ -67,7 +67,7 @@ class AbstModel {
       // 센서이고 현재 데이터가 숫자이면서 float형인 경우만 랜덤 수치를 적용
       if (nodeInfo.isSensor && _.isNumber(nodeInfo.data) && nodeInfo.data % 1 !== 0) {
         // 현재 값을 기준으로 95% ~ 105% 사이의 랜덤 값을 사용
-        nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.951, 1.051));
+        nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.95, 1.05));
       }
     });
   }

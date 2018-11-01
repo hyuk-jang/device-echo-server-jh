@@ -66,11 +66,14 @@ async function startTest() {
 }
 
 // operationServer({ deviceMap: mapList.FP.YeongSanPo, socketPort: 9000, protocolInfo });
-// startTest();
+
+// setTimeout(() => {
+//   startTest();
+// }, 1000);
 
 // MultiTest
 for (let index = 9000; index < 9002; index++) {
-  operationServer({ deviceMap: mapList.FP.Yeongheung, socketPort: index, protocolInfo });
+  operationServer({ deviceMap: mapList.FP.Naju, socketPort: index, protocolInfo });
 }
 
 process.on('uncaughtException', err => {

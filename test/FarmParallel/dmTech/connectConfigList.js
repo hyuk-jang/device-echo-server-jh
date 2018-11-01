@@ -1,10 +1,13 @@
 const mapList = require('../../../src/mapList');
 
+const host = 'fp.smsoft.co.kr';
+const port = 8001;
+
 module.exports = [
   {
     connectInfo: {
-      host: 'fp.smsoft.co.kr',
-      port: 8001,
+      host,
+      port,
       uuid: '001',
     },
     fp: {
@@ -50,7 +53,8 @@ module.exports = [
   },
   {
     connectInfo: {
-      port: 8001,
+      host,
+      port,
       uuid: '002',
     },
     fp: {
@@ -78,7 +82,8 @@ module.exports = [
   },
   {
     connectInfo: {
-      port: 8001,
+      host,
+      port,
       uuid: '003',
     },
     fp: {
@@ -106,7 +111,8 @@ module.exports = [
   },
   {
     connectInfo: {
-      port: 8001,
+      host,
+      port,
       uuid: '004',
     },
     fp: {
@@ -152,7 +158,8 @@ module.exports = [
   },
   {
     connectInfo: {
-      port: 8001,
+      host,
+      port,
       uuid: '005',
     },
     fp: {
