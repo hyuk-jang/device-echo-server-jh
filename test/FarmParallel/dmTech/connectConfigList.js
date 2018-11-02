@@ -1,6 +1,7 @@
 const mapList = require('../../../src/mapList');
 
-const host = 'fp.smsoft.co.kr';
+const host = 'localhost';
+// const host = 'fp.smsoft.co.kr';
 const port = 8001;
 
 module.exports = [

@@ -26,7 +26,8 @@ class Model extends BaseModel.Inverter {
     this.basePvA = this.amount * 5;
 
     this.BASE = BaseModel.Inverter.BASE_MODEL;
-    this.BASE.powerCpKwh = 0; // 100 kWh 부터 시작
+    // TEST
+    this.BASE.powerCpKwh = this.amount * _.random(10, 10.5, true); // 100 kWh 부터 시작
     this.index = 0;
 
     this.intervalMinute = 1;
@@ -51,17 +52,17 @@ class Model extends BaseModel.Inverter {
       0, // 4시
       0, // 5시
       0, // 6시
-      31, // 7시
-      531, // 8시
-      756, // 9시
-      1011, // 10시
-      1087, // 11시
-      1034, // 12시
-      956, // 13시
-      865, // 14시
-      705, // 15시
-      351, // 16시
-      151, // 17시
+      41, // 7시
+      82, // 8시
+      524, // 9시
+      762, // 10시
+      866, // 11시
+      899, // 12시
+      841, // 13시
+      689, // 14시
+      444, // 15시
+      162, // 16시
+      39, // 17시
       1, // 18시
       0, // 19시
       0, // 20시
@@ -91,7 +92,7 @@ class Model extends BaseModel.Inverter {
     const currHourScale = _.divide(currRealSolar, BASE_SOLAR);
 
     this.BASE.pvAmp = _.multiply(this.basePvA, currHourScale);
-    this.BASE.pvVol = _.random(190, 210, true);
+    this.BASE.pvVol = _.random(180, 220, true);
     this.BASE.pvKw = _.multiply(_.multiply(this.BASE.pvAmp, this.BASE.pvVol), 0.001);
     this.BASE.gridLf = _.random(59.7, 60.5);
     this.BASE.gridRAmp = _.multiply(this.BASE.pvAmp, _.random(0.9, 1, true));

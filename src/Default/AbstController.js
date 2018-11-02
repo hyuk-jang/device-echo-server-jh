@@ -108,13 +108,14 @@ class AbstController {
 
   /** 장치와의 연결이 수립되었을 경우 */
   notifyConnect() {
-    // BU.CLI('notifyConnect');
-    if (!this.hasConnect && !_.isEmpty(this.client)) {
+    BU.CLI('notifyConnect', this.hasConnect, _.isEmpty(this.client));
+    if (this.hasConnect !== true && !_.isEmpty(this.client)) {
+      BU.CLI('타이머 정지', this.connectTimer.getStateRunning());
+      this.connectTimer.getStateRunning() && this.connectTimer.pause();
       this.hasConnect = true;
       this.notifyEvent(definedControlEvent.CONNECT);
 
       // 타이머가 살아있다면 정지
-      this.connectTimer.getStateRunning() && this.connectTimer.pause();
     }
   }
 
@@ -128,7 +129,7 @@ class AbstController {
       // 이벤트 발송 및 약간의 장치와의 접속 딜레이를 1초 줌
       // 재접속 옵션이 있을 경우에만 자동 재접속 수행
       Promise.delay(1000).then(() => {
-        BU.CLIS('Retry Check', _.isEmpty(this.client), !this.connectTimer.getStateRunning());
+        BU.CLIS('Retry Check', _.isEmpty(this.client), this.connectTimer.getStateRunning());
         if (_.isEmpty(this.client) && this.connectTimer.getStateRunning() === false) {
           this.doConnect();
         }

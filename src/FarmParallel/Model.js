@@ -50,7 +50,7 @@ class Model extends AbstModel {
           break;
         case OUTSIDE_AIR_REH.KEY:
         case SOIL_REH.KEY:
-          nodeInfo.data = _.random(30, 95, true);
+          nodeInfo.data = _.random(30, 85, true);
           break;
         // 40 도를 올림
         case OUTSIDE_AIR_TEMPERATURE.KEY:
@@ -66,7 +66,7 @@ class Model extends AbstModel {
           break;
         case HORIZONTAL_SOLAR.KEY:
         case INCLINED_SOLAR.KEY:
-          nodeInfo.data = _.random(0, 1000, true);
+          nodeInfo.data = _.random(700, 1000, true);
           break;
         case WIND_DIRECTRION.KEY:
           nodeInfo.data = _.random(0, 360);
