@@ -9,12 +9,6 @@ module.exports = dialing => {
     address: 0,
     bodyLength: 19,
     decodingDataList: [
-      {},
-      {},
-      {},
-      {},
-      {},
-      {},
       {
         key: Model.BASE_KEY.lux,
       },
@@ -79,12 +73,6 @@ module.exports = dialing => {
     address: 0,
     bodyLength: 19,
     decodingDataList: [
-      {},
-      {},
-      {},
-      {},
-      {},
-      {},
       {
         key: Model.BASE_KEY.lux,
       },
@@ -149,12 +137,6 @@ module.exports = dialing => {
     address: 0,
     bodyLength: 19,
     decodingDataList: [
-      {},
-      {},
-      {},
-      {},
-      {},
-      {},
       {
         key: Model.BASE_KEY.lux,
       },
