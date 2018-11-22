@@ -12,10 +12,10 @@ class Model extends AbstModel {
   constructor(protocolInfo, deviceMap) {
     super(protocolInfo, deviceMap);
 
-    this.nodeDefKeyInfo = BaseModel.FarmParallel.BASE_MODEL;
+    this.nodeDefKeyInfo = BaseModel.Sensor.BASE_MODEL;
 
     // Intellisense를 위한 device 재정의
-    this.device = new BaseModel.FarmParallel(protocolInfo).device;
+    this.device = new BaseModel.Sensor(protocolInfo).device;
   }
 
   /**
@@ -24,18 +24,50 @@ class Model extends AbstModel {
   init() {
     const {
       co2,
+      gridLf,
+      gridRAmp,
+      gridRsVol,
+      gridSAmp,
+      gridStVol,
+      gridTAmp,
+      gridTrVol,
       horizontalSolar,
       inclinedSolar,
       isRain,
       lux,
+      operErrorList,
+      operIsError,
+      operIsRun,
+      operTemperature,
+      operTime,
+      operTroubleList,
+      operWarningList,
       outsideAirReh,
       outsideAirTemperature,
+      powerCpKwh,
+      powerDailyKwh,
+      powerGridKw,
+      powerPf,
+      powerPvKw,
+      pvAmp,
+      pvAmp2,
+      pvKw,
+      pvKw2,
       pvRearTemperature,
       pvUnderlyingSolar,
+      pvVol,
+      pvVol2,
+      pvW,
       r1,
       soilReh,
       soilTemperature,
       soilWaterValue,
+      sysCapaKw,
+      sysIsSingle,
+      sysLineVoltage,
+      sysProductYear,
+      sysSn,
+      waterTemperature,
       windDirection,
       windSpeed,
       writeDate,
@@ -60,7 +92,7 @@ class Model extends AbstModel {
         case outsideAirTemperature:
         case soilTemperature:
         case pvRearTemperature:
-          nodeInfo.data = _.random(55, 75, true);
+          nodeInfo.data = _.random(15, 35, true);
           break;
         case r1:
           nodeInfo.data = _.random(0, 10, true);
@@ -77,7 +109,7 @@ class Model extends AbstModel {
           nodeInfo.data = _.random(0, 360);
           break;
         case windSpeed:
-          nodeInfo.data = _.random(20, 30, true);
+          nodeInfo.data = _.random(0, 7, true);
           break;
         case writeDate:
           nodeInfo.data = new Date();
