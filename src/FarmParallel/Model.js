@@ -12,7 +12,7 @@ class Model extends AbstModel {
   constructor(protocolInfo, deviceMap) {
     super(protocolInfo, deviceMap);
 
-    this.nodeDefKeyInfo = BaseModel.FarmParallel.BASE_MODEL;
+    this.nodeDefKeyInfo = BaseModel.FarmParallel.BASE_KEY;
 
     // Intellisense를 위한 device 재정의
     this.device = new BaseModel.FarmParallel(protocolInfo).device;

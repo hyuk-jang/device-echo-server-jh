@@ -141,7 +141,9 @@ class SocketClient extends AbstController {
             `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(new Date(), '', 2)}.txt`,
             `writeData : ${returnBuffer}`,
           ).then(() => {
-            client.write(returnBuffer);
+            setTimeout(() => {
+              client.write(returnBuffer);
+            }, 1000);
           });
         }
       });

@@ -91,7 +91,7 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    // BU.CLIS(this.protocolInfo, bufData);
+    BU.CLIS(this.protocolInfo, bufData);
     // Frame을 쓴다면 벗겨냄
     const convertedBufData = this.peelFrameMSg(bufData);
     // BU.CLI(convertedBufData);

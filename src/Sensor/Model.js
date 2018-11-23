@@ -4,15 +4,15 @@ const { BU } = require('base-util-jh');
 const { BaseModel } = require('../../../device-protocol-converter-jh');
 const AbstModel = require('../Default/AbstModel');
 
-class Model extends AbstModel {
+class Model {
   /**
    * @param {protocol_info} protocolInfo
    * @param {mDeviceMap} deviceMap
    */
   constructor(protocolInfo, deviceMap) {
-    super(protocolInfo, deviceMap);
+    // super(protocolInfo, deviceMap);
 
-    this.nodeDefKeyInfo = BaseModel.Sensor.BASE_MODEL;
+    this.nodeDefKeyInfo = BaseModel.Sensor.BASE_KEY;
 
     // Intellisense를 위한 device 재정의
     this.device = new BaseModel.Sensor(protocolInfo).device;
