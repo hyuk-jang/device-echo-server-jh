@@ -23,42 +23,42 @@ function operationServer() {
         amount: 33.3,
       },
     },
-    // {
-    //   deviceId: '001',
-    //   mainCategory: 'Inverter',
-    //   subCategory: 'das_1.3',
-    //   wrapperCategory: 'default',
-    //   protocolOptionInfo: {
-    //     hasTrackingData: true,
-    //   },
-    //   option: {
-    //     amount: 10,
-    //   },
-    // },
-    // {
-    //   deviceId: '002',
-    //   mainCategory: 'Inverter',
-    //   subCategory: 'das_1.3',
-    //   wrapperCategory: 'default',
-    //   protocolOptionInfo: {
-    //     hasTrackingData: true,
-    //   },
-    //   option: {
-    //     amount: 33.3,
-    //   },
-    // },
-    // {
-    //   deviceId: '003',
-    //   mainCategory: 'Inverter',
-    //   subCategory: 'das_1.3',
-    //   wrapperCategory: 'default',
-    //   protocolOptionInfo: {
-    //     hasTrackingData: true,
-    //   },
-    //   option: {
-    //     amount: 33.3,
-    //   },
-    // },
+    {
+      deviceId: '001',
+      mainCategory: 'Inverter',
+      subCategory: 'das_1.3',
+      wrapperCategory: 'default',
+      protocolOptionInfo: {
+        hasTrackingData: true,
+      },
+      option: {
+        amount: 10,
+      },
+    },
+    {
+      deviceId: '002',
+      mainCategory: 'Inverter',
+      subCategory: 'das_1.3',
+      wrapperCategory: 'default',
+      protocolOptionInfo: {
+        hasTrackingData: true,
+      },
+      option: {
+        amount: 33.3,
+      },
+    },
+    {
+      deviceId: '003',
+      mainCategory: 'Inverter',
+      subCategory: 'das_1.3',
+      wrapperCategory: 'default',
+      protocolOptionInfo: {
+        hasTrackingData: true,
+      },
+      option: {
+        amount: 33.3,
+      },
+    },
     // {
     //   deviceId: '004',
     //   mainCategory: 'Inverter',

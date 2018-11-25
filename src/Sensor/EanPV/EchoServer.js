@@ -16,11 +16,12 @@ class EchoServer {
     // super(protocolInfo, deviceMap);
     // this.init();
 
-    this.rtd0 = 1;
-    this.rtd1 = 10;
-    this.rtd2 = 100;
+    this.vol = 15.5;
+    this.amp = 2.5;
+    this.watt = 200;
 
     this.counting = 0;
+    this.status = 0;
   }
 
   /**
@@ -30,21 +31,39 @@ class EchoServer {
   onData(bufData) {
     const strData = bufData.toString();
 
-    let returnBuffer;
-    if (strData === '21 get rtd\r') {
-      this.counting += 1;
-      if (this.counting > 3) {
-        this.rtd0 = 100;
-        this.rtd1 = 200;
-        this.rtd2 = 300;
-      }
-      // this.rtd0 += 0.1;
-      // this.rtd1 += 1;
-      // this.rtd2 += 10;
-      returnBuffer = Buffer.from(
-        `: 21 rtd0 ${this.rtd0} rtd1 ${this.rtd1} rtd2 ${this.rtd2} rtd3 1000.0 \r`,
-      );
+    BU.CLI(strData);
+
+    let value;
+    switch (strData) {
+      case ':MEASure:VOLTage?\n':
+        value = this.vol;
+        break;
+      case ':MEASure:CURRent?\n':
+        value = this.amp;
+        break;
+      case ':MEASure:POWer?\n':
+        value = this.watt;
+        break;
+      case ':SOUR:INP:STAT?\n':
+        value = this.status;
+        break;
+      case ':SOUR:INP:STAT ON\n':
+        BU.CLI('Power On');
+        this.status = 1;
+        break;
+      case ':SOUR:INP:STAT OFF\n':
+        BU.CLI('Power Off');
+        this.status = 0;
+        break;
+      default:
+        break;
     }
+
+    BU.CLI(value);
+    if (_.isUndefined(value) || this.status === 0) return undefined;
+
+    const returnBuffer = Buffer.from(`${value}\n`);
+    // const returnBuffer = undefined;
 
     // Wrapping 처리
     return returnBuffer;
