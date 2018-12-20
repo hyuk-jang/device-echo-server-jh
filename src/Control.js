@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const split = require('split');
 const { BU } = require('base-util-jh');
 const net = require('net');
 const mapListInfo = require('./mapList');
@@ -8,9 +9,14 @@ const instanceList = [];
 class Control {
   /**
    * @param {number} port
+   * @param {Object=} parserInfo
+   * @param {string} parserOption.parser
+   * @param {string|number} parserOption.option
    */
-  constructor(port) {
+  constructor(port, parserInfo = {}) {
+    this.msgLength = 0;
     this.port = port;
+    this.parserInfo = parserInfo;
 
     this.returnData;
     this.mapListInfo = mapListInfo;
@@ -23,7 +29,7 @@ class Control {
     if (_.isEmpty(foundInstance)) {
       instanceList.push({ id: this.port, instance: this });
       this.deviceModelList = [];
-      this.setInit();
+      this.setInit(parserInfo);
     } else {
       return foundInstance.instance;
     }
@@ -59,42 +65,46 @@ class Control {
     }
   }
 
-  setInit() {
+  /**
+   *
+   * @param {Object=} parserInfo
+   * @param {string} parserInfo.parser
+   * @param {string|number} parserInfo.option
+   */
+  setInit(parserInfo = {}) {
     const server = net
       .createServer(socket => {
-        // socket.end('goodbye\n');
         console.log(`client is Connected ${this.port}`);
+        // socket.end('goodbye\n');
+        if (!_.isEmpty(parserInfo)) {
+          let stream = null;
+          switch (this.parserInfo.parser) {
+            case 'delimiterParser':
+              stream = socket.pipe(split(this.parserInfo.option));
+              stream.on('data', data => {
+                data += this.parserInfo.option;
+                BU.CLI(data);
+                this.spreadMsg(socket, data);
+              });
+              break;
+            case 'readLineParser':
+              stream = socket.pipe(split(this.parserInfo.option));
+              stream.on('data', data => {
+                this.spreadMsg(socket, data);
+              });
+              break;
+            default:
+              break;
+          }
+        } else {
+          socket.on('data', data => {
+            // BU.CLI(data);
+            // parseData.data = Buffer.from(parseData.data);
+            BU.CLI(`P: ${this.port}\tReceived Data: `, data.toString());
 
-        socket.on('data', data => {
-          // parseData.data = Buffer.from(parseData.data);
-          BU.CLI(`P: ${this.port}\tReceived Data: `, data.toString());
-
-          // BU.CLI(data);
-          // 응답 받을 데이터 배열
-          const receiveDataList = [];
-          this.deviceModelList.forEach(deviceModel => {
-            // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
-            receiveDataList.push(deviceModel.onData(data));
+            this.spreadMsg(socket, data);
           });
-          // BU.CLI(data);
-          // BU.CLI(receiveDataList);
-          // 응답받지 않은 데이터는 undefined가 들어가므로 이를 제거하고 유효한 데이터 1개를 가져옴
-          this.returnData = _(receiveDataList)
-            .reject(receiveData => _.isUndefined(receiveData))
-            .head();
-
-          // BU.CLI(data);
-          // 약간의 지연 시간을 둠 (30ms)
-          setTimeout(() => {
-            // BU.CLI(this.returnData);
-            const returnValue = Buffer.isBuffer(this.returnData)
-              ? this.returnData
-              : JSON.stringify(this.returnData);
-            BU.CLI(_.get(returnValue, 'length'), returnValue);
-            if (_.isEmpty(returnValue) || _.isBoolean(returnValue)) return;
-            socket.write(returnValue);
-          }, 1);
-        });
+        }
       })
       .on('error', err => {
         // handle errors here
@@ -114,6 +124,38 @@ class Control {
     server.on('error', err => {
       console.error(err);
     });
+  }
+
+  /**
+   *
+   * @param {Socket} socket
+   * @param {Buffer} msg
+   */
+  spreadMsg(socket, msg) {
+    // BU.CLI(data);
+    // 응답 받을 데이터 배열
+    const receiveDataList = [];
+    this.deviceModelList.forEach(deviceModel => {
+      // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
+      receiveDataList.push(deviceModel.onData(msg));
+    });
+    // BU.CLI(data);
+    // BU.CLI(receiveDataList);
+    // 응답받지 않은 데이터는 undefined가 들어가므로 이를 제거하고 유효한 데이터 1개를 가져옴
+    const data = _(receiveDataList)
+      .reject(receiveData => _.isUndefined(receiveData))
+      .head();
+
+    const returnValue = Buffer.isBuffer(data) ? data : JSON.stringify(data);
+
+    setTimeout(() => {
+      // BU.CLI(this.returnData);
+      // BU.CLI(_.get(returnValue, 'length'), returnValue);
+      if (_.isEmpty(returnValue) || _.isBoolean(returnValue)) return;
+
+      BU.CLI(returnValue);
+      socket.write(returnValue);
+    }, 300);
   }
 }
 module.exports = Control;

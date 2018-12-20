@@ -16,17 +16,32 @@ function operationServer() {
     {
       mainCategory: 'UPSAS',
       subCategory: 'xbee',
+      parserOption: {
+        parser: 'delimiterParser',
+        option: '}',
+      },
     },
     {
       mainCategory: 'UPSAS',
       subCategory: 'xbee',
+      parserOption: {
+        parser: 'delimiterParser',
+        option: '}',
+      },
     },
     {
       mainCategory: 'UPSAS',
       subCategory: 'xbee',
+      parserOption: {
+        parser: 'delimiterParser',
+        option: '}',
+      },
     },
   ];
-  const control = new Control(9000);
+  const control = new Control(9000, {
+    parser: 'delimiterParser',
+    option: '}',
+  });
 
   control.attachDevice(deviceList, mapList.UPSAS.muan6kW);
 
