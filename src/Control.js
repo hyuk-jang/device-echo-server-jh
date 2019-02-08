@@ -155,7 +155,7 @@ class Control {
 
       BU.CLI(returnValue);
       socket.write(returnValue);
-    }, 300);
+    }, 1);
   }
 }
 module.exports = Control;
