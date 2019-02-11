@@ -1,3 +1,9 @@
+const {
+  BLOCK,
+  TROUBLE,
+  NONE,
+} = require('../../../../default-intelligence').dcmConfigModel.nodeDataType;
+
 /**
  * @type {mDeviceMap}
  */
@@ -59,7 +65,6 @@ const map = {
   },
   setInfo: {
     mainInfo: {
-      main_seq: 5,
       uuid: '005',
     },
     dccConstructorList: [
@@ -92,6 +97,62 @@ const map = {
           subCategory: 'dmTech',
           wrapperCategory: 'default',
         },
+      },
+      {
+        dpcId: 'DPC_IVT_001',
+        protocol_info: {
+          mainCategory: 'Inverter',
+          subCategory: 'das_1.3',
+          wrapperCategory: 'default',
+        },
+      },
+      {
+        dpcId: 'DPC_IVT_002',
+        protocol_info: {
+          mainCategory: 'Inverter',
+          subCategory: 's5500k',
+          wrapperCategory: 'default',
+        },
+      },
+    ],
+    repeatNodeList: [
+      {
+        repeatId: 'RE_NODE_IVT',
+        repeatCategory: 'node',
+        nodeList: [
+          {
+            target_code: '011',
+            target_name: '영흥 A (33kW 급)',
+          },
+          {
+            target_code: '012',
+            target_name: '영흥 B (33kW 급)',
+          },
+          {
+            target_code: '013',
+            target_name: '영흥 C (33kW 급)',
+          },
+        ],
+      },
+      {
+        repeatId: 'RE_PREFIX_IVT',
+        repeatCategory: 'prefix',
+        nodeList: [
+          'IVT_PV_V',
+          'IVT_PV_A',
+          'IVT_PV_KW',
+          'IVT_G_RS_V',
+          'IVT_G_ST_V',
+          'IVT_G_TR_V',
+          'IVT_G_R_A',
+          'IVT_G_S_A',
+          'IVT_G_T_A',
+          'IVT_G_L_F',
+          'IVT_PW_PV_KW',
+          'IVT_PW_G_KW',
+          'IVT_PW_C_KWH',
+          'IVT_TRB',
+        ],
       },
     ],
     dataLoggerStructureList: [
@@ -138,6 +199,36 @@ const map = {
               'RF1_016',
               'IR_016',
             ],
+          },
+        ],
+      },
+      {
+        target_prefix: 'D_IVT',
+        target_name: '인버터 DL',
+        dataLoggerDeviceList: [
+          {
+            target_name: '영흥 A (33kW 급)',
+            serial_number: '001',
+            target_code: '011',
+            dccId: 'DCC_001',
+            dpcId: 'DPC_IVT_001',
+            repeatId: 'RE_PREFIX_IVT',
+          },
+          {
+            target_name: '영흥 B (33kW 급)',
+            serial_number: '002',
+            target_code: '012',
+            dccId: 'DCC_001',
+            dpcId: 'DPC_IVT_001',
+            repeatId: 'RE_PREFIX_IVT',
+          },
+          {
+            target_name: '영흥 C (33kW 급)',
+            serial_number: '003',
+            target_code: '013',
+            dccId: 'DCC_001',
+            dpcId: 'DPC_IVT_001',
+            repeatId: 'RE_PREFIX_IVT',
           },
         ],
       },
@@ -402,78 +493,229 @@ const map = {
       {
         target_id: 'vol',
         target_name: '전압',
-        is_sensor: 1,
+        is_sensor: 0,
+        save_db_type: BLOCK,
         data_unit: 'V',
         description: null,
-        defList: [],
+        defList: [
+          {
+            target_id: 'pvVol',
+            target_name: '인버터 PV 전압',
+            target_prefix: 'IVT_PV_V',
+            repeatId: 'RE_NODE_IVT',
+          },
+          {
+            target_id: 'gridRsVol',
+            target_name: 'RS 선간 전압',
+            target_prefix: 'IVT_G_RS_V',
+            repeatId: 'RE_NODE_IVT',
+          },
+          {
+            target_id: 'gridStVol',
+            target_name: 'ST 선간 전압',
+            target_prefix: 'IVT_G_ST_V',
+            repeatId: 'RE_NODE_IVT',
+          },
+          {
+            target_id: 'gridTrVol',
+            target_name: 'TR 선간 전압',
+            target_prefix: 'IVT_G_TR_V',
+            repeatId: 'RE_NODE_IVT',
+          },
+        ],
       },
       {
         target_id: 'amp',
         target_name: '전류',
         is_sensor: 1,
+        save_db_type: BLOCK,
         data_unit: 'A',
         description: null,
+        defList: [
+          {
+            target_id: 'pvAmp',
+            target_name: '인버터 PV 전류',
+            target_prefix: 'IVT_PV_A',
+            repeatId: 'RE_NODE_IVT',
+          },
+          {
+            target_id: 'gridRAmp',
+            target_name: '인버터 R상 전류',
+            target_prefix: 'IVT_G_R_A',
+            repeatId: 'RE_NODE_IVT',
+          },
+          {
+            target_id: 'gridSAmp',
+            target_name: '인버터 S상 전류',
+            target_prefix: 'IVT_G_S_A',
+            repeatId: 'RE_NODE_IVT',
+          },
+          {
+            target_id: 'gridTAmp',
+            target_name: '인버터 T상 전류',
+            target_prefix: 'IVT_G_T_A',
+            repeatId: 'RE_NODE_IVT',
+          },
+        ],
+      },
+      {
+        target_id: 'W',
+        target_name: '전력량',
+        is_sensor: 1,
+        save_db_type: BLOCK,
+        data_unit: 'W',
+        description: '1 와트(기호 W)는 1 초 동안의 1 줄(N·m)에 해당하는 일률의 SI 단위',
         defList: [],
       },
       {
-        target_id: 'kiloWatt',
-        target_name: '출력',
+        target_id: 'kW',
+        target_name: '전력량',
+        is_sensor: 1,
+        save_db_type: BLOCK,
         data_unit: 'kW',
-        description: '출력',
+        description: '1 킬로와트(기호 kW)는 1 초 동안의 1,000 줄(N·m)에 해당하는 일률의 SI 단위',
         defList: [
           {
-            target_id: 'inverter',
-            target_name: '인버터 출력',
-            target_prefix: 'kW_I',
-            description: '33kW급',
-            nodeList: [
-              {
-                target_code: '009',
-              },
-              {
-                target_code: '010',
-              },
-              {
-                target_code: '011',
-              },
-            ],
+            target_id: 'pvKw',
+            target_name: '인버터 PV 출력',
+            target_prefix: 'IVT_PV_KW',
+            description: 'PV',
+            repeatId: 'RE_NODE_IVT',
+          },
+          {
+            target_id: 'powerGridKw',
+            target_name: '인버터 현재 전력',
+            target_prefix: 'IVT_PW_G_KW',
+            description: 'Power',
+            repeatId: 'RE_NODE_IVT',
+          },
+        ],
+      },
+      {
+        target_id: 'MW',
+        target_name: '전력량',
+        is_sensor: 1,
+        save_db_type: BLOCK,
+        data_unit: 'MW',
+        description:
+          '1 메가와트(기호 MW)는 1 초 동안의 1,000,000 줄(N·m)에 해당하는 일률의 SI 단위',
+        defList: [],
+      },
+      {
+        target_id: 'Wh',
+        target_name: '전력량',
+        is_sensor: 1,
+        save_db_type: BLOCK,
+        data_unit: 'Wh',
+        description: '시간당 에너지 단위, 1 W의 일률로 1 시간 동안 하는 일의 양',
+        defList: [],
+      },
+      {
+        target_id: 'kWh',
+        target_name: '전력량',
+        is_sensor: 1,
+        save_db_type: BLOCK,
+        data_unit: 'kWh',
+        description: '시간당 에너지 단위, 1 kW의 일률로 1 시간 동안 하는 일의 양',
+        defList: [
+          {
+            target_id: 'powerDailyKwh',
+            target_name: '인버터 하루 발전량',
+            target_prefix: 'IVT_PW_D_KWH',
+            repeatId: 'RE_NODE_IVT',
+          },
+          {
+            target_id: 'powerCpKwh',
+            target_name: '인버터 누적 발전량',
+            target_prefix: 'IVT_PW_C_KWH',
+            description: 'Cumulative Power Generation',
+            repeatId: 'RE_NODE_IVT',
+          },
+        ],
+      },
+      {
+        target_id: 'MWh',
+        target_name: '전력량',
+        is_sensor: 1,
+        save_db_type: BLOCK,
+        data_unit: 'MWh',
+        description: '시간당 에너지 단위, 1 MW의 일률로 1 시간 동안 하는 일의 양',
+        defList: [],
+      },
+      {
+        target_id: 'powerFactor',
+        target_name: '역률',
+        is_sensor: 1,
+        save_db_type: BLOCK,
+        data_unit: '%',
+        defList: [],
+      },
+      {
+        target_id: 'frequency',
+        target_name: '주파수',
+        is_sensor: 1,
+        save_db_type: BLOCK,
+        data_unit: 'Hz',
+        defList: [
+          {
+            target_id: 'gridLf',
+            target_name: '계통 주파수',
+            target_prefix: 'IVT_G_L_F',
+            repeatId: 'RE_NODE_IVT',
+          },
+        ],
+      },
+      {
+        target_id: 'trouble',
+        target_name: '오류 목록',
+        is_sensor: 1,
+        save_db_type: TROUBLE,
+        description: '장치에서 보내오는 이상 데이터',
+        defList: [
+          {
+            target_id: 'operTroubleList',
+            target_name: '인버터 에러',
+            target_prefix: 'IVT_TRB',
+            repeatId: 'RE_NODE_IVT',
           },
         ],
       },
     ],
   },
-  realtionInfo: {
+  relationInfo: {
     placeRelationList: [
       {
         target_id: 'inverter',
         target_name: '인버터',
-        description: '인버터가 설치된 부지',
+        description: '인버터를 설치한 공간',
         defList: [
           {
             target_id: 'inverter',
-            target_name: '인버터',
-            target_prefix: 'IVT',
+            target_prefix: 'P_IVT',
             placeList: [
               {
-                target_code: '009',
-                target_name: '일반 구조물',
-                chart_color: '#868e96',
-                chart_sort_rank: 9,
-                nodeList: ['kW_I_009', 'S_I_014'],
-              },
-              {
-                target_code: '010',
-                target_name: '태양광 구조물',
-                chart_color: '#b9560d',
-                chart_sort_rank: 10,
-                nodeList: ['kW_I_010', 'S_I_015'],
-              },
-              {
                 target_code: '011',
-                target_name: '외부',
-                chart_color: '#3bc9db',
+                target_name: '영흥 A (33kW 급)',
+                chart_color: '#868e96',
                 chart_sort_rank: 11,
-                nodeList: ['kW_I_011', 'S_H_016'],
+                repeatId: 'RE_PREFIX_IVT',
+                nodeList: ['S_I_015'],
+              },
+              {
+                target_code: '012',
+                target_name: '영흥 B (33kW 급)',
+                chart_color: '#b9560d',
+                chart_sort_rank: 12,
+                repeatId: 'RE_PREFIX_IVT',
+                nodeList: ['S_I_015'],
+              },
+              {
+                target_code: '013',
+                target_name: '영흥 C (33kW 급)',
+                chart_color: '#3bc9db',
+                chart_sort_rank: 13,
+                repeatId: 'RE_PREFIX_IVT',
+                nodeList: ['S_I_015'],
               },
             ],
           },

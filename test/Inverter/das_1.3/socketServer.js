@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const net = require('net');
 
 const { BU } = require('base-util-jh');
@@ -8,109 +9,30 @@ require('../../../../default-intelligence');
 
 function operationServer() {
   /**
-   * @type {protocol_info[]}
+   * @type {protocol_info}
    */
-  const deviceList = [
-    {
-      deviceId: '001',
-      mainCategory: 'Inverter',
-      subCategory: 'das_1.3',
-      // wrapperCategory: 'default',
-      protocolOptionInfo: {
-        hasTrackingData: true,
-      },
-      option: {
-        amount: 33.3,
-      },
+  const protocolInfo = {
+    deviceId: '001',
+    mainCategory: 'Inverter',
+    subCategory: 'das_1.3',
+    // wrapperCategory: 'default',
+    protocolOptionInfo: {
+      hasTrackingData: true,
     },
-    {
-      deviceId: '001',
-      mainCategory: 'Inverter',
-      subCategory: 'das_1.3',
-      // wrapperCategory: 'default',
-      protocolOptionInfo: {
-        hasTrackingData: true,
-      },
-      option: {
-        amount: 10,
-      },
+    option: {
+      amount: 33.3,
     },
-    {
-      deviceId: '002',
-      mainCategory: 'Inverter',
-      subCategory: 'das_1.3',
-      // wrapperCategory: 'default',
-      protocolOptionInfo: {
-        hasTrackingData: true,
-      },
-      option: {
-        amount: 33.3,
-      },
-    },
-    {
-      deviceId: '003',
-      mainCategory: 'Inverter',
-      subCategory: 'das_1.3',
-      // wrapperCategory: 'default',
-      protocolOptionInfo: {
-        hasTrackingData: true,
-      },
-      option: {
-        amount: 33.3,
-      },
-    },
-    {
-      deviceId: '004',
-      mainCategory: 'Inverter',
-      subCategory: 'das_1.3',
-      // wrapperCategory: 'default',
-      protocolOptionInfo: {
-        hasTrackingData: true,
-      },
-      option: {
-        amount: 33.3,
-      },
-    },
-    {
-      deviceId: '005',
-      mainCategory: 'Inverter',
-      subCategory: 'das_1.3',
-      // wrapperCategory: 'default',
-      protocolOptionInfo: {
-        hasTrackingData: true,
-      },
-      option: {
-        amount: 33.3,
-      },
-    },
-    {
-      deviceId: '006',
-      mainCategory: 'Inverter',
-      subCategory: 'das_1.3',
-      // wrapperCategory: 'default',
-      protocolOptionInfo: {
-        hasTrackingData: true,
-      },
-      option: {
-        amount: 33.3,
-      },
-    },
-    {
-      deviceId: '007',
-      mainCategory: 'Inverter',
-      subCategory: 'das_1.3',
-      // wrapperCategory: 'default',
-      protocolOptionInfo: {
-        hasTrackingData: true,
-      },
-      option: {
-        amount: 33.3,
-      },
-    },
-  ];
+  };
   const control = new Control(9001);
 
-  control.attachDevice(deviceList);
+  const protocolList = [];
+  for (let index = 0; index < 13; index += 1) {
+    const cloneProtocolInfo = _.clone(protocolInfo);
+    cloneProtocolInfo.deviceId = _.padStart(_.toString(index), 3, '00');
+
+    protocolList.push(cloneProtocolInfo);
+  }
+  control.attachDevice(protocolList);
 }
 
 function startTest() {
