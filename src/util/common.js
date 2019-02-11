@@ -1,4 +1,75 @@
+const _ = require('lodash');
+
 module.exports = {
+  /**
+   * @param {mDeviceMap} deviceMap
+   * @return {mDeviceMap}
+   */
+  setRepeatNode(deviceMap) {
+    const { setInfo, relationInfo } = deviceMap;
+
+    const { repeatNodeList } = setInfo;
+
+    // 노드 목록 repeatNodeList 반영
+    setInfo.nodeStructureList.forEach(nodeClassInfo => {
+      nodeClassInfo.defList.forEach(nodeDefInfo => {
+        const { repeatId = '' } = nodeDefInfo;
+        // repeatId가 있을 경우
+        if (repeatId.length) {
+          nodeDefInfo.nodeList = _.find(repeatNodeList, {
+            repeatId,
+            repeatCategory: 'node',
+          }).nodeList;
+          delete nodeDefInfo.repeatId;
+        }
+      });
+    });
+
+    // 데이터 로거 재구성
+    setInfo.dataLoggerStructureList.forEach(dataLoggerDefInfo => {
+      dataLoggerDefInfo.dataLoggerDeviceList.forEach(dataLoggerInfo => {
+        const { repeatId = '', target_code: uniqNumber = '' } = dataLoggerInfo;
+        // repeatId가 있을 경우
+        if (repeatId.length) {
+          const prefixNodeList = _.find(repeatNodeList, {
+            repeatId,
+            repeatCategory: 'prefix',
+          }).nodeList;
+
+          dataLoggerInfo.nodeList = prefixNodeList.map(prefix => `${prefix}_${uniqNumber}`);
+
+          delete dataLoggerInfo.repeatId;
+        }
+      });
+    });
+
+    // 장소 재구성
+    relationInfo.placeRelationList.forEach(placeClassInfo => {
+      placeClassInfo.defList.forEach(placeDefInfo => {
+        placeDefInfo.placeList.forEach(placeInfo => {
+          const { repeatId = '', target_code: uniqNumber = '', nodeList = [] } = placeInfo;
+          // repeatId가 있을 경우
+          if (repeatId.length) {
+            const prefixNodeList = _.find(repeatNodeList, {
+              repeatId,
+              repeatCategory: 'prefix',
+            }).nodeList;
+
+            // 반복해서 추가할 node 구성
+            const addNodeList = prefixNodeList.map(prefix => `${prefix}_${uniqNumber}`);
+
+            // 설정한 nodeList 에 동적으로 생성된 nodeList를 붙임
+            placeInfo.nodeList = _.concat(nodeList, addNodeList);
+
+            delete placeInfo.repeatId;
+          }
+        });
+      });
+    });
+
+    return deviceMap;
+  },
+
   /**
    * @param {mDeviceMap} deviceMap
    * @return {detailNodeInfo[]}

@@ -72,7 +72,7 @@ async function startTest() {
 // }, 1000);
 
 // MultiTest
-for (let index = 9000; index < 9002; index++) {
+for (let index = 9000; index < 9001; index++) {
   operationServer({ deviceMap: mapList.FP.Naju, socketPort: index, protocolInfo });
 }
 

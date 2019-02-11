@@ -188,11 +188,12 @@ class EchoServer extends Model {
     // BU.CLI(this.dialing, bufData);
     // BU.CLI(this.BASE);
     bufData = this.peelFrameMSg(bufData);
+    // BU.CLI(bufData);
     const SOP = Buffer.from([_.head(bufData)]);
 
     // SOP 일치 여부 체크
     if (!_.isEqual(SOP, Buffer.from('^'))) {
-      BU.CLI(`Not Matching SOP expect: ${this.SOP} res: ${SOP}`);
+      // BU.CLI(`Not Matching SOP expect: ${this.SOP} res: ${SOP}`);
       return;
     }
 

@@ -46,12 +46,14 @@ class AbstModel {
     this.protocolInfo = protocolInfo;
 
     // 현재 쓰이는 맵 정보 정의(instance Id로 사용)
-    this.deviceMap = deviceMap;
+    // this.deviceMap = deviceMap;
+    this.deviceMap = commonUtils.setRepeatNode(deviceMap);
+
     // 실제 장치 데이터
-    this.nodeList = commonUtils.makeNodeList(deviceMap);
+    this.nodeList = commonUtils.makeNodeList(this.deviceMap);
 
     // 장치들의 데이터를 취합하는 데이터 로거
-    this.dataLoggerList = commonUtils.makeDataLoggerList(deviceMap);
+    this.dataLoggerList = commonUtils.makeDataLoggerList(this.deviceMap);
 
     // BU.CLIN(this);
 
