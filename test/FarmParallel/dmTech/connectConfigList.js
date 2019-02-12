@@ -71,11 +71,20 @@ module.exports = [
       protocolList: [
         {
           mainCategory: 'Inverter',
-          subCategory: 'das_1.3',
+          subCategory: 's5500k',
           wrapperCategory: 'default',
-          deviceId: '001',
+          deviceId: '\u0001',
           option: {
-            amount: 10,
+            amount: 5,
+          },
+        },
+        {
+          mainCategory: 'Inverter',
+          subCategory: 's5500k',
+          wrapperCategory: 'default',
+          deviceId: '\u0002',
+          option: {
+            amount: 5,
           },
         },
       ],
@@ -100,11 +109,20 @@ module.exports = [
       protocolList: [
         {
           mainCategory: 'Inverter',
-          subCategory: 'das_1.3',
+          subCategory: 's5500k',
           wrapperCategory: 'default',
-          deviceId: '001',
+          deviceId: '\u0001',
           option: {
-            amount: 10,
+            amount: 5,
+          },
+        },
+        {
+          mainCategory: 'Inverter',
+          subCategory: 's5500k',
+          wrapperCategory: 'default',
+          deviceId: '\u0002',
+          option: {
+            amount: 5,
           },
         },
       ],

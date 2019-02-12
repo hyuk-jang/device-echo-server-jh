@@ -36,16 +36,22 @@ class EchoServer extends Model {
     const foundNodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
     // BU.CLI(foundNodeList);
 
-    const { PRT_SITE, HORIZONTAL_SITE, INCLINED_SITE } = protocol(this.protocolInfo.deviceId);
+    const { PRT_SITE, PUS_SITE, HORIZONTAL_SITE, INCLINED_SITE } = protocol(
+      this.protocolInfo.deviceId,
+    );
 
     let protocolList;
-    // NOTE: DL 001, 003, 005 번은 모듈 뒷면 온도를 재기 위한 테이블을 불러옴
+    // NOTE: 모듈 후면 온도, 경사 일사량이 붙어 있는 로거
     const pvRearTempTableList = [1, 4];
+    // NOTE: 모듈 하부 일사량이 붙어 있는 로거
+    const pvUnderyingSolarTableList = [2, 5];
     // NOTE: 외기 환경 데이터 로거 번호
     const horizontalSiteList = [7, 9, 11, 13, 16];
 
     if (_.includes(pvRearTempTableList, slaveAddr)) {
       protocolList = PRT_SITE.decodingDataList;
+    } else if (_.includes(pvUnderyingSolarTableList, slaveAddr)) {
+      protocolList = PUS_SITE.decodingDataList;
     } else if (_.includes(horizontalSiteList, slaveAddr)) {
       protocolList = HORIZONTAL_SITE.decodingDataList;
     } else {
@@ -63,6 +69,7 @@ class EchoServer extends Model {
     //   moment().format('ss'),
     // ];
 
+    BU.CLI(protocolList);
     const nodeDataList = [];
     let calcData;
     const dataLoggerData = protocolList.map((protocolInfo, index) => {
@@ -81,7 +88,8 @@ class EchoServer extends Model {
       // BU.CLI(_.pick(nodeInfo, ['defId', 'data']));
       return calcData;
     });
-    // BU.CLI(nodeDataList);
+    BU.CLI(nodeDataList);
+    BU.CLI(dataLoggerData);
 
     return dataLoggerData.slice(registerAddr, _.sum([registerAddr, dataLength]));
   }
@@ -121,7 +129,7 @@ class EchoServer extends Model {
         break;
     }
 
-    // BU.CLI(dataList.length);
+    BU.CLI(dataList.length);
     // Modbus Header 구성
     const mbapHeader = Buffer.concat([
       Buffer.from([slaveAddr, fnCode]),

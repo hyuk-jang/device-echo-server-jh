@@ -122,48 +122,56 @@ class SocketClient extends AbstController {
   /** 장치 접속 시도 */
   async connect() {
     // BU.CLI('Try SocketClient Connect : ', this.configInfo);
-    /** 접속 중인 상태라면 접속 시도하지 않음 */
-    if (!_.isEmpty(this.client)) {
-      throw new Error(`Already connected. ${this.configInfo.port}`);
-    }
+    return new Promise((resolve, reject) => {
+      if (!_.isEmpty(this.client)) {
+        reject(new Error(`Already connected. ${this.configInfo.port}`));
+      }
 
-    const client = net.createConnection(this.configInfo.port, this.configInfo.host);
+      const client = net.createConnection({
+        port: this.configInfo.port,
+        host: this.configInfo.host,
+      });
 
-    client.on('data', data => {
-      BU.CLI(this.configInfo.uuid, data);
-      BU.appendFile(
-        `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(new Date(), '', 2)}.txt`,
-        `onData : ${data}`,
-      ).then(() => {
-        const returnBuffer = this.dataParser(data);
-        if (!_.isEmpty(returnBuffer)) {
-          BU.appendFile(
-            `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(new Date(), '', 2)}.txt`,
-            `writeData : ${returnBuffer}`,
-          ).then(() => {
-            setTimeout(() => {
-              client.write(returnBuffer);
-            }, 1000);
-          });
-        }
+      client.on('data', data => {
+        BU.CLI(this.configInfo.uuid, data);
+        BU.appendFile(
+          `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(new Date(), '', 2)}.txt`,
+          `onData : ${data}`,
+        ).then(() => {
+          const returnBuffer = this.dataParser(data);
+          if (!_.isEmpty(returnBuffer)) {
+            BU.appendFile(
+              `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(new Date(), '', 2)}.txt`,
+              `writeData : ${returnBuffer}`,
+            ).then(() => {
+              setTimeout(() => {
+                client.write(returnBuffer);
+              }, 1000);
+            });
+          }
+        });
+      });
+
+      client.on('connect', () => {
+        this.client = client;
+        resolve();
+      });
+
+      client.on('close', err => {
+        this.hasCertification = false;
+        this.client = {};
+        this.notifyDisconnect(err);
+      });
+
+      client.on('end', () => {
+        // console.log('Client disconnected');
+      });
+
+      client.on('error', error => {
+        reject(error);
+        this.notifyError(error);
       });
     });
-
-    client.on('close', err => {
-      this.hasCertification = false;
-      this.client = {};
-      this.notifyDisconnect(err);
-    });
-
-    // 에러가 나면 일단 close 이벤트 발생 시킴
-    client.on('error', error => {
-      BU.CLI(error);
-      this.notifyError(error);
-    });
-    await eventToPromise.multi(client, ['connect', 'connection', 'open'], ['close', 'error']);
-    this.client = client;
-
-    return this.client;
   }
 }
 
@@ -260,7 +268,7 @@ class SocketServer {
                   currCmdIndex: 0,
                 },
               });
-              BU.CLI(parsingData);
+              // BU.CLI(parsingData);
               if (parsingData.eventCode !== 'DONE') {
                 throw new Error('센서 데이터 파싱 실패');
               }
@@ -358,9 +366,9 @@ async function startTestSocketClientCommunication() {
     port: 9000,
     uuid: '001',
   });
-  socketClient.setEchoServerFP(protocolFP, mapList.FP.YeongSanPo);
-  socketClient.setEchoServerInverter(protocolInverter);
-  socketClient.connect();
+  socketClient.setEchoServerFP(protocolFP, mapList.FP.Naju);
+  // socketClient.setEchoServerInverter(protocolInverter);
+  // socketClient.connect();
 }
 
 // SocketClient 구동 하고자 할 경우
@@ -400,7 +408,7 @@ process.on('uncaughtException', err => {
 
 process.on('unhandledRejection', err => {
   // BU.debugConsole();
-  console.errBU.CLI(err);
+  BU.CLI(err);
   console.log('Node NOT Exiting...');
 });
 

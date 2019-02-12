@@ -72,8 +72,22 @@ async function startTest() {
 // }, 1000);
 
 // MultiTest
-for (let index = 9000; index < 9001; index++) {
-  operationServer({ deviceMap: mapList.FP.Naju, socketPort: index, protocolInfo });
+
+const fpMapList = [
+  mapList.FP.Naju,
+  mapList.FP.Gangjin,
+  mapList.FP.Boseong,
+  mapList.FP.Ochang,
+  mapList.FP.Yeongheung,
+];
+
+for (let index = 9000; index < 9005; index += 1) {
+  // operationServer({ deviceMap: mapList.FP.Naju, socketPort: index, protocolInfo });
+  operationServer({
+    deviceMap: fpMapList[_.subtract(index, 9000)],
+    socketPort: index,
+    protocolInfo,
+  });
 }
 
 process.on('uncaughtException', err => {

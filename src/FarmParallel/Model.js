@@ -50,7 +50,7 @@ class Model extends AbstModel {
           nodeInfo.data = _.random(0, 1);
           break;
         case lux:
-          nodeInfo.data = _.random(0, 130, true);
+          nodeInfo.data = _.random(0, 3800, true);
           break;
         case outsideAirReh:
         case soilReh:

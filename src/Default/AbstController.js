@@ -90,7 +90,7 @@ class AbstController {
   }
 
   notifyEvent(eventName) {
-    // BU.CLI('notifyEvent', eventName);
+    BU.CLI('notifyEvent', eventName);
     switch (eventName) {
       case definedControlEvent.CONNECT:
         this.startOperation();
@@ -108,9 +108,9 @@ class AbstController {
 
   /** 장치와의 연결이 수립되었을 경우 */
   notifyConnect() {
-    BU.CLI('notifyConnect', this.hasConnect, _.isEmpty(this.client));
+    // BU.CLI('notifyConnect', this.hasConnect, _.isEmpty(this.client));
     if (this.hasConnect !== true && !_.isEmpty(this.client)) {
-      BU.CLI('타이머 정지', this.connectTimer.getStateRunning());
+      // BU.CLI('타이머 정지', this.connectTimer.getStateRunning());
       this.connectTimer.getStateRunning() && this.connectTimer.pause();
       this.hasConnect = true;
       this.notifyEvent(definedControlEvent.CONNECT);

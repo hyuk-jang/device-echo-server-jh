@@ -56,7 +56,7 @@ class EchoServer extends Model {
    */
   convert16UIntLE(data, scale = 1, allocSize = 2) {
     // 버퍼 2 자리 생성
-    const buf = Buffer.allocUnsafe(allocSize);
+    const buf = Buffer.alloc(allocSize);
 
     // 배율이 존재할 경우 곱셈
     if (scale !== 1) {
@@ -72,6 +72,7 @@ class EchoServer extends Model {
    * 동양 E&P 데이터 반환
    */
   makeDefault() {
+    // BU.CLI(this.BASE)
     const dataBody = [
       Buffer.from([0xb1, 0xb5]),
       this.dialing,

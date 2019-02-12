@@ -24,7 +24,7 @@ function operationServer() {
     },
   };
 
-  const control = new Control(9002);
+  const control = new Control(9006);
 
   const protocolList = [];
   for (let index = 0; index < 3; index += 1) {
