@@ -121,7 +121,7 @@ class AbstController {
 
   /** 장치와의 연결이 해제되었을 경우 */
   notifyDisconnect() {
-    BU.CLI('notifyDisconnect', this.hasConnect);
+    // BU.CLI('notifyDisconnect', this.hasConnect);
     // 장치와의 연결이 계속해제된 상태였다면 이벤트를 보내지 않음
     if ((this.hasConnect || _.isUndefined(this.hasConnect)) && _.isEmpty(this.client)) {
       this.hasConnect = false;
@@ -129,7 +129,7 @@ class AbstController {
       // 이벤트 발송 및 약간의 장치와의 접속 딜레이를 1초 줌
       // 재접속 옵션이 있을 경우에만 자동 재접속 수행
       Promise.delay(1000).then(() => {
-        BU.CLIS('Retry Check', _.isEmpty(this.client), this.connectTimer.getStateRunning());
+        // BU.CLIS('Retry Check', _.isEmpty(this.client), this.connectTimer.getStateRunning());
         if (_.isEmpty(this.client) && this.connectTimer.getStateRunning() === false) {
           this.doConnect();
         }

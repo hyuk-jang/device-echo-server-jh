@@ -26,6 +26,7 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   readInputRegister(dataLogger, bufData) {
+    // BU.CLI('readInputRegister');
     const slaveAddr = bufData.readIntBE(0, 1);
     const registerAddr = bufData.readInt16BE(2);
     const dataLength = bufData.readInt16BE(4);
@@ -69,7 +70,7 @@ class EchoServer extends Model {
     //   moment().format('ss'),
     // ];
 
-    BU.CLI(protocolList);
+    // BU.CLI(protocolList);
     const nodeDataList = [];
     let calcData;
     const dataLoggerData = protocolList.map((protocolInfo, index) => {
@@ -88,9 +89,8 @@ class EchoServer extends Model {
       // BU.CLI(_.pick(nodeInfo, ['defId', 'data']));
       return calcData;
     });
-    BU.CLI(nodeDataList);
-    BU.CLI(dataLoggerData);
-
+    // BU.CLI(nodeDataList);
+    // BU.CLI(dataLoggerData);
     return dataLoggerData.slice(registerAddr, _.sum([registerAddr, dataLength]));
   }
 
@@ -99,7 +99,7 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    BU.CLIS(this.protocolInfo, bufData);
+    // BU.CLIS(this.protocolInfo, bufData);
     // Frame을 쓴다면 벗겨냄
     const convertedBufData = this.peelFrameMSg(bufData);
     // BU.CLI(convertedBufData);
@@ -129,11 +129,11 @@ class EchoServer extends Model {
         break;
     }
 
-    BU.CLI(dataList.length);
+    // BU.CLI(dataList.length);
     // Modbus Header 구성
     const mbapHeader = Buffer.concat([
       Buffer.from([slaveAddr, fnCode]),
-      this.protocolConverter.convertNumToHxToBuf(dataList.length, 1),
+      this.protocolConverter.convertNumToHxToBuf(dataList.length * 2, 1),
     ]);
     // BU.CLI(mbapHeader);
     // 장치 데이터 Hi-Lo 형태로 변환

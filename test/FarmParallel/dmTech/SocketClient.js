@@ -10,7 +10,8 @@ const mapList = require('../../../src/mapList');
 const { MainConverter, BaseModel } = require('../../../../device-protocol-converter-jh');
 
 const EchoServerFP = require('../../../src/FarmParallel/dmTech/EchoServer');
-const EchoServerInverter = require('../../../src/Inverter/das_1.3/EchoServer');
+const EchoServerInverterDas = require('../../../src/Inverter/das_1.3/EchoServer');
+const EchoServerInverterS5500k = require('../../../src/Inverter/s5500k/EchoServer');
 
 const AbstController = require('../../../src/Default/AbstController');
 
@@ -69,9 +70,21 @@ class SocketClient extends AbstController {
    */
   setEchoServerInverter(protocolList) {
     protocolList = Array.isArray(protocolList) ? protocolList : [protocolList];
-    this.echoServerInverterList = protocolList.map(
-      protocolInfo => new EchoServerInverter(protocolInfo),
-    );
+    this.echoServerInverterList = protocolList.map(protocolInfo => {
+      let echoServer;
+      switch (protocolInfo.subCategory) {
+        case 'das_1.3':
+          echoServer = new EchoServerInverterDas(protocolInfo);
+          break;
+        case 's5500k':
+          echoServer = new EchoServerInverterS5500k(protocolInfo);
+          break;
+        default:
+          echoServer = new EchoServerInverterDas(protocolInfo);
+          break;
+      }
+      return echoServer;
+    });
   }
 
   /** AbstController 에서 접속 타이머 시작 요청 */
@@ -145,6 +158,7 @@ class SocketClient extends AbstController {
               `writeData : ${returnBuffer}`,
             ).then(() => {
               setTimeout(() => {
+                BU.CLI(returnBuffer);
                 client.write(returnBuffer);
               }, 1000);
             });
@@ -249,7 +263,7 @@ class SocketServer {
 
               const requestSensorMsg = this.defaultWrapper.wrapFrameMsg(
                 protocolFP,
-                Buffer.from([0x01, 0x04, 0x00, 0x00, 0x00, 0x12]),
+                Buffer.from([0x01, 0x04, 0x00, 0x00, 0x00, 0x0c]),
               );
               this.currentMsg = requestSensorMsg;
               BU.CLI('센서 데이터 요청 메시지 전송', requestSensorMsg);
@@ -272,9 +286,6 @@ class SocketServer {
               if (parsingData.eventCode !== 'DONE') {
                 throw new Error('센서 데이터 파싱 실패');
               }
-              const writeDate = _.head(parsingData.data.writeDate);
-              // BU.CLI(writeDate);
-              BU.CLI(BU.convertDateToText(writeDate));
 
               // 인버터 데이터 요청
               this.currentCMD = 'I';
@@ -367,8 +378,8 @@ async function startTestSocketClientCommunication() {
     uuid: '001',
   });
   socketClient.setEchoServerFP(protocolFP, mapList.FP.Naju);
-  // socketClient.setEchoServerInverter(protocolInverter);
-  // socketClient.connect();
+  socketClient.setEchoServerInverter(protocolInverter);
+  socketClient.connect();
 }
 
 // SocketClient 구동 하고자 할 경우
