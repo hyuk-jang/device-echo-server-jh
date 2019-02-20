@@ -381,6 +381,23 @@ class EchoServer extends Model {
   }
 
   /**
+   * @param {detailNodeInfo} nodeInfo
+   * @param {detailNodeInfo[]} nodeList
+   */
+  getGroundRelay(nodeInfo, nodeList) {
+    // BU.CLI('getGroundRelay', nodeList);
+    const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x36]);
+
+    const cgrList = ['00', '01', '10', '11'];
+
+    return Buffer.concat([
+      bufHeader,
+      Buffer.from(cgrList[_.random(0, cgrList.length - 1)]),
+      this.bufDataBattery,
+    ]);
+  }
+
+  /**
    *
    * @param {xbeeApi_0x10} xbeeApi0x10
    */
@@ -437,6 +454,9 @@ class EchoServer extends Model {
         break;
       case 'D_EP':
         dataLoggerData = this.getEarthPV(findDevice, foundNodeList);
+        break;
+      case 'D_GR':
+        dataLoggerData = this.getGroundRelay(findDevice, foundNodeList);
         break;
       default:
         break;

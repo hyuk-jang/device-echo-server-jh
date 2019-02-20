@@ -15,7 +15,7 @@ function operationServer() {
     deviceId: '001',
     mainCategory: 'Inverter',
     subCategory: 'das_1.3',
-    wrapperCategory: 'default',
+    // wrapperCategory: 'default',
     protocolOptionInfo: {
       hasTrackingData: true,
     },
