@@ -6,7 +6,7 @@ const { BU } = require('base-util-jh');
 const Control = require('../../../src/Control');
 require('../../../../default-intelligence');
 
-const mapList = require('../../../src/mapList');
+const deviceMap = require('../../../src/deviceMap');
 
 const { MainConverter } = require('../../../../device-protocol-converter-jh');
 
@@ -32,11 +32,11 @@ function operationServer() {
   ];
   control = new Control(9000);
   BU.CLI(_.head(deviceList));
-  echoServer = new EchoServer(_.head(deviceList), mapList.FP.YeongSanPo);
+  echoServer = new EchoServer(_.head(deviceList), deviceMap.FP.YeongSanPo);
   mainConverter = new MainConverter(_.head(deviceList));
   mainConverter.setProtocolConverter();
 
-  control.attachDevice(deviceList, mapList.FP.YeongSanPo);
+  control.attachDevice(deviceList, deviceMap.FP.YeongSanPo);
 
   // 2개 장치 구동
   if (control.deviceModelList.length !== 1) {

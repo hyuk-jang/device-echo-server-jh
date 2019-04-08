@@ -6,7 +6,7 @@ const { BU } = require('base-util-jh');
 const Control = require('../../../src/Control');
 require('../../../../default-intelligence');
 
-const mapList = require('../../../src/mapList');
+const deviceMap = require('../../../src/deviceMap');
 
 const { MainConverter } = require('../../../../device-protocol-converter-jh');
 
@@ -65,7 +65,7 @@ async function startTest() {
   client.write(writeMsg);
 }
 
-// operationServer({ deviceMap: mapList.FP.YeongSanPo, socketPort: 9000, protocolInfo });
+// operationServer({ deviceMap: deviceMap.FP.YeongSanPo, socketPort: 9000, protocolInfo });
 
 // setTimeout(() => {
 //   startTest();
@@ -73,18 +73,18 @@ async function startTest() {
 
 // MultiTest
 
-const fpMapList = [
-  mapList.FP.Naju,
-  mapList.FP.Gangjin,
-  mapList.FP.Boseong,
-  mapList.FP.Ochang,
-  mapList.FP.Yeongheung,
+const fpdeviceMap = [
+  deviceMap.FP.Naju,
+  deviceMap.FP.Gangjin,
+  deviceMap.FP.Boseong,
+  deviceMap.FP.Ochang,
+  deviceMap.FP.Yeongheung,
 ];
 
 for (let index = 9000; index < 9005; index += 1) {
-  // operationServer({ deviceMap: mapList.FP.Naju, socketPort: index, protocolInfo });
+  // operationServer({ deviceMap: deviceMap.FP.Naju, socketPort: index, protocolInfo });
   operationServer({
-    deviceMap: fpMapList[_.subtract(index, 9000)],
+    deviceMap: fpdeviceMap[_.subtract(index, 9000)],
     socketPort: index,
     protocolInfo,
   });

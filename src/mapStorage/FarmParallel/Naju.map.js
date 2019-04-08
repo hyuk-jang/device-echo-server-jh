@@ -86,6 +86,7 @@ const map = {
           mainCategory: 'FarmParallel',
           subCategory: 'dmTech',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 2,
         },
       },
       {
@@ -94,6 +95,7 @@ const map = {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 6,
         },
       },
       {
@@ -102,6 +104,7 @@ const map = {
           mainCategory: 'Inverter',
           subCategory: 's5500k',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 10,
         },
       },
     ],
@@ -591,7 +594,7 @@ const map = {
       },
       {
         target_id: 'waterValue',
-        target_name: '수분 값',
+        target_name: 'EC 값',
         is_sensor: 1,
         // save_db_type: BLOCK,
         data_unit: '%',
@@ -600,7 +603,7 @@ const map = {
           {
             target_id: 'soilWaterValue',
             target_prefix: 'WV_S',
-            target_name: '토양 수분 값',
+            target_name: '토양 EC 값',
             nodeList: [
               {
                 target_code: '001',
@@ -841,7 +844,7 @@ const map = {
               {
                 target_code: '002',
                 target_name: '나주 고정식 B (33kW 급)',
-                chart_color: '#c92a2a',
+                chart_color: '#fcc2d7',
                 chart_sort_rank: 2,
                 repeatId: 'RE_PREFIX_IVT',
                 nodeList: ['S_I_001'],
@@ -849,7 +852,7 @@ const map = {
               {
                 target_code: '003',
                 target_name: '나주 가변식 C (33kW 급)',
-                chart_color: '#a61e4d',
+                chart_color: '#d0bfff',
                 chart_sort_rank: 3,
                 repeatId: 'RE_PREFIX_IVT',
                 nodeList: ['S_I_004'],
@@ -886,14 +889,14 @@ const map = {
               {
                 target_code: '002',
                 target_name: 'B',
-                chart_color: '#c92a2a',
+                chart_color: '#fcc2d7',
                 chart_sort_rank: 2,
                 nodeList: ['LX_002', 'S_PU_002', 'CO2_002', 'WV_S_002', 'T_S_002', 'RH_S_002'],
               },
               {
                 target_code: '003',
                 target_name: 'C',
-                chart_color: '#a61e4d',
+                chart_color: '#d0bfff',
                 chart_sort_rank: 3,
                 nodeList: ['LX_003', 'CO2_003', 'WV_S_003', 'T_S_003', 'RH_S_003'],
               },
@@ -907,7 +910,7 @@ const map = {
               {
                 target_code: '004',
                 target_name: 'A',
-                chart_color: '#862e9c',
+                chart_color: '#99e9f2',
                 chart_sort_rank: 4,
                 nodeList: [
                   'LX_004',
@@ -922,14 +925,14 @@ const map = {
               {
                 target_code: '005',
                 target_name: 'B',
-                chart_color: '#5f3dc4',
+                chart_color: '#212529',
                 chart_sort_rank: 5,
                 nodeList: ['LX_005', 'S_PU_005', 'CO2_005', 'WV_S_005', 'T_S_005', 'RH_S_005'],
               },
               {
                 target_code: '006',
                 target_name: 'C',
-                chart_color: '#364fc7',
+                chart_color: '#a9e34b',
                 chart_sort_rank: 6,
                 nodeList: ['LX_006', 'CO2_006', 'WV_S_006', 'T_S_006', 'RH_S_006'],
               },
@@ -949,7 +952,7 @@ const map = {
             placeList: [
               {
                 target_code: '007',
-                chart_color: '#1864ab',
+                chart_color: '#ffe066',
                 chart_sort_rank: 7,
                 nodeList: [
                   'LX_007',

@@ -5,7 +5,7 @@ const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 require('../../../../default-intelligence');
 
-const mapList = require('../../../src/mapList');
+const deviceMap = require('../../../src/deviceMap');
 
 const { MainConverter, BaseModel } = require('../../../../device-protocol-converter-jh');
 
@@ -61,7 +61,7 @@ class SocketClient extends AbstController {
    */
   setEchoServerFP(protocolInfo, deviceMap) {
     this.echoServerFP = new EchoServerFP(protocolInfo, deviceMap);
-    // this.echoServerFP = new EchoServerFP(protocolInfo, mapList.FP.YeongSanPo);
+    // this.echoServerFP = new EchoServerFP(protocolInfo, deviceMap.FP.YeongSanPo);
   }
 
   /**
@@ -377,7 +377,7 @@ async function startTestSocketClientCommunication() {
     port: 9000,
     uuid: '001',
   });
-  socketClient.setEchoServerFP(protocolFP, mapList.FP.Naju);
+  socketClient.setEchoServerFP(protocolFP, deviceMap.FP.Naju);
   socketClient.setEchoServerInverter(protocolInverter);
   socketClient.connect();
 }

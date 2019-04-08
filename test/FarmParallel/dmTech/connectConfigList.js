@@ -1,4 +1,4 @@
-const mapList = require('../../../src/mapList');
+const deviceMap = require('../../../src/deviceMap');
 
 const host = 'localhost';
 // const host = 'fp.smsoft.co.kr';
@@ -18,7 +18,7 @@ module.exports = [
         wrapperCategory: 'default',
         deviceId: 1,
       },
-      deviceMap: mapList.FP.Naju,
+      deviceMap: deviceMap.FP.Naju,
     },
     inverter: {
       protocolList: [
@@ -65,7 +65,7 @@ module.exports = [
         wrapperCategory: 'default',
         deviceId: 2,
       },
-      deviceMap: mapList.FP.Gangjin,
+      deviceMap: deviceMap.FP.Gangjin,
     },
     inverter: {
       protocolList: [
@@ -103,7 +103,7 @@ module.exports = [
         wrapperCategory: 'default',
         deviceId: 3,
       },
-      deviceMap: mapList.FP.Boseong,
+      deviceMap: deviceMap.FP.Boseong,
     },
     inverter: {
       protocolList: [
@@ -141,7 +141,7 @@ module.exports = [
         wrapperCategory: 'default',
         deviceId: 4,
       },
-      deviceMap: mapList.FP.Ochang,
+      deviceMap: deviceMap.FP.Ochang,
     },
     inverter: {
       protocolList: [
@@ -188,7 +188,7 @@ module.exports = [
         wrapperCategory: 'default',
         deviceId: 5,
       },
-      deviceMap: mapList.FP.Yeongheung,
+      deviceMap: deviceMap.FP.Yeongheung,
     },
     inverter: {
       protocolList: [

@@ -86,6 +86,7 @@ const map = {
           mainCategory: 'FarmParallel',
           subCategory: 'dmTech',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 2,
         },
       },
       {
@@ -94,6 +95,7 @@ const map = {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 6,
         },
       },
       {
@@ -102,6 +104,7 @@ const map = {
           mainCategory: 'Inverter',
           subCategory: 's5500k',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 10,
         },
       },
     ],
@@ -188,7 +191,7 @@ const map = {
         dataLoggerDeviceList: [
           {
             target_name: '보성 A (5.5kW 급)',
-            serial_number: '\u0001',
+            serial_number: Buffer.from([66]),
             target_code: '006',
             dccId: 'DCC_001',
             dpcId: 'DPC_IVT_002',
@@ -196,7 +199,7 @@ const map = {
           },
           {
             target_name: '보성 B (5.5kW 급)',
-            serial_number: '\u0002',
+            serial_number: Buffer.from([67]),
             target_code: '007',
             dccId: 'DCC_001',
             dpcId: 'DPC_IVT_002',
@@ -424,7 +427,7 @@ const map = {
       },
       {
         target_id: 'waterValue',
-        target_name: '수분 값',
+        target_name: 'EC 값',
         is_sensor: 1,
         data_unit: '%',
         description: '',
@@ -432,7 +435,7 @@ const map = {
           {
             target_id: 'soilWaterValue',
             target_prefix: 'WV_S',
-            target_name: '토양 수분 값',
+            target_name: '토양 EC 값',
             nodeList: [
               {
                 target_code: '010',
@@ -658,7 +661,7 @@ const map = {
               {
                 target_code: '007',
                 target_name: '보성 B (5.5kW 급)',
-                chart_color: '#5c940d',
+                chart_color: '#ff6b6b',
                 chart_sort_rank: 7,
                 repeatId: 'RE_PREFIX_IVT',
                 nodeList: ['S_I_010'],
@@ -700,7 +703,7 @@ const map = {
             placeList: [
               {
                 target_code: '011',
-                chart_color: '#5c940d',
+                chart_color: '#ff6b6b',
                 chart_sort_rank: 11,
                 nodeList: [
                   'LX_011',

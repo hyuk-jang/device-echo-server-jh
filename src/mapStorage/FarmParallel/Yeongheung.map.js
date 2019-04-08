@@ -96,6 +96,7 @@ const map = {
           mainCategory: 'FarmParallel',
           subCategory: 'dmTech',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 2,
         },
       },
       {
@@ -104,6 +105,7 @@ const map = {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 6,
         },
       },
       {
@@ -112,6 +114,7 @@ const map = {
           mainCategory: 'Inverter',
           subCategory: 's5500k',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 10,
         },
       },
     ],
@@ -467,7 +470,7 @@ const map = {
       },
       {
         target_id: 'waterValue',
-        target_name: '수분 값',
+        target_name: 'EC 값',
         is_sensor: 1,
         data_unit: '%',
         description: '',
@@ -475,7 +478,7 @@ const map = {
           {
             target_id: 'soilWaterValue',
             target_prefix: 'WV_S',
-            target_name: '토양 수분 값',
+            target_name: '토양 EC 값',
             nodeList: [
               {
                 target_code: '014',
@@ -696,7 +699,7 @@ const map = {
               {
                 target_code: '011',
                 target_name: '영흥 A (33kW 급)',
-                chart_color: '#868e96',
+                chart_color: '#f06595',
                 chart_sort_rank: 11,
                 repeatId: 'RE_PREFIX_IVT',
                 nodeList: ['S_I_015'],
@@ -704,7 +707,7 @@ const map = {
               {
                 target_code: '012',
                 target_name: '영흥 B (33kW 급)',
-                chart_color: '#b9560d',
+                chart_color: '#087f5b',
                 chart_sort_rank: 12,
                 repeatId: 'RE_PREFIX_IVT',
                 nodeList: ['S_I_015'],
@@ -734,7 +737,7 @@ const map = {
               {
                 target_code: '014',
                 target_name: '하부',
-                chart_color: '#868e96',
+                chart_color: '#f06595',
                 chart_sort_rank: 14,
                 nodeList: ['LX_014', 'S_I_014', 'CO2_014', 'WV_S_014', 'T_S_014', 'RH_S_014'],
               },
@@ -748,7 +751,7 @@ const map = {
               {
                 target_code: '015',
                 target_name: '하부',
-                chart_color: '#b9560d',
+                chart_color: '#087f5b',
                 chart_sort_rank: 15,
                 nodeList: ['LX_015', 'S_I_015', 'CO2_015', 'WV_S_015', 'T_S_015', 'RH_S_015'],
               },

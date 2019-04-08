@@ -86,6 +86,7 @@ const map = {
           mainCategory: 'FarmParallel',
           subCategory: 'dmTech',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 2,
         },
       },
       {
@@ -94,6 +95,7 @@ const map = {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 6,
         },
       },
       {
@@ -102,6 +104,7 @@ const map = {
           mainCategory: 'Inverter',
           subCategory: 's5500k',
           wrapperCategory: 'default',
+          cmdExecTimeoutMs: 1000 * 10,
         },
       },
     ],
@@ -423,7 +426,7 @@ const map = {
       },
       {
         target_id: 'waterValue',
-        target_name: '수분 값',
+        target_name: 'EC 값',
         is_sensor: 1,
         data_unit: '%',
         description: '',
@@ -431,7 +434,7 @@ const map = {
           {
             target_id: 'soilWaterValue',
             target_prefix: 'WV_S',
-            target_name: '토양 수분 값',
+            target_name: '토양 EC 값',
             nodeList: [
               {
                 target_code: '008',
@@ -649,7 +652,7 @@ const map = {
               {
                 target_code: '004',
                 target_name: '강진 A (5.5kW 급)',
-                chart_color: '#b0e2ff',
+                chart_color: '#0b7285',
                 chart_sort_rank: 4,
                 repeatId: 'RE_PREFIX_IVT',
                 nodeList: ['S_I_008'],
@@ -657,7 +660,7 @@ const map = {
               {
                 target_code: '005',
                 target_name: '강진 B (5.5kW 급)',
-                chart_color: '#ff7256',
+                chart_color: '#7048e8',
                 chart_sort_rank: 5,
                 repeatId: 'RE_PREFIX_IVT',
                 nodeList: ['S_I_008'],
@@ -699,7 +702,7 @@ const map = {
             placeList: [
               {
                 target_code: '009',
-                chart_color: '#087f5b',
+                chart_color: '#7048e8',
                 chart_sort_rank: 9,
                 nodeList: [
                   'LX_009',

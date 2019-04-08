@@ -6,7 +6,7 @@ const Control = require('../../../src/Control');
 
 require('../../../../default-intelligence');
 
-const mapList = require('../../../src/mapList');
+const deviceMap = require('../../../src/deviceMap');
 
 function operationServer() {
   /**
@@ -43,7 +43,7 @@ function operationServer() {
     option: '}',
   });
 
-  control.attachDevice(deviceList, mapList.UPSAS.muan6kW);
+  control.attachDevice(deviceList, deviceMap.UPSAS.muan6kW);
 
   // 2개 장치 구동
   if (control.deviceModelList.length !== 1) {

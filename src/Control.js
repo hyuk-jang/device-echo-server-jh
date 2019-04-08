@@ -2,7 +2,7 @@ const _ = require('lodash');
 const split = require('split');
 const { BU } = require('base-util-jh');
 const net = require('net');
-const mapListInfo = require('./mapList');
+const deviceMapInfo = require('./deviceMap');
 
 /** @type {Array.<{id: constructorSocket, instance: Control}>} */
 const instanceList = [];
@@ -19,7 +19,7 @@ class Control {
     this.parserInfo = parserInfo;
 
     this.returnData;
-    this.mapListInfo = mapListInfo;
+    this.deviceMapInfo = deviceMapInfo;
 
     // 싱글톤 패턴으로 생성
     const foundInstance = _.find(instanceList, instanceInfo =>

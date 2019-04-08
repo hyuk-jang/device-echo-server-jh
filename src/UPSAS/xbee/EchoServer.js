@@ -482,7 +482,7 @@ module.exports = EchoServer;
 if (require !== undefined && require.main === module) {
   console.log('__main__');
 
-  const mapList = require('../../mapList');
+  const deviceMap = require('../../deviceMap');
 
   const echoServer = new EchoServer(
     {
@@ -490,7 +490,7 @@ if (require !== undefined && require.main === module) {
       mainCategory: 'UPSAS',
       subCategory: 'das_1.3',
     },
-    mapList.UPSAS.muan6kW,
+    deviceMap.UPSAS.muan6kW,
   );
 
   echoServer.reload();

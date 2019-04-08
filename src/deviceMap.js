@@ -11,6 +11,5 @@ module.exports = {
     Boseong: require('./mapStorage/FarmParallel/Boseong.map'),
     Ochang: require('./mapStorage/FarmParallel/Ochang.map'),
     Yeongheung: require('./mapStorage/FarmParallel/Yeongheung.map'),
-    YeongSanPo: require('./mapStorage/FarmParallel/YeongSanPo'),
   },
 };

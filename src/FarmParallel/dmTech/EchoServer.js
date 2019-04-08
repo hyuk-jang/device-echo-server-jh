@@ -155,7 +155,7 @@ module.exports = EchoServer;
 if (require !== undefined && require.main === module) {
   console.log('__main__');
 
-  const mapList = require('../../mapList');
+  const deviceMap = require('../../deviceMap');
 
   const protocolInfo = {
     deviceId: '001',
@@ -163,7 +163,7 @@ if (require !== undefined && require.main === module) {
     subCategory: 'dmTech',
   };
 
-  const echoServer = new EchoServer(protocolInfo, mapList.FP.YeongSanPo);
+  const echoServer = new EchoServer(protocolInfo, deviceMap.FP.YeongSanPo);
 
   const mainConverter = new MainConverter(protocolInfo);
   mainConverter.setProtocolConverter();

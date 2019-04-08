@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet" />
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/jquery.panzoom.js"></script>
+  <script src="/js/jquery.mousewheel.js"></script>
+  <script src="/js/jquery-confirm.js"></script>
+
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/bootstrap-dialog.js"></script>
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+  <script src="/js/svg.js"></script>
+  <script src="/js/svg.filter.js"></script>
+
+  <script src="/js/lodash.min.js"></script>
+
+  <script src="../config/upsasConfig.js"></script>
+  <script src="../../out/defaultMap.js"></script>
+  <script src="/js/drawSvg/drawSvg.js"></script>
+</head>
+
+<body>
+  <!-- 메인 -->
+  <div class="jumbotron text-center jumbotron_line">
+    <div class="">
+      <div id="zoom" style="display: flex; justify-content: center;">
+        <button id="zoom-in" class="btn btn-default btn-sm" style="margin-right: 5px">
+          <span class="glyphicon glyphicon-zoom-in"></span> Zoom-in
+        </button>
+        <button id="zoom-out" class="btn btn-default btn-sm" style="margin-right: 5px">
+          <span class="glyphicon glyphicon-zoom-out"></span> Zoom-out
+        </button>
+        <button id="reset" class="btn btn-default btn-sm" style="margin-right: 5px">
+          <span class="glyphicon glyphicon-refresh"></span> Reset
+        </button>
+        <input id="placeNodeChangeNameToogleBtn" type="checkbox" data-toggle="toggle" />
+      </div>
+      <!-- canvas -->
+      <div style="height:800px">
+        <div id="canvas" style=" display: flex; justify-content: center; margin: 5px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    drawSvgBasePlace('canvas');
+
+    // size 재설정
+    var svgMap = SVG.get('svgCanvas');
+    var canvas = document.getElementById('canvas');
+    canvas.style.width = svgMap.node.width.baseVal.value + 'px';
+    canvas.style.height = svgMap.node.height.baseVal.value + 'px';
+    var $canvas = $('#canvas');
+    var matrix = 'matrix(0.4, 0, 0, 0.4, -850, -600)';
+
+    var filter = 'win16|win32|win64|mac';
+    if (navigator.platform) {
+      if (0 > filter.indexOf(navigator.platform.toLowerCase())) {
+        // mobile
+        // panzoom
+        $canvas.panzoom({
+          disablePan: true,
+          disableZoom: true,
+          startTransform: matrix,
+        });
+        $('#zoom-out', '#zoom-in', '#reset').hide();
+      } else {
+        // pc
+        // panzoom
+        $canvas.panzoom({
+          $reset: $('#reset'),
+          cursor: 'context-menu',
+          startTransform: matrix,
+        });
+
+        // mouseWheel
+        $canvas.panzoom().on('mousewheel.focal', function (e) {
+          e.preventDefault();
+          var delta = e.delta || e.originalEvent.wheelDelta;
+          var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
+          $canvas.panzoom('zoom', zoomOut, {
+            animate: false,
+            focal: e,
+          });
+        });
+
+        // zoom 기능 기준점 재정의
+        $('#zoom-in').click(function (e) {
+          e.clientX = 300;
+          e.clientY = 200;
+          $canvas.panzoom('zoom', {
+            // focal: e
+          });
+        });
+        $('#zoom-out').click(function (e) {
+          e.clientX = 300;
+          e.clientY = 200;
+          $canvas.panzoom('zoom', 'zoomOut', {
+            focal: e,
+          });
+        });
+      }
+    }
+
+    //FIXME: 테스트 용 선언
+    bindingClickEventNode();
+    showNodeData('P_002', 'open');
+    showNodeData('WL_004', '100');
+
+    $('#placeNodeChangeNameToogleBtn').change(() => {
+      const isChecked = $('#placeNodeChangeNameToogleBtn').prop('checked'); // 체크 상태 false: off, true: on
+
+      $(`#canvas`).empty(); // svg가 그려진 공간 초기화
+      drawSvgBasePlace('canvas', isChecked); // 초기화 후 다시 그리기 (체크 상태 포함)
+
+      bindingClickEventNode(); // 장치, 센서 클릭 이벤트 다시 바인딩
+
+      showNodeData('P_002', 'open', isChecked); // 새롭게 그려진 svg map 다시 데이터 뿌리기 (체크 상태 포함)
+      showNodeData('WL_004', '100', isChecked);
+    });
+  </script>
+</body>
+
+</html>

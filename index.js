@@ -12,7 +12,7 @@ if (require !== undefined && require.main === module) {
       mainCategory: 'UPSAS',
       subCategory: 'xbee',
     },
-    control.mapListInfo.UPSAS.muan6kW,
+    control.deviceMapInfo.UPSAS.muan6kW,
   );
 
   process.on('uncaughtException', err => {
