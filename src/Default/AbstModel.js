@@ -1,5 +1,7 @@
 const _ = require('lodash');
+const EventEmitter = require('events');
 const { BU } = require('base-util-jh');
+
 const { BaseModel } = require('../../../device-protocol-converter-jh');
 
 const { ESS, FarmParallel, Inverter, UPSAS } = BaseModel;
@@ -8,12 +10,13 @@ const commonUtils = require('../util/common');
 
 /** @type {Array.<{id: mDeviceMap, instance: EchoServer}>} */
 const instanceList = [];
-class AbstModel {
+class AbstModel extends EventEmitter {
   /**
    * @param {protocol_info} protocolInfo
    * @param {mDeviceMap} deviceMap
    */
   constructor(protocolInfo, deviceMap) {
+    super();
     // 기존에 객체에 생성되어 있는지 체크
     const foundInstance = _.find(instanceList, instanceInfo =>
       _.isEqual(instanceInfo.id, deviceMap),
@@ -69,9 +72,11 @@ class AbstModel {
       // 센서이고 현재 데이터가 숫자이면서 float형인 경우만 랜덤 수치를 적용
       if (nodeInfo.isSensor && _.isNumber(nodeInfo.data) && nodeInfo.data % 1 !== 0) {
         // 현재 값을 기준으로 95% ~ 105% 사이의 랜덤 값을 사용
-        nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.95, 1.05));
+        nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.95, 1.05, true));
       }
     });
+
+    this.emit('reload');
   }
 
   /**

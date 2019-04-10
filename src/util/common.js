@@ -20,7 +20,7 @@ module.exports = {
             repeatId,
             repeatCategory: 'node',
           }).nodeList;
-          delete nodeDefInfo.repeatId;
+          // delete nodeDefInfo.repeatId;
         }
       });
     });
@@ -38,7 +38,7 @@ module.exports = {
 
           dataLoggerInfo.nodeList = prefixNodeList.map(prefix => `${prefix}_${uniqNumber}`);
 
-          delete dataLoggerInfo.repeatId;
+          // delete dataLoggerInfo.repeatId;
         }
       });
     });
@@ -61,7 +61,7 @@ module.exports = {
             // 설정한 nodeList 에 동적으로 생성된 nodeList를 붙임
             placeInfo.nodeList = _.concat(nodeList, addNodeList);
 
-            delete placeInfo.repeatId;
+            // delete placeInfo.repeatId;
           }
         });
       });
@@ -77,8 +77,12 @@ module.exports = {
   makeNodeList: deviceMap => {
     const returnList = [];
     deviceMap.setInfo.nodeStructureList.forEach(nodeClassInfo => {
+      // 단순 표기를 위한 node는 제외
+      if (nodeClassInfo.is_sensor < 0) return false;
       // 노드 개요 목록 순회
       nodeClassInfo.defList.forEach(nodeDefInfo => {
+        // repeatId가 있을 경우에는 무시
+        if (nodeDefInfo.repeatId) return false;
         // 노드 목록 순회
         nodeDefInfo.nodeList.forEach(nodeInfo => {
           // 노드 ID 정의
@@ -113,6 +117,9 @@ module.exports = {
     deviceMap.setInfo.dataLoggerStructureList.forEach(dataLoggerClassInfo => {
       // 데이터 로거 장치 목록 순회
       dataLoggerClassInfo.dataLoggerDeviceList.forEach(dataLoggerDeviceInfo => {
+        // repeatId가 있을 경우에는 무시
+        if (dataLoggerDeviceInfo.repeatId) return false;
+
         let dataLoggerId = dataLoggerClassInfo.target_prefix;
         if (dataLoggerDeviceInfo.target_code.length) {
           dataLoggerId += `_${dataLoggerDeviceInfo.target_code}`;

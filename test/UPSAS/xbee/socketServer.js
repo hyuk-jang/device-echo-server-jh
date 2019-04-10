@@ -8,6 +8,8 @@ require('../../../../default-intelligence');
 
 const deviceMap = require('../../../src/deviceMap');
 
+const SimulatorWeb = require('../../../src/SimulatorWeb');
+
 function operationServer() {
   /**
    * @type {protocol_info[]}
@@ -43,7 +45,12 @@ function operationServer() {
     option: '}',
   });
 
-  control.attachDevice(deviceList, deviceMap.UPSAS.muan6kW);
+  // 생성된 에코서버
+  const echoServer = control.attachDevice(deviceList, deviceMap.UPSAS.muan6kW);
+
+  // 시뮬레이터 웹 서버 구동
+  const simulWeb = new SimulatorWeb(9100, echoServer);
+  simulWeb.init();
 
   // 2개 장치 구동
   if (control.deviceModelList.length !== 1) {

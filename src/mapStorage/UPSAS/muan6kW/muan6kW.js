@@ -2,7 +2,7 @@ const {
   BLOCK,
   TROUBLE,
   NONE,
-} = require('../../../../default-intelligence').dcmConfigModel.nodeDataType;
+} = require('../../../../../default-intelligence').dcmConfigModel.nodeDataType;
 
 /**
  * @type {mDeviceMap}
@@ -23,36 +23,57 @@ const map = {
           id: 'salternModuleBlock_A',
           type: 'rect',
           elementDrawInfo: { width: 480, height: 300, color: '#383667', opacity: 0 },
+          textStyleInfo: {
+            color: 'white',
+          },
         },
         {
           id: 'salternModuleBlock_B',
           type: 'rect',
           elementDrawInfo: { width: 480, height: 600, color: '#383667', opacity: 0 },
+          textStyleInfo: {
+            color: 'white',
+          },
         },
         {
           id: 'salternNomalBlock_A',
           type: 'rect',
           elementDrawInfo: { width: 480, height: 220, color: '#86623b', opacity: 0 },
+          textStyleInfo: {
+            color: 'white',
+          },
         },
         {
           id: 'salternNomalBlock_B',
           type: 'rect',
           elementDrawInfo: { width: 510, height: 330, color: '#86623b', opacity: 0 },
+          textStyleInfo: {
+            color: 'white',
+          },
         },
         {
           id: 'earth',
           type: 'rect',
           elementDrawInfo: { width: 500, height: 160, color: '#4c7093', opacity: 0 },
+          textStyleInfo: {
+            color: 'white',
+          },
         },
         {
           id: 'salternCrystalBlock',
           type: 'rect',
           elementDrawInfo: { width: 510, height: 330, color: '#4f351a', opacity: 0 },
+          textStyleInfo: {
+            color: 'white',
+          },
         },
         {
           id: 'brineWarehouse',
           type: 'rect',
           elementDrawInfo: { width: 240, height: 220, color: '#5b666c', opacity: 0 },
+          textStyleInfo: {
+            color: 'white',
+          },
         },
         {
           id: 'waterDoor',
@@ -68,6 +89,9 @@ const map = {
           id: 'sea',
           type: 'rect',
           elementDrawInfo: { width: 170, height: 120, color: '#0f587c', opacity: 0 },
+          textStyleInfo: {
+            color: 'white',
+          },
         },
         {
           id: 'valve',
@@ -93,6 +117,9 @@ const map = {
           id: 'reservoir',
           type: 'rect',
           elementDrawInfo: { width: 760, height: 150, color: '#3d4448', opacity: 0 },
+          textStyleInfo: {
+            color: 'white',
+          },
         },
         {
           id: 'pump',

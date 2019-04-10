@@ -43,22 +43,23 @@ class Control {
   attachDevice(protocolInfo, deviceMap) {
     try {
       if (_.isArray(protocolInfo)) {
+        let echoModel;
         protocolInfo.forEach(currentItem => {
-          this.attachDevice(currentItem, deviceMap);
+          echoModel = this.attachDevice(currentItem, deviceMap);
         });
-        return;
+        return echoModel;
       }
       // BU.CLI(protocol_info);
       // protocol_info.forEach(protocol_info => {
       const path = `./${protocolInfo.mainCategory}/${protocolInfo.subCategory}/EchoServer`;
       const DeviceProtocolConverter = require(path);
-      // BU.CLIN(DeviceProtocolConverter, 4);
       const protocolConverter = new DeviceProtocolConverter(protocolInfo, deviceMap);
 
       const foundIt = _.find(this.deviceModelList, deviceModel =>
         _.isEqual(protocolConverter, deviceModel),
       );
       _.isEmpty(foundIt) && this.deviceModelList.push(protocolConverter);
+      return protocolConverter;
       // });
     } catch (error) {
       throw error;

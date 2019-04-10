@@ -46,10 +46,10 @@ class EchoServer extends Model {
           nodeInfo.data = _.random(30.1, 35.9);
           break;
         case this.device.WATER_LEVEL.KEY:
-          nodeInfo.data = _.random(0.0, 9.9);
+          nodeInfo.data = _.random(0, 10, true);
           break;
         case this.device.SALINITY.KEY:
-          nodeInfo.data = _.random(0.0, 9.9);
+          nodeInfo.data = _.random(0, 10, true);
           break;
         default:
           break;

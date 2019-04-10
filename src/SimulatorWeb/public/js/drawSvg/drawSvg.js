@@ -1,3 +1,7 @@
+const TRUE_DATA = '1';
+const FALSE_DATA = '0';
+const ERROR_DATA = '-1';
+
 /** @type {{nodeId: string, nodeName: '', text: textElement}[]} */
 const writtenSvgTextList = [];
 
@@ -83,21 +87,13 @@ function showNodeData(nodeDefId, data = '', isChangePlaceNodeName = false) {
 
   let dataUnit = getDataUnit(nodeDefId); // 데이터 단위
   if (data === '' || _.isNull(dataUnit)) dataUnit = ''; // 장치일 경우 단위가 없음
-  let [dx, dy, style, nodeName] = [0, 15, 'font-size: 15pt; fill: #05f605; stroke-width: 0.2', '']; // <Tspan> 속성
-  const changedAllNodeTspanEle = applyConfigTspanEle(config); // config에서 <tspan> 속성을 모두를 바꿀 정보를 가져옴
-  const changedSingleNodeTspanEle = applyConfigTspanEle(config, nodeDefId); // config에서 <tsapn> 속성을 단일로 바꿀 정보 가져옴
+  let [dx, dy, style, nodeName] = [0, 15, 'font-size: 15pt; fill: #7675ff; stroke-width: 0.2', '']; // <Tspan> 속성
 
   // svg로 그려진 Text의 정보를 찾는다. (위치값을 알기위한 용도)
   const foundSvgTextInfo = _.find(writtenSvgTextList, { id: nodeDefId });
   if (_.isUndefined(foundSvgTextInfo)) return false;
   // svg로 그려진 Text의 자식 Tspan 을 찾는다.
   const foundNodeTextChild = $(`#text_${nodeDefId}`);
-
-  // config의 allNodeTspanEleInfo 를 가져와 적용
-  if (changedAllNodeTspanEle) {
-    const { allDx, allDy, allStyle } = changedAllNodeTspanEle;
-    [dx, dy, style] = [allDx, allDy, allStyle];
-  }
 
   // 장소, 장비, 센서 이름 재정의
   isChangePlaceNodeName ? (nodeName = foundSvgTextInfo.id) : (nodeName = foundSvgTextInfo.name);
@@ -112,15 +108,6 @@ function showNodeData(nodeDefId, data = '', isChangePlaceNodeName = false) {
     foundSvgTextInfo.textX
   }" style="${style}" dx="${dx}" dy="${dy}">${data}</tspan>`; // data 표시
   foundNodeTextChild.get(0).innerHTML += `<tspan>${dataUnit}</tspan>`; // data 단위 표시
-
-  // configdml 새로 운 <tspan> 태그 속성 단일 적용
-  if (changedSingleNodeTspanEle) {
-    const { targetDx, targetDy, targetStyle } = applyConfigTspanEle(config, nodeDefId);
-    const nodeDataTspanTag = _.head($('#nodeData'));
-    nodeDataTspanTag.attributes.dx.value = targetDx;
-    nodeDataTspanTag.attributes.dy.value = targetDy;
-    nodeDataTspanTag.style.cssText = targetStyle;
-  }
 }
 
 /**
@@ -152,13 +139,13 @@ function changeNodeStatusColor(nDefId, data) {
 
   // 0: 장치, 1: 센서, -1: 미분류
   if (foundNodeInfo.is_sensor === 0) {
-    const checkDataStatus = checkDataType(data); // 데이터의 상태
+    const checkDataStatus = checkTrueFalseData(data); // 데이터의 상태
     const drawedSvgElement = $(`#${nDefId}`);
 
     // 데이터 상태에 따른 색상 변경
-    if (checkDataStatus === 'falseData') {
+    if (checkDataStatus === FALSE_DATA) {
       drawedSvgElement.attr({ fill: getNodeBgColor[0], opacity: 0.8 });
-    } else if (checkDataStatus === 'trueData') {
+    } else if (checkDataStatus === TRUE_DATA) {
       drawedSvgElement.attr({ fill: getNodeBgColor[1] });
     } else {
       drawedSvgElement.attr({ fill: getNodeBgColor[2] });
@@ -175,8 +162,6 @@ function changeNodeStatusColor(nDefId, data) {
 function writeSvgText(svgCanvas, defInfo, resourceInfo, isChangedPlaceNodeName = false) {
   const { width, height, radius } = resourceInfo.elementDrawInfo; // 텍스트가 그려질 공간 크기 또는 투명도
   const [x1, y1, x2, y2] = defInfo.point; // 텍스트 위치
-  const changedAllTextStyle = applyConfigTextStyle(config); // config 정보
-  const changedSingleTextStyle = applyConfigTextStyle(config, defInfo.id); // config 정보
   let naming; // defInfo.name: 한글, defInfo.id: 영문
   let [textX, textY, textColor, textSize, leading, anchor] = [0, 0, '', 0, '', '']; // 텍스트 스타일, 위치 초기값
 
@@ -194,7 +179,7 @@ function writeSvgText(svgCanvas, defInfo, resourceInfo, isChangedPlaceNodeName =
     if (_.isUndefined(foundSvgInfo)) return false;
   }
 
-  // 텍스트 색, 크기, 미세한 위치값 조정  , 0: 장치, 1: 센서, -1: 미분류
+  // 텍스트 색, 크기, 미세한 위치 기본값 조정  , 0: 장치, 1: 센서, -1: 미분류
   if (foundSvgInfo.is_sensor === 1) {
     textColor = 'black';
     anchor = 'middle';
@@ -247,34 +232,18 @@ function writeSvgText(svgCanvas, defInfo, resourceInfo, isChangedPlaceNodeName =
     textY = y1 + height;
   }
 
-  // config를 이용하여 전체 텍스트의 속성 스타일 재정의
-  if (changedAllTextStyle) {
-    [textSize, anchor, leading, textColor] = [
-      changedAllTextStyle.textSize,
-      changedAllTextStyle.anchor,
-      changedAllTextStyle.leading,
-      changedAllTextStyle.textColor,
-    ];
-    // 기존 위치에서 이동
-    textX += changedAllTextStyle.moveScale[0];
-    textY += changedAllTextStyle.moveScale[1];
-  }
-
-  // config를 이용하여 단일 텍스트의 속성 스타일 재정의
-  if (changedSingleTextStyle) {
-    [textSize, textColor, leading, anchor] = [
-      changedSingleTextStyle.styleInfo.textSize,
-      changedSingleTextStyle.styleInfo.textColor,
-      changedSingleTextStyle.styleInfo.leading,
-      changedSingleTextStyle.styleInfo.anchor,
-    ];
-    // 기존 위치에서 이동
-    textX += changedSingleTextStyle.styleInfo.moveScale[0];
-    textY += changedSingleTextStyle.styleInfo.moveScale[1];
+  /** @type {mSvgModelResource} */
+  const foundSvgModelResourceInfo = _.find(map.drawInfo.frame.svgModelResourceList, {
+    id: defInfo.resourceId,
+  });
+  if (foundSvgModelResourceInfo.textStyleInfo) {
+    textColor = foundSvgModelResourceInfo.textStyleInfo.color;
   }
 
   // 제외 할 텍스트 찾기
   checkHidableText(defInfo.id) ? (naming = '') : '';
+
+  // 텍스트 그리기
   const svgText = svgCanvas.text(naming);
   svgText
     .move(textX, textY)
@@ -338,49 +307,50 @@ function checkHidableText(defId) {
  *  그려진 svg map 에서 장치,센서 클릭하여 제어할 수 있는 기능을 바인딩.
  * @param {socekt} socket
  */
-function bindingClickEventNode(socket) {
+function bindingClickEventNode(socket, selectedModeVal = 'view') {
   /** @type {mDeviceMap} */
   const realMap = map;
 
   realMap.drawInfo.positionInfo.svgNodeList.forEach(svgNodeInfo => {
     svgNodeInfo.defList.forEach(nodeDefInfo => {
       const $drawedSvgElement = $(`#${nodeDefInfo.id}`);
+
+      // 클릭 이벤트 바인딩
       $drawedSvgElement.on('click touchstart', () => {
-        // 센서인지 장치인지 체크
-        const foundSvgNodeInfo = _.find(realMap.drawInfo.positionInfo.svgNodeList, info =>
-          _.map(info.defList, 'id').includes(nodeDefInfo.id),
-        );
-        if (_.isUndefined(foundSvgNodeInfo)) return false;
+        const deviceType = svgNodeInfo.is_sensor; // 장치 or 센서 구분  1: 센서, 0: 장치, -1: 미분류
+        const $nodeTspanEleInfo = $(`tspan.${nodeDefInfo.id}`); // svg 그려진 노드 <Tspan> 정보
 
-        // 장치 or 센서 구분  1: 센서, 0: 장치, -1: 미분류
-        // 장치
-        if (foundSvgNodeInfo.is_sensor === 0) {
-          const $nodeTspanEleInfo = $(`tspan.${nodeDefInfo.id}`); // svg 그려진 노드
+        // 장치 and 제어모드
+        if (deviceType === 0 && selectedModeVal === 'control') {
           const currentNodeStatus = _.head($nodeTspanEleInfo).innerHTML; // 현재 들어오는 노드의 최근 데이터
-          const checkedDataStatus = checkDataType(currentNodeStatus); // 데이터의 타입이 true데이터인지 false 데이터인지 체크
-
-          // true 데이터
-          if (checkedDataStatus === 'trueData') {
+          const checkedDataStatus = checkTrueFalseData(currentNodeStatus); // 데이터의 타입이 true데이터인지 false 데이터인지 체크
+          // 현재 상태에 따라 confirm창 내용 변경
+          if (checkedDataStatus === TRUE_DATA) {
             const confirmBool = confirm(`'${nodeDefInfo.name}' 을(를) 닫으시겠습니까?`);
             confirmBool ? executeCommand(socket, '0', nodeDefInfo.id) : null;
-          }
-          // false 데이터
-          else if (checkedDataStatus === 'falseData') {
+          } else if (checkedDataStatus === FALSE_DATA) {
             const confirmBool = confirm(`'${nodeDefInfo.name}' 을(를) 여시겠습니까?`);
             confirmBool ? executeCommand(socket, '1', nodeDefInfo.id) : null;
-          }
-          // 그 외 (error)
-          else {
+          } else if (checkedDataStatus === ERROR_DATA) {
             alert('장치 상태 이상');
           }
-        }
 
-        // 센서
-        // else if (foundSvgNodeInfo.is_sensor === 1) {
-        //   // 센서 input에 입력된 센서의 값 FIXME:
-        //   const inputtedSensorValue = prompt(`'${nodeDefInfo.name}'`);
-        //   inputtedSensorValue ? executeCommand(socket, '3', nodeDefInfo.id) : null;
-        // }
+          // 장치 and 개발모드
+        } else if (deviceType === 0 && selectedModeVal === 'develop') {
+          const inputtedDeviceValue = prompt(`'${nodeDefInfo.name}'`);
+          if (_.isNull(inputtedDeviceValue)) return false;
+
+          // 데이터가 true/ false 값인지 확인
+          const checkedInputValue = checkTrueFalseData(inputtedDeviceValue);
+          checkedInputValue === TRUE_DATA || checkedInputValue === FALSE_DATA
+            ? changeNodeData(nodeDefInfo.id, inputtedDeviceValue)
+            : alert('입력값을 확인해 주세요');
+        }
+        // 센서 and 개발모드
+        else if (deviceType === 1 && selectedModeVal === 'develop') {
+          const inputtedSensorValue = prompt(`'${nodeDefInfo.name}'`);
+          inputtedSensorValue ? changeNodeData(nodeDefInfo.id, inputtedSensorValue) : null;
+        }
       });
     });
   });
@@ -729,7 +699,7 @@ function applyConfigTextStyle(config, targetId) {
  * 데이터가 true값인지 false값인지 구분한다.
  * @param {string} data
  */
-function checkDataType(data) {
+function checkTrueFalseData(data) {
   const falseValList = ['CLOSE', 'CLOSING', 'OFF', 0, '0'];
   const trueValList = ['OPEN', 'OPENING', 'ON', 1, '1'];
   const isFalseValue = _.includes(falseValList, data.toUpperCase());
@@ -737,11 +707,11 @@ function checkDataType(data) {
   let result;
 
   if (isTrueValue && isFalseValue === false) {
-    result = 'trueData';
+    result = TRUE_DATA;
   } else if (isTrueValue === false && isFalseValue) {
-    result = 'falseData';
+    result = FALSE_DATA;
   } else {
-    result = 'error';
+    result = ERROR_DATA;
   }
   return result;
 }
