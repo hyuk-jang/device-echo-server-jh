@@ -51,6 +51,9 @@ class EchoServer extends Model {
         case this.device.SALINITY.KEY:
           nodeInfo.data = _.random(0, 10, true);
           break;
+        case this.device.CONNECTOR_GROUND_RELAY.KEY:
+          nodeInfo.data = _.random(0, 1);
+          break;
         default:
           break;
       }
@@ -392,6 +395,7 @@ class EchoServer extends Model {
 
     return Buffer.concat([
       bufHeader,
+      Buffer.from([30]),
       Buffer.from(cgrList[_.random(0, cgrList.length - 1)]),
       this.bufDataBattery,
     ]);
@@ -457,6 +461,7 @@ class EchoServer extends Model {
         break;
       case 'D_GR':
         dataLoggerData = this.getGroundRelay(findDevice, foundNodeList);
+        BU.CLI(dataLoggerData);
         break;
       default:
         break;

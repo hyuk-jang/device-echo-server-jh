@@ -1047,40 +1047,6 @@ const map = {
     ],
     repeatNodeList: [
       {
-        repeatId: 'RE_NODE_IVT',
-        repeatCategory: 'node',
-        nodeList: [
-          {
-            target_code: '001',
-            target_name: '육상 G2G 다결정',
-          },
-          {
-            target_code: '002',
-            target_name: '육상 일반 다결정',
-          },
-          {
-            target_code: '003',
-            target_name: '수중 G2G 다결정',
-          },
-          {
-            target_code: '004',
-            target_name: '수중 일반 다결정',
-          },
-          {
-            target_code: '005',
-            target_name: '수중 G2G 단결정',
-          },
-          {
-            target_code: '006',
-            target_name: '수중 일반 단결정',
-          },
-          {
-            target_code: '007',
-            target_name: '수중 G2G 개선형 단결정',
-          },
-        ],
-      },
-      {
         repeatId: 'RE_NODE_CNT',
         repeatCategory: 'node',
         nodeList: [
@@ -1119,23 +1085,6 @@ const map = {
             target_name: '수중 G2G 개선형 단결정',
             data_logger_index: 3,
           },
-        ],
-      },
-      {
-        repeatId: 'RE_PREFIX_IVT',
-        repeatCategory: 'prefix',
-        nodeList: [
-          'IVT_PV_V',
-          'IVT_PV_A',
-          'IVT_PV_KW',
-          'IVT_G_RS_V',
-          'IVT_G_R_A',
-          'IVT_G_L_F',
-          'IVT_PW_PF',
-          'IVT_PW_G_KW',
-          'IVT_PW_D_KWH',
-          'IVT_PW_C_KWH',
-          'IVT_TRB',
         ],
       },
     ],
@@ -1425,68 +1374,6 @@ const map = {
         ],
       },
       {
-        target_prefix: 'D_IVT',
-        target_name: '인버터 DL',
-        dataLoggerDeviceList: [
-          {
-            target_name: '육상 G2G(다) 인버터 로거',
-            serial_number: '01',
-            target_code: '001',
-            dccId: 'DCC_IVT_001',
-            dpcId: 'DPC_IVT_001',
-            repeatId: 'RE_PREFIX_IVT',
-          },
-          {
-            target_name: '육상 일반(다) 인버터 로거',
-            serial_number: '02',
-            target_code: '002',
-            dccId: 'DCC_IVT_002',
-            dpcId: 'DPC_IVT_001',
-            repeatId: 'RE_PREFIX_IVT',
-          },
-          {
-            target_name: '수중 G2G(다) 인버터 로거',
-            serial_number: '03',
-            target_code: '003',
-            dccId: 'DCC_IVT_003',
-            dpcId: 'DPC_IVT_001',
-            repeatId: 'RE_PREFIX_IVT',
-          },
-          {
-            target_name: '수중 일반(다) 인버터 로거',
-            serial_number: '04',
-            target_code: '004',
-            dccId: 'DCC_IVT_004',
-            dpcId: 'DPC_IVT_001',
-            repeatId: 'RE_PREFIX_IVT',
-          },
-          {
-            target_name: '수중 G2G(단) 인버터 로거',
-            serial_number: '05',
-            target_code: '005',
-            dccId: 'DCC_IVT_005',
-            dpcId: 'DPC_IVT_001',
-            repeatId: 'RE_PREFIX_IVT',
-          },
-          {
-            target_name: '수중 일반(단) 인버터 로거',
-            serial_number: '06',
-            target_code: '006',
-            dccId: 'DCC_IVT_006',
-            dpcId: 'DPC_IVT_001',
-            repeatId: 'RE_PREFIX_IVT',
-          },
-          {
-            target_name: '개선형 수중 G2G(단) 인버터 로거',
-            serial_number: '01',
-            target_code: '007',
-            dccId: 'DCC_IVT_007',
-            dpcId: 'DPC_IVT_001',
-            repeatId: 'RE_PREFIX_IVT',
-          },
-        ],
-      },
-      {
         target_prefix: 'D_CNT',
         target_name: '접속반',
         dataLoggerDeviceList: [
@@ -1538,30 +1425,6 @@ const map = {
             target_prefix: 'CNT_V',
             repeatId: 'RE_NODE_CNT',
           },
-          {
-            target_id: 'pvVol',
-            target_name: '인버터 PV 전압',
-            target_prefix: 'IVT_PV_V',
-            repeatId: 'RE_NODE_IVT',
-          },
-          {
-            target_id: 'gridRsVol',
-            target_name: 'RS 선간 전압',
-            target_prefix: 'IVT_G_RS_V',
-            repeatId: 'RE_NODE_IVT',
-          },
-          {
-            target_id: 'gridStVol',
-            target_name: 'ST 선간 전압',
-            target_prefix: 'IVT_G_ST_V',
-            repeatId: 'RE_NODE_IVT',
-          },
-          {
-            target_id: 'gridTrVol',
-            target_name: 'TR 선간 전압',
-            target_prefix: 'IVT_G_TR_V',
-            repeatId: 'RE_NODE_IVT',
-          },
         ],
       },
       {
@@ -1576,167 +1439,7 @@ const map = {
             target_id: 'amp',
             target_name: '접속반 전류',
             target_prefix: 'CNT_A',
-            repeatId: 'RE_NODE_IVT',
-          },
-          {
-            target_id: 'pvAmp',
-            target_name: '인버터 PV 전류',
-            target_prefix: 'IVT_PV_A',
-            repeatId: 'RE_NODE_IVT',
-          },
-          {
-            target_id: 'gridRAmp',
-            target_name: '인버터 R상 전류',
-            target_prefix: 'IVT_G_R_A',
-            repeatId: 'RE_NODE_IVT',
-          },
-          {
-            target_id: 'gridSAmp',
-            target_name: '인버터 S상 전류',
-            target_prefix: 'IVT_G_S_A',
-            repeatId: 'RE_NODE_IVT',
-          },
-          {
-            target_id: 'gridTAmp',
-            target_name: '인버터 T상 전류',
-            target_prefix: 'IVT_G_T_A',
-            repeatId: 'RE_NODE_IVT',
-          },
-        ],
-      },
-      {
-        target_id: 'W',
-        target_name: '전력량',
-        is_sensor: 1,
-        save_db_type: BLOCK,
-        data_unit: 'W',
-        description: '1 와트(기호 W)는 1 초 동안의 1 줄(N·m)에 해당하는 일률의 SI 단위',
-        defList: [],
-      },
-      {
-        target_id: 'kW',
-        target_name: '전력량',
-        is_sensor: 1,
-        save_db_type: BLOCK,
-        data_unit: 'kW',
-        description: '1 킬로와트(기호 kW)는 1 초 동안의 1,000 줄(N·m)에 해당하는 일률의 SI 단위',
-        defList: [
-          {
-            target_id: 'pvKw',
-            target_name: '인버터 PV 출력',
-            target_prefix: 'IVT_PV_KW',
-            description: 'PV',
-            repeatId: 'RE_NODE_IVT',
-          },
-          {
-            target_id: 'powerPvKw',
-            target_name: '태양 전지 현재 전력',
-            target_prefix: 'IVT_PW_PV_KW',
-            description: 'Power',
-            repeatId: 'RE_NODE_IVT',
-          },
-          {
-            target_id: 'powerGridKw',
-            target_name: '인버터 현재 전력',
-            target_prefix: 'IVT_PW_G_KW',
-            description: 'Power',
-            repeatId: 'RE_NODE_IVT',
-          },
-        ],
-      },
-      {
-        target_id: 'MW',
-        target_name: '전력량',
-        is_sensor: 1,
-        save_db_type: BLOCK,
-        data_unit: 'MW',
-        description:
-          '1 메가와트(기호 MW)는 1 초 동안의 1,000,000 줄(N·m)에 해당하는 일률의 SI 단위',
-        defList: [],
-      },
-      {
-        target_id: 'Wh',
-        target_name: '전력량',
-        is_sensor: 1,
-        save_db_type: BLOCK,
-        data_unit: 'Wh',
-        description: '시간당 에너지 단위, 1 W의 일률로 1 시간 동안 하는 일의 양',
-        defList: [],
-      },
-      {
-        target_id: 'kWh',
-        target_name: '전력량',
-        is_sensor: 1,
-        save_db_type: BLOCK,
-        data_unit: 'kWh',
-        description: '시간당 에너지 단위, 1 kW의 일률로 1 시간 동안 하는 일의 양',
-        defList: [
-          {
-            target_id: 'powerDailyKwh',
-            target_name: '인버터 하루 발전량',
-            target_prefix: 'IVT_PW_D_KWH',
-            repeatId: 'RE_NODE_IVT',
-          },
-          {
-            target_id: 'powerCpKwh',
-            target_name: '인버터 누적 발전량',
-            target_prefix: 'IVT_PW_C_KWH',
-            description: 'Cumulative Power Generation',
-            repeatId: 'RE_NODE_IVT',
-          },
-        ],
-      },
-      {
-        target_id: 'MWh',
-        target_name: '전력량',
-        is_sensor: 1,
-        save_db_type: BLOCK,
-        data_unit: 'MWh',
-        description: '시간당 에너지 단위, 1 MW의 일률로 1 시간 동안 하는 일의 양',
-        defList: [],
-      },
-      {
-        target_id: 'powerFactor',
-        target_name: '역률',
-        is_sensor: 1,
-        save_db_type: BLOCK,
-        data_unit: '%',
-        defList: [
-          {
-            target_id: 'powerFactor',
-            target_name: '인버터 누적 발전량',
-            target_prefix: 'IVT_PW_PF',
-            repeatId: 'RE_NODE_IVT',
-          },
-        ],
-      },
-      {
-        target_id: 'frequency',
-        target_name: '주파수',
-        is_sensor: 1,
-        save_db_type: BLOCK,
-        data_unit: 'Hz',
-        defList: [
-          {
-            target_id: 'gridLf',
-            target_name: '계통 주파수',
-            target_prefix: 'IVT_G_L_F',
-            repeatId: 'RE_NODE_IVT',
-          },
-        ],
-      },
-      {
-        target_id: 'trouble',
-        target_name: '오류 목록',
-        is_sensor: 1,
-        save_db_type: TROUBLE,
-        description: '장치에서 보내오는 이상 데이터',
-        defList: [
-          {
-            target_id: 'operTroubleList',
-            target_name: '인버터 에러',
-            target_prefix: 'IVT_TRB',
-            repeatId: 'RE_NODE_IVT',
+            repeatId: 'RE_NODE_CNT',
           },
         ],
       },
@@ -1991,54 +1694,6 @@ const map = {
   },
   relationInfo: {
     placeRelationList: [
-      {
-        target_id: 'inverter',
-        target_name: '인버터',
-        description: '인버터를 설치한 공간',
-        defList: [
-          {
-            target_id: 'inverter',
-            target_prefix: 'P_IVT',
-            placeList: [
-              {
-                target_code: '001',
-                target_name: '육상 G2G 다결정',
-                repeatId: 'RE_PREFIX_IVT',
-              },
-              {
-                target_code: '002',
-                target_name: '육상 일반 다결정',
-                repeatId: 'RE_PREFIX_IVT',
-              },
-              {
-                target_code: '003',
-                target_name: '수중 G2G 다결정',
-                repeatId: 'RE_PREFIX_IVT',
-              },
-              {
-                target_code: '004',
-                target_name: '수중 일반 다결정',
-                repeatId: 'RE_PREFIX_IVT',
-              },
-              {
-                target_code: '005',
-                target_name: '수중 G2G 단결정',
-                repeatId: 'RE_PREFIX_IVT',
-              },
-              {
-                target_code: '006',
-                target_name: '수중 일반 단결정',
-                repeatId: 'RE_PREFIX_IVT',
-              },
-              {
-                target_code: '007',
-                target_name: '수중 G2G 개선형 단결정',
-                repeatId: 'RE_PREFIX_IVT',
-              },
-            ],
-          },
-        ],
-      },
       {
         target_id: 'connector',
         target_name: '접속반',
