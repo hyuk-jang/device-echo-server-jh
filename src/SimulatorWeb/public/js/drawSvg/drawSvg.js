@@ -368,7 +368,7 @@ function executeCommand(socket, controlType, nodeId) {
     contents: {
       wrapCmdType: 'CONTROL',
       nodeId,
-      controlValue: controlType,
+      singleControlType: controlType,
       rank: 2,
     },
   };
