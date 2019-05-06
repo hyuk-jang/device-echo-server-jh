@@ -18,8 +18,8 @@ class EchoServer extends Model {
 
     this.bufDataBattery = Buffer.from([0x31, 0x30, 0x2e, 0x32]);
 
-    this.normalDeviceOperTime = 500;
-    this.pumpDeviceOperTime = 1000;
+    this.normalDeviceOperTime = 300;
+    this.pumpDeviceOperTime = 500;
   }
 
   /**
