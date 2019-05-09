@@ -1,0 +1,1 @@
+nodemon "./test/UPSAS/xbee/socketServer.js"
