@@ -16,10 +16,14 @@ module.exports = {
         const { repeatId = '' } = nodeDefInfo;
         // repeatId가 있을 경우
         if (repeatId.length) {
-          nodeDefInfo.nodeList = _.find(repeatNodeList, {
+          const fountDefInfo = _.find(repeatNodeList, {
             repeatId,
             repeatCategory: 'node',
-          }).nodeList;
+          });
+          if (fountDefInfo !== undefined) {
+            nodeDefInfo.nodeList = fountDefInfo.nodeList;
+          }
+
           // delete nodeDefInfo.repeatId;
         }
       });
