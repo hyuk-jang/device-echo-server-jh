@@ -46,7 +46,7 @@ function operationServer() {
   });
 
   // 생성된 에코서버
-  const echoServer = control.attachDevice(deviceList, deviceMap.UPSAS.muan6kW);
+  const echoServer = control.attachDevice(deviceList, deviceMap.UPSAS.muan100kW);
 
   // 시뮬레이터 웹 서버 구동
   const simulWeb = new SimulatorWeb(9100, echoServer);

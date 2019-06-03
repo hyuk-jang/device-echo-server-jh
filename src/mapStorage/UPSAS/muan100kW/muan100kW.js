@@ -115,29 +115,51 @@ const map = {
         {
           id: 'waterDoor',
           type: 'rect',
-          elementDrawInfo: { width: 80, height: 80, color: '#b45b95', opacity: 1 },
+          elementDrawInfo: {
+            width: 80,
+            height: 80,
+            color: ['#a3a3a3', '#b45b95', '#dc1d1f'],
+            opacity: 1,
+          },
           textStyleInfo: { color: '' },
         },
         {
           id: 'gateValve',
           type: 'rect',
-          elementDrawInfo: { width: 60, height: 60, color: 'yellow', opacity: 1 },
+          elementDrawInfo: {
+            width: 60,
+            height: 60,
+            color: ['#a3a3a3', 'yellow', '#dc1d1f'],
+            opacity: 1,
+          },
           textStyleInfo: { color: '' },
         },
         {
           id: 'overPump',
           type: 'circle',
-          elementDrawInfo: { width: 80, height: 80, radius: 80, color: '#22fb00', opacity: 1 },
+          elementDrawInfo: {
+            width: 80,
+            height: 80,
+            radius: 80,
+            color: ['#a3a3a3', '#22fb00', '#dc1d1f'],
+            opacity: 1,
+          },
           textStyleInfo: { color: '' },
         },
         {
           id: 'underPump',
           type: 'circle',
-          elementDrawInfo: { width: 60, height: 60, radius: 60, color: '#8b24b0', opacity: 1 },
+          elementDrawInfo: {
+            width: 60,
+            height: 60,
+            radius: 60,
+            color: ['#a3a3a3', '#8b24b0', '#dc1d1f'],
+            opacity: 1,
+          },
           textStyleInfo: { color: '' },
         },
         {
-          id: 'output',
+          id: 'outlet',
           type: 'circle',
           elementDrawInfo: { width: 20, height: 20, radius: 20, color: 'black', opacity: 1 },
           textStyleInfo: { color: '' },
@@ -665,98 +687,98 @@ const map = {
       ],
       svgNodeList: [
         {
-          nodeDefId: 'output',
+          nodeDefId: 'outlet',
           is_sensor: -1,
           defList: [
             {
               id: 'O_004',
               name: '배출구_004',
               placeId: 'SEB_1',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [356, 2750],
             },
             {
               id: 'O_005',
               name: '배출구_005',
               placeId: 'SEB_2',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [616, 2750],
             },
             {
               id: 'O_006',
               name: '배출구_006',
               placeId: 'SEB_3',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [872, 2750],
             },
             {
               id: 'O_007',
               name: '배출구_007',
               placeId: 'SEB_4',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [1146, 2750],
             },
             {
               id: 'O_008',
               name: '배출구_008',
               placeId: 'SEB_5',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [1284, 2750],
             },
             {
               id: 'O_009',
               name: '배출구_009',
               placeId: 'SEB_6',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [1556, 2750],
             },
             {
               id: 'O_010',
               name: '배출구_010',
               placeId: 'SEB_7',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [1820, 2750],
             },
             {
               id: 'O_011',
               name: '배출구_011',
               placeId: 'SEB_8',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [2106, 2750],
             },
             {
               id: 'O_002',
               name: '배출구_002',
               placeId: 'NEB_1',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [120, 560],
             },
             {
               id: 'O_003',
               name: '배출구_003',
               placeId: 'NEB_2',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [470, 2010],
             },
             {
               id: 'O_012',
               name: '배출구_012',
               placeId: 'NCB',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [560, 3621],
             },
             {
               id: 'O_013',
               name: '배출구_013',
               placeId: 'BW_5',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [946, 3600],
             },
             {
               id: 'O_001',
               name: '배출구_001',
               placeId: 'RV',
-              resourceId: 'output',
+              resourceId: 'outlet',
               point: [120, 170],
             },
           ],
@@ -1366,7 +1388,7 @@ const map = {
     },
   },
   setInfo: {
-    mainInfo: { main_seq: 1, uuid: 'aaaaa' },
+    mainInfo: { main_seq: 2, uuid: 'bbbbb' },
     dccConstructorList: [
       {
         dccId: 'DCC_TEST_001',
@@ -1739,7 +1761,7 @@ const map = {
         target_name: '펌프 DL',
         dataLoggerDeviceList: [
           {
-            serial_number: '0013A20040F70001',
+            serial_number: '0013A20040F72001',
             target_code: '001',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1747,7 +1769,7 @@ const map = {
             nodeList: ['P_001'],
           },
           {
-            serial_number: '0013A20040F70002',
+            serial_number: '0013A20040F72002',
             target_code: '002',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1755,7 +1777,7 @@ const map = {
             nodeList: ['P_002'],
           },
           {
-            serial_number: '0013A20040F70003',
+            serial_number: '0013A20040F72003',
             target_code: '003',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1763,7 +1785,7 @@ const map = {
             nodeList: ['P_003'],
           },
           {
-            serial_number: '0013A20040F70004',
+            serial_number: '0013A20040F72004',
             target_code: '004',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1771,7 +1793,7 @@ const map = {
             nodeList: ['P_004'],
           },
           {
-            serial_number: '0013A20040F70005',
+            serial_number: '0013A20040F72005',
             target_code: '005',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1779,7 +1801,7 @@ const map = {
             nodeList: ['P_005'],
           },
           {
-            serial_number: '0013A20040F70006',
+            serial_number: '0013A20040F72006',
             target_code: '006',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1787,7 +1809,7 @@ const map = {
             nodeList: ['P_006'],
           },
           {
-            serial_number: '0013A20040F70007',
+            serial_number: '0013A20040F72007',
             target_code: '007',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1795,7 +1817,7 @@ const map = {
             nodeList: ['P_007'],
           },
           {
-            serial_number: '0013A20040F70008',
+            serial_number: '0013A20040F72008',
             target_code: '008',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1803,7 +1825,7 @@ const map = {
             nodeList: ['P_008'],
           },
           {
-            serial_number: '0013A20040F70009',
+            serial_number: '0013A20040F72009',
             target_code: '009',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1811,7 +1833,7 @@ const map = {
             nodeList: ['P_009'],
           },
           {
-            serial_number: '0013A20040F70010',
+            serial_number: '0013A20040F72010',
             target_code: '010',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1819,7 +1841,7 @@ const map = {
             nodeList: ['P_010'],
           },
           {
-            serial_number: '0013A20040F70011',
+            serial_number: '0013A20040F72011',
             target_code: '011',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1827,7 +1849,7 @@ const map = {
             nodeList: ['P_011'],
           },
           {
-            serial_number: '0013A20040F70012',
+            serial_number: '0013A20040F72012',
             target_code: '012',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1835,7 +1857,7 @@ const map = {
             nodeList: ['P_012'],
           },
           {
-            serial_number: '0013A20040F70013',
+            serial_number: '0013A20040F72013',
             target_code: '013',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1843,7 +1865,7 @@ const map = {
             nodeList: ['P_013'],
           },
           {
-            serial_number: '0013A20040F70014',
+            serial_number: '0013A20040F72014',
             target_code: '014',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1857,23 +1879,39 @@ const map = {
         target_name: '센서 ',
         dataLoggerDeviceList: [
           {
-            serial_number: '0013A20040F70001',
+            serial_number: '0013A20040F71001',
             target_code: '001',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_001',
-            nodeList: ['WL_003'],
+            nodeList: ['WL_001'],
           },
           {
-            serial_number: '0013A20040F70002',
+            serial_number: '0013A20040F71002',
             target_code: '002',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_001',
-            nodeList: ['S_001', 'WL_004'],
+            nodeList: ['WL_002'],
           },
           {
-            serial_number: '0013A20040F70005',
+            serial_number: '0013A20040F71003',
+            target_code: '003',
+            isAddSerialNumberToDCC: false,
+            dccId: 'DCC_SSCS_001',
+            dpcId: 'DPC_001',
+            nodeList: ['S_001', 'WL_003'],
+          },
+          {
+            serial_number: '0013A20040F71004',
+            target_code: '004',
+            isAddSerialNumberToDCC: false,
+            dccId: 'DCC_SSCS_001',
+            dpcId: 'DPC_001',
+            nodeList: ['WL_004'],
+          },
+          {
+            serial_number: '0013A20040F71005',
             target_code: '005',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1881,7 +1919,7 @@ const map = {
             nodeList: ['WL_005'],
           },
           {
-            serial_number: '0013A20040F70006',
+            serial_number: '0013A20040F71006',
             target_code: '006',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1889,7 +1927,7 @@ const map = {
             nodeList: ['WL_006'],
           },
           {
-            serial_number: '0013A20040F70007',
+            serial_number: '0013A20040F71007',
             target_code: '007',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
@@ -1897,330 +1935,20 @@ const map = {
             nodeList: ['WL_007'],
           },
           {
-            serial_number: '0013A20040F70008',
+            serial_number: '0013A20040F71008',
             target_code: '008',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_001',
-            nodeList: ['WL_008'],
+            nodeList: ['WL_016'],
           },
           {
-            serial_number: '0013A20040F70009',
+            serial_number: '0013A20040F71009',
             target_code: '009',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['WL_009', 'S_002', 'MRT_001', 'BT_001'],
-          },
-          {
-            serial_number: '0013A20040F70010',
-            target_code: '010',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['WL_010', 'S_003', 'MRT_002'],
-          },
-          {
-            serial_number: '0013A20040F70011',
-            target_code: '011',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['WL_011', 'S_004', 'MRT_003'],
-          },
-          {
-            serial_number: '0013A20040F70012',
-            target_code: '012',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['WL_012', 'S_005', 'MRT_004'],
-          },
-          {
-            serial_number: '0013A20040F70013',
-            target_code: '013',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['WL_013', 'S_006', 'MRT_005'],
-          },
-          {
-            serial_number: '0013A20040F70014',
-            target_code: '014',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['WL_014', 'S_007', 'MRT_006'],
-          },
-          {
-            serial_number: '0013A20040F70015',
-            target_code: '015',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['WL_015', 'S_008', 'MRT_007'],
-          },
-          {
-            serial_number: '0013A20040F70016',
-            target_code: '016',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['WL_016', 'S_009', 'MRT_008'],
-          },
-          {
-            serial_number: '0013A20040F70017',
-            target_code: '017',
             isAddSerialNumberToDCC: false,
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_001',
             nodeList: ['WL_017'],
-          },
-        ],
-      },
-      {
-        target_prefix: 'D_GR',
-        target_name: '지락 계전기 DL',
-        dataLoggerDeviceList: [
-          {
-            serial_number: '0013A20040F70001',
-            target_code: '001',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_001', 'CGR_001'],
-          },
-          {
-            serial_number: '0013A20040F70002',
-            target_code: '002',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_002', 'CGR_002'],
-          },
-          {
-            serial_number: '0013A20040F70002',
-            target_code: '002',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_002', 'CGR_002'],
-          },
-          {
-            serial_number: '0013A20040F70002',
-            target_code: '002',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_002', 'CGR_002'],
-          },
-          {
-            serial_number: '0013A20040F70002',
-            target_code: '002',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_002', 'CGR_002'],
-          },
-          {
-            serial_number: '0013A20040F70002',
-            target_code: '002',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_002', 'CGR_002'],
-          },
-          {
-            serial_number: '0013A20040F70003',
-            target_code: '003',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_003', 'CGR_003'],
-          },
-          {
-            serial_number: '0013A20040F70003',
-            target_code: '003',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_003', 'CGR_003'],
-          },
-          {
-            serial_number: '0013A20040F70004',
-            target_code: '004',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_004', 'CGR_004'],
-          },
-          {
-            serial_number: '0013A20040F70005',
-            target_code: '005',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_005', 'CGR_005'],
-          },
-          {
-            serial_number: '0013A20040F70006',
-            target_code: '006',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_006', 'CGR_006'],
-          },
-          {
-            serial_number: '0013A20040F70006',
-            target_code: '006',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_006', 'CGR_006'],
-          },
-          {
-            serial_number: '0013A20040F70007',
-            target_code: '007',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_007', 'CGR_007'],
-          },
-          {
-            serial_number: '0013A20040F70008',
-            target_code: '008',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_008', 'CGR_008'],
-          },
-          {
-            serial_number: '0013A20040F70009',
-            target_code: '009',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_009', 'CGR_009'],
-          },
-          {
-            serial_number: '0013A20040F70010',
-            target_code: '010',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_010', 'CGR_010'],
-          },
-          {
-            serial_number: '0013A20040F70011',
-            target_code: '011',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_011', 'CGR_011'],
-          },
-          {
-            serial_number: '0013A20040F70012',
-            target_code: '012',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_012', 'CGR_012'],
-          },
-          {
-            serial_number: '0013A20040F70013',
-            target_code: '013',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_013', 'CGR_013'],
-          },
-          {
-            serial_number: '0013A20040F70014',
-            target_code: '014',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_014', 'CGR_014'],
-          },
-          {
-            serial_number: '0013A20040F70015',
-            target_code: '015',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_015', 'CGR_015'],
-          },
-          {
-            serial_number: '0013A20040F70016',
-            target_code: '016',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_016', 'CGR_016'],
-          },
-          {
-            serial_number: '0013A20040F70017',
-            target_code: '017',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_017', 'CGR_017'],
-          },
-          {
-            serial_number: '0013A20040F70018',
-            target_code: '018',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_018', 'CGR_018'],
-          },
-          {
-            serial_number: '0013A20040F70019',
-            target_code: '019',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_019', 'CGR_019'],
-          },
-          {
-            serial_number: '0013A20040F70020',
-            target_code: '020',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_020', 'CGR_020'],
-          },
-          {
-            serial_number: '0013A20040F70021',
-            target_code: '021',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_021', 'CGR_021'],
-          },
-          {
-            serial_number: '0013A20040F70022',
-            target_code: '022',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_022', 'CGR_022'],
-          },
-          {
-            serial_number: '0013A20040F70023',
-            target_code: '023',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_023', 'CGR_023'],
-          },
-          {
-            serial_number: '0013A20040F70024',
-            target_code: '024',
-            isAddSerialNumberToDCC: false,
-            dccId: 'DCC_SSCS_001',
-            dpcId: 'DPC_001',
-            nodeList: ['CGR_024', 'CGR_024'],
           },
         ],
       },
@@ -2411,7 +2139,7 @@ const map = {
         ],
       },
       {
-        target_id: 'gatValve',
+        target_id: 'gateValve',
         target_name: '수문',
         is_sensor: 0,
         data_unit: null,
@@ -2544,7 +2272,7 @@ const map = {
                 nodeList: ['S_002', 'WL_008', 'MRT_001', 'BT_001', 'O_004'],
                 depth: 5,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2570,7 +2298,7 @@ const map = {
                 nodeList: ['S_003', 'WL_009', 'MRT_002', 'O_005'],
                 depth: 5,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2596,7 +2324,7 @@ const map = {
                 nodeList: ['S_004', 'WL_010', 'MRT_003', 'O_006'],
                 depth: 5,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2622,7 +2350,7 @@ const map = {
                 nodeList: ['S_005', 'WL_011', 'MRT_004', 'O_007'],
                 depth: 5,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2648,7 +2376,7 @@ const map = {
                 nodeList: ['S_006', 'WL_012', 'MRT_005', 'O_008'],
                 depth: 5,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2674,7 +2402,7 @@ const map = {
                 nodeList: ['S_007', 'WL_013', 'MRT_006', 'O_009'],
                 depth: 5,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2700,7 +2428,7 @@ const map = {
                 nodeList: ['S_008', 'WL_014', 'MRT_007', 'O_010'],
                 depth: 5,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2726,7 +2454,7 @@ const map = {
                 nodeList: ['S_009', 'WL_015', 'MRT_008', 'O_011'],
                 depth: 5,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2759,7 +2487,7 @@ const map = {
                 nodeList: ['WD_001', 'WD_002', 'WL_002', 'O_002'],
                 depth: 5,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2779,7 +2507,7 @@ const map = {
                 nodeList: ['WD_001', 'WD_002', 'WD_003', 'WD_004', 'S_001', 'WL_003', 'O_003'],
                 depth: 4,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2807,7 +2535,7 @@ const map = {
                 nodeList: ['WD_008', 'WL_016', 'O_012'],
                 depth: 0,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 10,
@@ -2819,7 +2547,7 @@ const map = {
                       putPlaceRankList: ['BW_5', 'SEA'],
                     },
                   ],
-                  placeSize: { width: 3300, height: 1000, depth: 20 },
+                  placeSize: { width: 800, height: 1000, depth: 20 },
                 },
               },
             ],
@@ -2841,7 +2569,7 @@ const map = {
                 nodeList: ['WD_006', 'P_004', 'WL_004'],
                 depth: -1,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 100,
@@ -2867,7 +2595,7 @@ const map = {
                 ],
                 depth: -1,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 100,
@@ -2884,7 +2612,7 @@ const map = {
                 nodeList: ['P_010', 'P_011', 'P_012', 'GV_102', 'WL_006'],
                 depth: -1,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 100,
@@ -2910,7 +2638,7 @@ const map = {
                 nodeList: ['P_013', 'GV_103', 'WL_007'],
                 depth: -1,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 100,
@@ -2927,7 +2655,7 @@ const map = {
                 nodeList: ['WD_009', 'P_014', 'WL_017', 'O_013'],
                 depth: -1,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 100,
@@ -2944,7 +2672,7 @@ const map = {
                 nodeList: [],
                 depth: -1,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 100,
@@ -2975,7 +2703,7 @@ const map = {
                 nodeList: ['P_003', 'WL_001', 'O_001'],
                 depth: -1,
                 place_info: {
-                  criticalControlList: [
+                  thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
                       maxValue: 100,
@@ -3308,7 +3036,7 @@ const map = {
           'O_012',
           'O_013',
         ],
-        resourceIdList: ['output'],
+        resourceIdList: ['outlet'],
       },
       {
         targetIdList: [
@@ -3361,14 +3089,18 @@ const map = {
       },
       { targetIdList: ['BT_001'], resourceIdList: ['brineTemperature'] },
     ],
-    hiddenTextSvgModelResourceIdList: ['pipeLine'],
+    hiddenTextSvgModelResourceIdList: ['pipeLine', 'outlet', 'waterWay'],
   },
   controlInfo: {
     flowCmdList: [
       {
+        srcPlaceId: 'SEA',
+        destList: [{ destPlaceId: 'RV', trueNodeList: ['P_001'], falseNodeList: [] }],
+      },
+      {
         srcPlaceId: 'RV',
         destList: [
-          { destPlaceId: 'NEB_1', trueNodeList: ['P_001'], falseNodeList: ['WD_001', 'WD_002'] },
+          { destPlaceId: 'NEB_1', trueNodeList: ['P_003'], falseNodeList: ['WD_001', 'WD_002'] },
         ],
       },
       {
@@ -3519,11 +3251,7 @@ const map = {
       {
         srcPlaceId: 'NCB',
         destList: [
-          {
-            destPlaceId: 'BW_5',
-            trueNodeList: ['WD_008', 'WD_009'],
-            falseNodeList: ['WD_010', 'WD_011'],
-          },
+          { destPlaceId: 'BW_5', trueNodeList: ['WD_008', 'WD_009'], falseNodeList: ['WD_010'] },
         ],
       },
       {
@@ -3618,7 +3346,7 @@ const map = {
       },
       {
         srcPlaceId: 'BW_4',
-        destList: [{ destPlaceId: 'BW_5', trueNodeList: ['P_013'], falseNodeList: ['WD_009'] }],
+        destList: [{ destPlaceId: 'BW_5', trueNodeList: ['P_013'], falseNodeList: [] }],
       },
       {
         srcPlaceId: 'BW_5',
@@ -3633,7 +3361,7 @@ const map = {
         destList: [
           {
             destPlaceId: 'SEA',
-            trueNodeList: ['WD_003', 'WD_004', 'WD_05'],
+            trueNodeList: ['WD_003', 'WD_004', 'WD_005'],
             falseNodeList: ['WD_006', 'WD_007'],
           },
         ],
@@ -3718,7 +3446,7 @@ const map = {
           'P_004',
           'P_005',
           'P_006',
-          'P_0071',
+          'P_007',
           'P_008',
           'P_009',
           'P_010',

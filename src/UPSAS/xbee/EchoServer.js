@@ -406,7 +406,7 @@ class EchoServer extends Model {
    * @param {xbeeApi_0x10} xbeeApi0x10
    */
   onData(xbeeApi0x10) {
-    // BU.CLI(xbeeApi0x10);
+    BU.CLI(xbeeApi0x10);
     const strData = xbeeApi0x10.toString();
     if (BU.IsJsonString(strData)) {
       const jsonData = JSON.parse(strData);
@@ -477,6 +477,8 @@ class EchoServer extends Model {
       type: 0x90,
       data: dataLoggerData,
     };
+
+    BU.CLI(returnValue);
 
     return returnValue;
   }

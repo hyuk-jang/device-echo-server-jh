@@ -84,7 +84,7 @@ class Control {
               stream = socket.pipe(split(this.parserInfo.option));
               stream.on('data', data => {
                 data += this.parserInfo.option;
-                BU.CLI(data);
+                // BU.CLI(data);
                 this.spreadMsg(socket, data);
               });
               break;
