@@ -154,7 +154,7 @@ class Control {
       // BU.CLI(_.get(returnValue, 'length'), returnValue);
       if (_.isEmpty(returnValue) || _.isBoolean(returnValue)) return;
 
-      BU.CLI(returnValue);
+      // BU.CLI(returnValue);
       socket.write(returnValue);
     }, 1);
   }
