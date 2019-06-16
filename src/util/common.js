@@ -80,6 +80,9 @@ module.exports = {
    */
   makeNodeList: deviceMap => {
     const returnList = [];
+
+    const { placeRelationList } = deviceMap.relationInfo;
+
     deviceMap.setInfo.nodeStructureList.forEach(nodeClassInfo => {
       // 단순 표기를 위한 node는 제외
       if (nodeClassInfo.is_sensor < 0) return false;
@@ -101,6 +104,7 @@ module.exports = {
             defId: nodeDefInfo.target_id,
             defName: nodeDefInfo.target_name,
             isSensor: nodeClassInfo.is_sensor,
+            targetCode: nodeInfo.target_code,
             nodeId,
             data: null,
           };
@@ -150,6 +154,7 @@ module.exports = {
  * @property {string} defId
  * @property {string} defName
  * @property {number} isSensor
+ * @property {string} targetCode
  * @property {string} nodeId
  * @property {*} data
  */

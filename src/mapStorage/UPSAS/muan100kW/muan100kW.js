@@ -2279,16 +2279,16 @@ const map = {
                       maxValue: 10,
                       upperLimitValue: 7,
                       setValue: 5,
-                      lowerLimitValue: 3,
+                      lowerLimitValue: 2.9,
                       minValue: 1,
                       callPlaceRankList: ['BW_2'],
                       putPlaceRankList: ['BW_2', 'SEA'],
                     },
-                    { ndId: 'salinity', upperLimitValue: 10.5, putPlaceRankList: ['BW_3', 'SEA'] },
+                    { ndId: 'salinity', upperLimitValue: 10.5, putPlaceRankList: ['BW_3', 'BW_2'] },
                     {
                       ndId: 'moduleRearTemperature',
                       upperLimitValue: 40,
-                      putPlaceRankList: ['BW_2', 'SEA'],
+                      putPlaceRankList: ['BW_2'],
                     },
                   ],
                   placeSize: { width: 356, height: 2800, depth: 15 },
@@ -2305,16 +2305,16 @@ const map = {
                       maxValue: 10,
                       upperLimitValue: 7,
                       setValue: 5,
-                      lowerLimitValue: 3,
+                      lowerLimitValue: 2.9,
                       minValue: 1,
                       callPlaceRankList: ['BW_2'],
                       putPlaceRankList: ['BW_2', 'SEA'],
                     },
-                    { ndId: 'salinity', upperLimitValue: 10.5, putPlaceRankList: ['BW_3', 'SEA'] },
+                    { ndId: 'salinity', upperLimitValue: 10.5, putPlaceRankList: ['BW_3', 'BW_2'] },
                     {
                       ndId: 'moduleRearTemperature',
                       upperLimitValue: 40,
-                      putPlaceRankList: ['BW_2', 'SEA'],
+                      putPlaceRankList: ['BW_2'],
                     },
                   ],
                   placeSize: { width: 356, height: 2800, depth: 15 },
@@ -2331,16 +2331,16 @@ const map = {
                       maxValue: 10,
                       upperLimitValue: 7,
                       setValue: 5,
-                      lowerLimitValue: 3,
+                      lowerLimitValue: 2.9,
                       minValue: 1,
                       callPlaceRankList: ['BW_2'],
                       putPlaceRankList: ['BW_2', 'SEA'],
                     },
-                    { ndId: 'salinity', upperLimitValue: 10.5, putPlaceRankList: ['BW_3', 'SEA'] },
+                    { ndId: 'salinity', upperLimitValue: 10.5, putPlaceRankList: ['BW_3', 'BW_2'] },
                     {
                       ndId: 'moduleRearTemperature',
                       upperLimitValue: 40,
-                      putPlaceRankList: ['BW_2', 'SEA'],
+                      putPlaceRankList: ['BW_2'],
                     },
                   ],
                   placeSize: { width: 356, height: 2800, depth: 15 },
@@ -2357,16 +2357,16 @@ const map = {
                       maxValue: 10,
                       upperLimitValue: 7,
                       setValue: 5,
-                      lowerLimitValue: 3,
+                      lowerLimitValue: 2.9,
                       minValue: 1,
                       callPlaceRankList: ['BW_2'],
                       putPlaceRankList: ['BW_2', 'SEA'],
                     },
-                    { ndId: 'salinity', upperLimitValue: 10.5, putPlaceRankList: ['BW_3', 'SEA'] },
+                    { ndId: 'salinity', upperLimitValue: 10.5, putPlaceRankList: ['BW_3', 'BW_2'] },
                     {
                       ndId: 'moduleRearTemperature',
                       upperLimitValue: 40,
-                      putPlaceRankList: ['BW_2', 'SEA'],
+                      putPlaceRankList: ['BW_2'],
                     },
                   ],
                   placeSize: { width: 356, height: 2800, depth: 15 },
@@ -2383,16 +2383,16 @@ const map = {
                       maxValue: 10,
                       upperLimitValue: 7,
                       setValue: 5,
-                      lowerLimitValue: 3,
+                      lowerLimitValue: 2.9,
                       minValue: 1,
                       callPlaceRankList: ['BW_2'],
                       putPlaceRankList: ['BW_2', 'SEA'],
                     },
-                    { ndId: 'salinity', upperLimitValue: 10.5, putPlaceRankList: ['BW_3', 'SEA'] },
+                    { ndId: 'salinity', upperLimitValue: 10.5, putPlaceRankList: ['BW_3', 'BW_2'] },
                     {
                       ndId: 'moduleRearTemperature',
                       upperLimitValue: 40,
-                      putPlaceRankList: ['BW_2', 'SEA'],
+                      putPlaceRankList: ['BW_2'],
                     },
                   ],
                   placeSize: { width: 356, height: 2800, depth: 15 },
@@ -2409,16 +2409,20 @@ const map = {
                       maxValue: 10,
                       upperLimitValue: 7,
                       setValue: 5,
-                      lowerLimitValue: 3,
+                      lowerLimitValue: 2.9,
                       minValue: 1,
                       callPlaceRankList: ['BW_3'],
-                      putPlaceRankList: ['BW_3', 'SEA'],
+                      putPlaceRankList: ['BW_3', 'BW_2', 'SEA'],
                     },
-                    { ndId: 'salinity', upperLimitValue: 18, putPlaceRankList: ['BW_4', 'SEA'] },
+                    {
+                      ndId: 'salinity',
+                      upperLimitValue: 18,
+                      putPlaceRankList: ['BW_4', 'BW_3', 'BW_2'],
+                    },
                     {
                       ndId: 'moduleRearTemperature',
                       upperLimitValue: 40,
-                      putPlaceRankList: ['BW_3', 'SEA'],
+                      putPlaceRankList: ['BW_3'],
                     },
                   ],
                   placeSize: { width: 356, height: 2800, depth: 15 },
@@ -2435,16 +2439,20 @@ const map = {
                       maxValue: 10,
                       upperLimitValue: 7,
                       setValue: 5,
-                      lowerLimitValue: 3,
+                      lowerLimitValue: 2.9,
                       minValue: 1,
                       callPlaceRankList: ['BW_3'],
-                      putPlaceRankList: ['BW_3', 'SEA'],
+                      putPlaceRankList: ['BW_3', 'BW_2', 'SEA'],
                     },
-                    { ndId: 'salinity', upperLimitValue: 18, putPlaceRankList: ['BW_4', 'SEA'] },
+                    {
+                      ndId: 'salinity',
+                      upperLimitValue: 18,
+                      putPlaceRankList: ['BW_4', 'BW_3', 'BW_2'],
+                    },
                     {
                       ndId: 'moduleRearTemperature',
                       upperLimitValue: 40,
-                      putPlaceRankList: ['BW_3', 'SEA'],
+                      putPlaceRankList: ['BW_3'],
                     },
                   ],
                   placeSize: { width: 356, height: 2800, depth: 15 },
@@ -2461,16 +2469,20 @@ const map = {
                       maxValue: 10,
                       upperLimitValue: 7,
                       setValue: 5,
-                      lowerLimitValue: 3,
+                      lowerLimitValue: 2.9,
                       minValue: 1,
                       callPlaceRankList: ['BW_3'],
-                      putPlaceRankList: ['BW_3', 'SEA'],
+                      putPlaceRankList: ['BW_3', 'BW_2', 'SEA'],
                     },
-                    { ndId: 'salinity', upperLimitValue: 18, putPlaceRankList: ['BW_4', 'SEA'] },
+                    {
+                      ndId: 'salinity',
+                      upperLimitValue: 18,
+                      putPlaceRankList: ['BW_4', 'BW_3', 'BW_2'],
+                    },
                     {
                       ndId: 'moduleRearTemperature',
                       upperLimitValue: 40,
-                      putPlaceRankList: ['BW_3', 'SEA'],
+                      putPlaceRankList: ['BW_3'],
                     },
                   ],
                   placeSize: { width: 356, height: 2800, depth: 15 },
@@ -2491,16 +2503,16 @@ const map = {
                   thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
-                      maxValue: 10,
-                      upperLimitValue: 7,
-                      setValue: 5,
-                      lowerLimitValue: 3,
-                      minValue: 1,
+                      maxValue: 20,
+                      upperLimitValue: 12,
+                      setValue: 10,
+                      lowerLimitValue: 6,
+                      minValue: 2,
                       callPlaceRankList: ['RV'],
                       putPlaceRankList: ['NEB_2'],
                     },
                   ],
-                  placeSize: { width: 3300, height: 1000, depth: 20 },
+                  placeSize: { width: 3300, height: 2000, depth: 20 },
                 },
               },
               {
@@ -2511,15 +2523,15 @@ const map = {
                   thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
-                      maxValue: 10,
-                      upperLimitValue: 7,
-                      setValue: 5,
-                      lowerLimitValue: 3,
-                      minValue: 1,
-                      callPlaceRankList: ['BW_1'],
+                      maxValue: 20,
+                      upperLimitValue: 15,
+                      setValue: 12,
+                      lowerLimitValue: 8,
+                      minValue: 2,
+                      callPlaceRankList: ['BW_1', 'NEB_1'],
                       putPlaceRankList: ['BW_1', 'SEA'],
                     },
-                    { ndId: 'salinity', upperLimitValue: 6, putPlaceRankList: ['BW_2', 'SEA'] },
+                    { ndId: 'salinity', upperLimitValue: 6, putPlaceRankList: ['BW_2', 'BW_1'] },
                   ],
                   placeSize: { width: 3300, height: 1000, depth: 20 },
                 },
@@ -2571,13 +2583,7 @@ const map = {
                 depth: -1,
                 place_info: {
                   thresholdConfigList: [
-                    {
-                      ndId: 'waterLevel',
-                      maxValue: 100,
-                      lowerLimitValue: 30,
-                      minValue: 10,
-                      callPlaceRankList: ['NEB_2'],
-                    },
+                    { ndId: 'waterLevel', maxValue: 150, lowerLimitValue: 20, minValue: 10 },
                   ],
                   placeSize: { width: 1200, height: 300, depth: 150 },
                 },
@@ -2597,13 +2603,7 @@ const map = {
                 depth: -1,
                 place_info: {
                   thresholdConfigList: [
-                    {
-                      ndId: 'waterLevel',
-                      maxValue: 100,
-                      lowerLimitValue: 30,
-                      minValue: 10,
-                      callPlaceRankList: ['SEB_1', 'SEB_2', 'SEB_3', 'SEB_4', 'SEB_5'],
-                    },
+                    { ndId: 'waterLevel', maxValue: 150, lowerLimitValue: 20, minValue: 10 },
                   ],
                   placeSize: { width: 900, height: 300, depth: 150 },
                 },
@@ -2614,22 +2614,7 @@ const map = {
                 depth: -1,
                 place_info: {
                   thresholdConfigList: [
-                    {
-                      ndId: 'waterLevel',
-                      maxValue: 100,
-                      lowerLimitValue: 30,
-                      minValue: 10,
-                      callPlaceRankList: [
-                        'SEB_1',
-                        'SEB_2',
-                        'SEB_3',
-                        'SEB_4',
-                        'SEB_5',
-                        'SEB_6',
-                        'SEB_7',
-                        'SEB_8',
-                      ],
-                    },
+                    { ndId: 'waterLevel', maxValue: 150, lowerLimitValue: 20, minValue: 10 },
                   ],
                   placeSize: { width: 400, height: 300, depth: 150 },
                 },
@@ -2640,13 +2625,7 @@ const map = {
                 depth: -1,
                 place_info: {
                   thresholdConfigList: [
-                    {
-                      ndId: 'waterLevel',
-                      maxValue: 100,
-                      lowerLimitValue: 30,
-                      minValue: 10,
-                      callPlaceRankList: ['SEB_6', 'SEB_7', 'SEB_8'],
-                    },
+                    { ndId: 'waterLevel', maxValue: 150, lowerLimitValue: 20, minValue: 10 },
                   ],
                   placeSize: { width: 400, height: 300, depth: 150 },
                 },
@@ -2657,13 +2636,7 @@ const map = {
                 depth: -1,
                 place_info: {
                   thresholdConfigList: [
-                    {
-                      ndId: 'waterLevel',
-                      maxValue: 100,
-                      lowerLimitValue: 30,
-                      minValue: 10,
-                      callPlaceRankList: ['BW_4'],
-                    },
+                    { ndId: 'waterLevel', maxValue: 150, lowerLimitValue: 20, minValue: 10 },
                   ],
                   placeSize: { width: 500, height: 300, depth: 150 },
                 },
@@ -2676,8 +2649,8 @@ const map = {
                   thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
-                      maxValue: 100,
-                      lowerLimitValue: 30,
+                      maxValue: 150,
+                      lowerLimitValue: 20,
                       minValue: 10,
                       callPlaceRankList: [],
                     },
@@ -2707,7 +2680,8 @@ const map = {
                   thresholdConfigList: [
                     {
                       ndId: 'waterLevel',
-                      maxValue: 100,
+                      maxValue: 200,
+                      upperLimitValue: 180,
                       lowerLimitValue: 30,
                       minValue: 10,
                       callPlaceRankList: ['SEA'],
@@ -3127,6 +3101,11 @@ const map = {
             trueNodeList: ['WD_003', 'WD_004', 'WD_007'],
             falseNodeList: ['WD_005', 'WD_006'],
           },
+          {
+            destPlaceId: 'SEA',
+            trueNodeList: ['WD_003', 'WD_004', 'WD_005'],
+            falseNodeList: ['WD_006', 'WD_007'],
+          },
         ],
       },
       {
@@ -3134,14 +3113,15 @@ const map = {
         destList: [
           {
             destPlaceId: 'BW_2',
-            trueNodeList: ['WD_101', 'WD_105'],
-            falseNodeList: ['WD_106', 'WD_104'],
+            trueNodeList: ['GV_101', 'GV_105'],
+            falseNodeList: ['GV_106', 'GV_104'],
           },
           {
             destPlaceId: 'BW_3',
-            trueNodeList: ['WD_102', 'WD_104', 'WD_105'],
-            falseNodeList: ['WD_106', 'WD_101', 'WD_103'],
+            trueNodeList: ['GV_102', 'GV_104', 'GV_105'],
+            falseNodeList: ['GV_106', 'GV_101', 'GV_103'],
           },
+          { destPlaceId: 'SEA', trueNodeList: ['GV_106'], falseNodeList: ['GV_105'] },
         ],
       },
       {
@@ -3149,14 +3129,15 @@ const map = {
         destList: [
           {
             destPlaceId: 'BW_2',
-            trueNodeList: ['WD_101', 'WD_107'],
-            falseNodeList: ['WD_108', 'WD_104'],
+            trueNodeList: ['GV_101', 'GV_107'],
+            falseNodeList: ['GV_108', 'GV_104'],
           },
           {
             destPlaceId: 'BW_3',
-            trueNodeList: ['WD_102', 'WD_104', 'WD_107'],
-            falseNodeList: ['WD_108', 'WD_101', 'WD_103'],
+            trueNodeList: ['GV_102', 'GV_104', 'GV_107'],
+            falseNodeList: ['GV_108', 'GV_101', 'GV_103'],
           },
+          { destPlaceId: 'SEA', trueNodeList: ['GV_108'], falseNodeList: ['GV_107'] },
         ],
       },
       {
@@ -3164,14 +3145,15 @@ const map = {
         destList: [
           {
             destPlaceId: 'BW_2',
-            trueNodeList: ['WD_101', 'WD_109'],
-            falseNodeList: ['WD_110', 'WD_104'],
+            trueNodeList: ['GV_101', 'GV_109'],
+            falseNodeList: ['GV_110', 'GV_104'],
           },
           {
             destPlaceId: 'BW_3',
-            trueNodeList: ['WD_102', 'WD_104', 'WD_109'],
-            falseNodeList: ['WD_110', 'WD_101', 'WD_103'],
+            trueNodeList: ['GV_102', 'GV_104', 'GV_109'],
+            falseNodeList: ['GV_110', 'GV_101', 'GV_103'],
           },
+          { destPlaceId: 'SEA', trueNodeList: ['GV_110'], falseNodeList: ['GV_109'] },
         ],
       },
       {
@@ -3179,14 +3161,15 @@ const map = {
         destList: [
           {
             destPlaceId: 'BW_2',
-            trueNodeList: ['WD_101', 'WD_111'],
-            falseNodeList: ['WD_112', 'WD_104'],
+            trueNodeList: ['GV_101', 'GV_111'],
+            falseNodeList: ['GV_112', 'GV_104'],
           },
           {
             destPlaceId: 'BW_3',
-            trueNodeList: ['WD_102', 'WD_104', 'WD_111'],
-            falseNodeList: ['WD_112', 'WD_101', 'WD_103'],
+            trueNodeList: ['GV_102', 'GV_104', 'GV_111'],
+            falseNodeList: ['GV_112', 'GV_101', 'GV_103'],
           },
+          { destPlaceId: 'SEA', trueNodeList: ['GV_112'], falseNodeList: ['GV_111'] },
         ],
       },
       {
@@ -3194,14 +3177,15 @@ const map = {
         destList: [
           {
             destPlaceId: 'BW_2',
-            trueNodeList: ['WD_101', 'WD_113'],
-            falseNodeList: ['WD_114', 'WD_104'],
+            trueNodeList: ['GV_101', 'GV_113'],
+            falseNodeList: ['GV_114', 'GV_104'],
           },
           {
             destPlaceId: 'BW_3',
-            trueNodeList: ['WD_102', 'WD_104', 'WD_113'],
-            falseNodeList: ['WD_114', 'WD_101', 'WD_103'],
+            trueNodeList: ['GV_102', 'GV_104', 'GV_113'],
+            falseNodeList: ['GV_114', 'GV_101', 'GV_103'],
           },
+          { destPlaceId: 'SEA', trueNodeList: ['GV_114'], falseNodeList: ['GV_113'] },
         ],
       },
       {
@@ -3209,14 +3193,15 @@ const map = {
         destList: [
           {
             destPlaceId: 'BW_3',
-            trueNodeList: ['WD_102', 'WD_115'],
-            falseNodeList: ['WD_116', 'WD_104', 'WD_103'],
+            trueNodeList: ['GV_102', 'GV_115'],
+            falseNodeList: ['GV_116', 'GV_104', 'GV_103'],
           },
           {
             destPlaceId: 'BW_4',
-            trueNodeList: ['WD_103', 'WD_115'],
-            falseNodeList: ['WD_116', 'WD_104', 'WD_102'],
+            trueNodeList: ['GV_103', 'GV_115'],
+            falseNodeList: ['GV_116', 'GV_104', 'GV_102'],
           },
+          { destPlaceId: 'SEA', trueNodeList: ['GV_116'], falseNodeList: ['GV_115'] },
         ],
       },
       {
@@ -3224,14 +3209,15 @@ const map = {
         destList: [
           {
             destPlaceId: 'BW_3',
-            trueNodeList: ['WD_102', 'WD_117'],
-            falseNodeList: ['WD_118', 'WD_104', 'WD_103'],
+            trueNodeList: ['GV_102', 'GV_117'],
+            falseNodeList: ['GV_118', 'GV_104', 'GV_103'],
           },
           {
             destPlaceId: 'BW_4',
-            trueNodeList: ['WD_103', 'WD_117'],
-            falseNodeList: ['WD_118', 'WD_104', 'WD_102'],
+            trueNodeList: ['GV_103', 'GV_117'],
+            falseNodeList: ['GV_118', 'GV_104', 'GV_102'],
           },
+          { destPlaceId: 'SEA', trueNodeList: ['GV_118'], falseNodeList: ['GV_117'] },
         ],
       },
       {
@@ -3239,110 +3225,46 @@ const map = {
         destList: [
           {
             destPlaceId: 'BW_3',
-            trueNodeList: ['WD_102', 'WD_119'],
-            falseNodeList: ['WD_120', 'WD_104', 'WD_103'],
+            trueNodeList: ['GV_102', 'GV_119'],
+            falseNodeList: ['GV_120', 'GV_104', 'GV_103'],
           },
           {
             destPlaceId: 'BW_4',
-            trueNodeList: ['WD_103', 'WD_119'],
-            falseNodeList: ['WD_120', 'WD_104', 'WD_102'],
+            trueNodeList: ['GV_103', 'GV_119'],
+            falseNodeList: ['GV_120', 'GV_104', 'GV_102'],
           },
+          { destPlaceId: 'SEA', trueNodeList: ['GV_120'], falseNodeList: ['GV_119'] },
         ],
       },
       {
         srcPlaceId: 'NCB',
         destList: [
           { destPlaceId: 'BW_5', trueNodeList: ['WD_008', 'WD_009'], falseNodeList: ['WD_010'] },
+          { destPlaceId: 'SEA', trueNodeList: ['WD_008', 'WD_010'], falseNodeList: ['WD_009'] },
         ],
       },
       {
         srcPlaceId: 'BW_1',
         destList: [
-          {
-            destPlaceId: 'NEB_2',
-            trueNodeList: ['P_004'],
-            falseNodeList: ['WD_003', 'WD_004', 'WD_006'],
-          },
+          { destPlaceId: 'NEB_2', trueNodeList: ['P_004'], falseNodeList: ['WD_003', 'WD_004'] },
         ],
       },
       {
         srcPlaceId: 'BW_2',
         destList: [
-          {
-            destPlaceId: 'SEB_1',
-            trueNodeList: ['P_005'],
-            falseNodeList: ['GV_101', 'GV_105', 'GV_106'],
-          },
-        ],
-      },
-      {
-        srcPlaceId: 'BW_2',
-        destList: [
-          {
-            destPlaceId: 'SEB_2',
-            trueNodeList: ['P_006'],
-            falseNodeList: ['GV_101', 'GV_107', 'GV_108'],
-          },
-        ],
-      },
-      {
-        srcPlaceId: 'BW_2',
-        destList: [
-          {
-            destPlaceId: 'SEB_3',
-            trueNodeList: ['P_007'],
-            falseNodeList: ['GV_101', 'GV_109', 'GV_110'],
-          },
-        ],
-      },
-      {
-        srcPlaceId: 'BW_2',
-        destList: [
-          {
-            destPlaceId: 'SEB_4',
-            trueNodeList: ['P_008'],
-            falseNodeList: ['GV_101', 'GV_111', 'GV_112'],
-          },
-        ],
-      },
-      {
-        srcPlaceId: 'BW_2',
-        destList: [
-          {
-            destPlaceId: 'SEB_5',
-            trueNodeList: ['P_009'],
-            falseNodeList: ['GV_101', 'GV_113', 'GV_114'],
-          },
+          { destPlaceId: 'SEB_1', trueNodeList: ['P_005'], falseNodeList: ['GV_105', 'GV_106'] },
+          { destPlaceId: 'SEB_2', trueNodeList: ['P_006'], falseNodeList: ['GV_107', 'GV_108'] },
+          { destPlaceId: 'SEB_3', trueNodeList: ['P_007'], falseNodeList: ['GV_109', 'GV_110'] },
+          { destPlaceId: 'SEB_4', trueNodeList: ['P_008'], falseNodeList: ['GV_111', 'GV_112'] },
+          { destPlaceId: 'SEB_5', trueNodeList: ['P_009'], falseNodeList: ['GV_113', 'GV_114'] },
         ],
       },
       {
         srcPlaceId: 'BW_3',
         destList: [
-          {
-            destPlaceId: 'SEB_6',
-            trueNodeList: ['P_010'],
-            falseNodeList: ['GV_102', 'GV_115', 'GV_116'],
-          },
-        ],
-      },
-      {
-        srcPlaceId: 'BW_3',
-        destList: [
-          {
-            destPlaceId: 'SEB_7',
-            trueNodeList: ['P_011'],
-            falseNodeList: ['GV_102', 'GV_117', 'GV_118'],
-          },
-        ],
-      },
-      {
-        srcPlaceId: 'BW_3',
-        destList: [
-          {
-            destPlaceId: 'SEB_8',
-            trueNodeList: ['P_012'],
-            falseNodeList: ['GV_102', 'GV_119', 'GV_120'],
-          },
+          { destPlaceId: 'SEB_6', trueNodeList: ['P_010'], falseNodeList: ['GV_115', 'GV_116'] },
+          { destPlaceId: 'SEB_7', trueNodeList: ['P_011'], falseNodeList: ['GV_117', 'GV_118'] },
+          { destPlaceId: 'SEB_8', trueNodeList: ['P_012'], falseNodeList: ['GV_119', 'GV_120'] },
         ],
       },
       {
@@ -3356,54 +3278,6 @@ const map = {
       {
         srcPlaceId: 'JG',
         destList: [{ destPlaceId: 'SEA', trueNodeList: ['P_002'], falseNodeList: [] }],
-      },
-      {
-        srcPlaceId: 'NEB_2',
-        destList: [
-          {
-            destPlaceId: 'SEA',
-            trueNodeList: ['WD_003', 'WD_004', 'WD_005'],
-            falseNodeList: ['WD_006', 'WD_007'],
-          },
-        ],
-      },
-      {
-        srcPlaceId: 'SEB_1',
-        destList: [{ destPlaceId: 'SEA', trueNodeList: ['GV_106'], falseNodeList: ['GV_105'] }],
-      },
-      {
-        srcPlaceId: 'SEB_2',
-        destList: [{ destPlaceId: 'SEA', trueNodeList: ['GV_108'], falseNodeList: ['GV_107'] }],
-      },
-      {
-        srcPlaceId: 'SEB_3',
-        destList: [{ destPlaceId: 'SEA', trueNodeList: ['GV_110'], falseNodeList: ['GV_109'] }],
-      },
-      {
-        srcPlaceId: 'SEB_4',
-        destList: [{ destPlaceId: 'SEA', trueNodeList: ['GV_112'], falseNodeList: ['GV_111'] }],
-      },
-      {
-        srcPlaceId: 'SEB_5',
-        destList: [{ destPlaceId: 'SEA', trueNodeList: ['GV_114'], falseNodeList: ['GV_113'] }],
-      },
-      {
-        srcPlaceId: 'SEB_6',
-        destList: [{ destPlaceId: 'SEA', trueNodeList: ['GV_116'], falseNodeList: ['GV_115'] }],
-      },
-      {
-        srcPlaceId: 'SEB_7',
-        destList: [{ destPlaceId: 'SEA', trueNodeList: ['GV_118'], falseNodeList: ['GV_117'] }],
-      },
-      {
-        srcPlaceId: 'SEB_8',
-        destList: [{ destPlaceId: 'SEA', trueNodeList: ['GV_120'], falseNodeList: ['GV_119'] }],
-      },
-      {
-        srcPlaceId: 'NCB',
-        destList: [
-          { destPlaceId: 'SEA', trueNodeList: ['WD_010', 'WD_008'], falseNodeList: ['WD_009'] },
-        ],
       },
     ],
     setCmdList: [

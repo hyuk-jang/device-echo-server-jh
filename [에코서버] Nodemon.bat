@@ -1,1 +1,1 @@
-nodemon "./test/UPSAS/xbee/socketServer.js"
+nodemon "./test/UPSAS/muan100kW/socketServer.js"

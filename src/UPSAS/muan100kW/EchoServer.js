@@ -27,6 +27,8 @@ class EchoServer extends Model {
    */
   init() {
     this.nodeList.forEach(nodeInfo => {
+      const numCode = _.toNumber(nodeInfo.targetCode);
+
       switch (nodeInfo.defId) {
         case this.device.WATER_DOOR.KEY:
           nodeInfo.data = this.device.WATER_DOOR.STATUS.CLOSE;
@@ -46,9 +48,28 @@ class EchoServer extends Model {
           nodeInfo.data = _.random(30.1, 35.9);
           break;
         case this.device.WATER_LEVEL.KEY:
-          nodeInfo.data = _.random(0, 10, true);
+          nodeInfo.data =
+            numCode <= 1
+              ? _.random(50, 120)
+              : numCode <= 3
+              ? _.random(8, 14, true)
+              : numCode <= 7
+              ? _.random(50, 120, true)
+              : numCode <= 16
+              ? _.random(4, 7, true)
+              : _.random(50, 120);
           break;
         case this.device.SALINITY.KEY:
+          nodeInfo.data =
+            numCode < 1
+              ? _.random(3, 5, true)
+              : numCode < 7
+              ? _.random(6, 9, true)
+              : numCode < 10
+              ? _.random(11, 17, true)
+              : _.random(0, 10);
+          break;
+
           nodeInfo.data = _.random(0, 10, true);
           break;
         case this.device.CONNECTOR_GROUND_RELAY.KEY:
@@ -199,7 +220,7 @@ class EchoServer extends Model {
     let tempData;
 
     tempData = _.isEmpty(nodeWL) ? 0 : _.round(nodeWL.data * 10);
-    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 3);
+    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
 
     tempData = _.isEmpty(nodeS) ? 0 : _.round(nodeS.data * 10);
     const bufDataS = this.protocolConverter.convertNumToBuf(tempData, 4);
@@ -250,7 +271,7 @@ class EchoServer extends Model {
     let tempData;
 
     tempData = _.isEmpty(nodeWL) ? 0 : _.round(nodeWL.data * 10);
-    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 2);
+    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
 
     // 모듈 염수 온도
     tempData = _.isEmpty(nodeBT) ? 0 : _.round(nodeBT.data, 1);
@@ -308,7 +329,7 @@ class EchoServer extends Model {
     let tempData;
     // 수위 : 200 - 현재 수위
     tempData = _.isEmpty(nodeWL) ? 200 : _.round(_.subtract(20, nodeWL.data) * 10);
-    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 3);
+    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
 
     tempData = _.isEmpty(nodeS) ? 0 : _.round(nodeS.data * 10);
     const bufDataS = this.protocolConverter.convertNumToBuf(tempData, 4);
@@ -371,7 +392,7 @@ class EchoServer extends Model {
 
     // 수위 : 200 - 현재 수위
     tempData = _.isEmpty(nodeWL) ? 200 : _.round(_.subtract(20, nodeWL.data) * 10);
-    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 3);
+    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
 
     // 모듈 후면 온도
     tempData = _.isEmpty(_.nth(nodeMRTList, 0)) ? 0 : _.round(_.nth(nodeMRTList, 0).data, 1);
@@ -423,7 +444,7 @@ class EchoServer extends Model {
     let tempData;
     // 수위 : 200 - 현재 수위
     tempData = _.isEmpty(nodeWL) ? 200 : _.round(_.subtract(20, nodeWL.data) * 10);
-    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 3);
+    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
 
     tempData = _.isEmpty(nodeS) ? 0 : _.round(nodeS.data * 10);
     const bufDataS = this.protocolConverter.convertNumToBuf(tempData, 4);
