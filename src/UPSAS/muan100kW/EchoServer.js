@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 const _ = require('lodash');
 
 const { BU } = require('base-util-jh');
@@ -52,7 +53,7 @@ class EchoServer extends Model {
             numCode <= 1
               ? _.random(50, 120)
               : numCode <= 3
-              ? _.random(8, 14, true)
+              ? _.random(9, 14, true)
               : numCode <= 7
               ? _.random(50, 120, true)
               : numCode <= 16
@@ -68,9 +69,6 @@ class EchoServer extends Model {
               : numCode < 10
               ? _.random(11, 17, true)
               : _.random(0, 10);
-          break;
-
-          nodeInfo.data = _.random(0, 10, true);
           break;
         case this.device.CONNECTOR_GROUND_RELAY.KEY:
           nodeInfo.data = _.random(0, 1);
