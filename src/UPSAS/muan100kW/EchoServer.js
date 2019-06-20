@@ -156,6 +156,7 @@ class EchoServer extends Model {
    * @param {detailNodeInfo} nodeInfo
    */
   controlPump(cmd, nodeInfo) {
+    // BU.CLI('controlPump', cmd)
     const DEVICE = this.device.PUMP;
     const OFF = _.get(_.head(DEVICE.COMMAND.OFF), 'cmd');
     const ON = _.get(_.head(DEVICE.COMMAND.ON), 'cmd');
@@ -163,20 +164,20 @@ class EchoServer extends Model {
     // 요청 명령이 닫는 명령이라면
     if (cmd === OFF) {
       // 현재 상태가 열려있는 상태라면
-      if (nodeInfo.data === DEVICE.STATUS.ON) {
-        // 닫는 상태로 변경
-        setTimeout(() => {
-          nodeInfo.data = DEVICE.STATUS.OFF;
-        }, this.pumpDeviceOperTime);
-      }
+      // if (nodeInfo.data === DEVICE.STATUS.ON) {
+      // 닫는 상태로 변경
+      setTimeout(() => {
+        nodeInfo.data = DEVICE.STATUS.OFF;
+      }, this.pumpDeviceOperTime);
+      // }
     } else if (cmd === ON) {
       // 현재 상태가 닫혀있다면
-      if (nodeInfo.data === DEVICE.STATUS.OFF) {
-        // 여는 상태로 변경
-        setTimeout(() => {
-          nodeInfo.data = DEVICE.STATUS.ON;
-        }, this.pumpDeviceOperTime);
-      }
+      // if (nodeInfo.data === DEVICE.STATUS.OFF) {
+      // 여는 상태로 변경
+      setTimeout(() => {
+        nodeInfo.data = DEVICE.STATUS.ON;
+      }, this.pumpDeviceOperTime);
+      // }
     }
   }
 
