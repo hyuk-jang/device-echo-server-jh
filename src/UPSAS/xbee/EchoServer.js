@@ -122,10 +122,10 @@ class EchoServer extends Model {
       if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
         // 여는 상태로 변경
         nodeInfo.data = DEVICE.STATUS.OPENING;
-        BU.CLI(nodeInfo);
+        // BU.CLI(nodeInfo);
         setTimeout(() => {
           nodeInfo.data = DEVICE.STATUS.OPEN;
-          BU.CLI(nodeInfo);
+          // BU.CLI(nodeInfo);
         }, this.normalDeviceOperTime);
       }
     }
