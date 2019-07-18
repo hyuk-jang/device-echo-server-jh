@@ -50,11 +50,11 @@ class EchoServer extends Model {
           break;
         case this.device.WATER_LEVEL.KEY:
           nodeInfo.data =
-            numCode <= 1
+            numCode <= 2
               ? _.random(50, 120)
-              : numCode <= 3
+              : numCode <= 4
               ? _.random(9, 14, true)
-              : numCode <= 7
+              : numCode <= 8
               ? _.random(50, 120, true)
               : numCode <= 16
               ? _.random(4, 7, true)
@@ -141,10 +141,10 @@ class EchoServer extends Model {
       if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
         // 여는 상태로 변경
         nodeInfo.data = DEVICE.STATUS.OPENING;
-        BU.CLI(nodeInfo);
+        // BU.CLI(nodeInfo);
         setTimeout(() => {
           nodeInfo.data = DEVICE.STATUS.OPEN;
-          BU.CLI(nodeInfo);
+          // BU.CLI(nodeInfo);
         }, this.normalDeviceOperTime);
       }
     }
