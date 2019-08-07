@@ -2507,7 +2507,7 @@ const map = {
                       setValue: { value: 10 },
                       lowerLimitValue: { value: 3, isCall: true },
                       minValue: { value: 2, isCall: true },
-                      callPlaceRankList: ['RV'],
+                      callPlaceRankList: ['RV_1'],
                       putPlaceRankList: ['NEB_2'],
                     },
                   ],
@@ -3016,7 +3016,6 @@ const map = {
           'WD_006',
           'WD_007',
           'WD_008',
-          'WD_009',
         ],
         resourceIdList: ['waterDoor'],
       },
@@ -3095,10 +3094,6 @@ const map = {
   controlInfo: {
     flowCmdList: [
       {
-        srcPlaceId: 'RV_2',
-        destList: [{ destPlaceId: 'RV_1', trueNodeList: ['P_002'], falseNodeList: ['P_001'] }],
-      },
-      {
         srcPlaceId: 'RV_1',
         destList: [
           {
@@ -3109,12 +3104,16 @@ const map = {
         ],
       },
       {
+        srcPlaceId: 'RV_2',
+        destList: [{ destPlaceId: 'RV_1', trueNodeList: ['P_002'], falseNodeList: [] }],
+      },
+      {
         srcPlaceId: 'NEB_1',
         destList: [
           {
             destPlaceId: 'NEB_2',
             trueNodeList: ['WD_002', 'WD_003'],
-            falseNodeList: ['WD_004', 'WD_005', 'WD_006'],
+            falseNodeList: ['WD_001', 'WD_004', 'WD_005', 'WD_006'],
           },
           { destPlaceId: 'SEA', trueNodeList: ['WD_001'], falseNodeList: ['WD_002', 'WD_003'] },
         ],
@@ -3122,8 +3121,8 @@ const map = {
       {
         srcPlaceId: 'NEB_2',
         destList: [
-          { destPlaceId: 'BW_1', trueNodeList: ['WD_005'], falseNodeList: ['WD_006'] },
-          { destPlaceId: 'BW_2', trueNodeList: ['WD_006'], falseNodeList: ['WD_005'] },
+          { destPlaceId: 'BW_1', trueNodeList: ['WD_005'], falseNodeList: ['WD_004', 'WD_006'] },
+          { destPlaceId: 'BW_2', trueNodeList: ['WD_006'], falseNodeList: ['WD_004', 'WD_005'] },
           { destPlaceId: 'SEA', trueNodeList: ['WD_004'], falseNodeList: ['WD_005', 'WD_006'] },
         ],
       },
@@ -3265,7 +3264,11 @@ const map = {
       {
         srcPlaceId: 'BW_1',
         destList: [
-          { destPlaceId: 'NEB_2', trueNodeList: ['P_003'], falseNodeList: ['WD_005', 'WD_006'] },
+          {
+            destPlaceId: 'NEB_2',
+            trueNodeList: ['P_003'],
+            falseNodeList: ['WD_004', 'WD_005', 'WD_006'],
+          },
         ],
       },
       {
@@ -3276,6 +3279,23 @@ const map = {
           { destPlaceId: 'SEB_3', trueNodeList: ['P_006'], falseNodeList: ['GV_109', 'GV_110'] },
           { destPlaceId: 'SEB_4', trueNodeList: ['P_007'], falseNodeList: ['GV_111', 'GV_112'] },
           { destPlaceId: 'SEB_5', trueNodeList: ['P_008'], falseNodeList: ['GV_113', 'GV_114'] },
+          {
+            destPlaceId: 'SEB_ONE',
+            destPlaceName: '수중 태양광 증발지 그룹 1',
+            trueNodeList: ['P_004', 'P_005', 'P_006', 'P_007', 'P_008'],
+            falseNodeList: [
+              'GV_105',
+              'GV_106',
+              'GV_107',
+              'GV_108',
+              'GV_109',
+              'GV_110',
+              'GV_111',
+              'GV_112',
+              'GV_113',
+              'GV_114',
+            ],
+          },
         ],
       },
       {
@@ -3284,6 +3304,12 @@ const map = {
           { destPlaceId: 'SEB_6', trueNodeList: ['P_009'], falseNodeList: ['GV_115', 'GV_116'] },
           { destPlaceId: 'SEB_7', trueNodeList: ['P_010'], falseNodeList: ['GV_117', 'GV_118'] },
           { destPlaceId: 'SEB_8', trueNodeList: ['P_011'], falseNodeList: ['GV_119', 'GV_120'] },
+          {
+            destPlaceId: 'SEB_TWO',
+            destPlaceName: '수중 태양광 증발지 그룹 2',
+            trueNodeList: ['P_009', 'P_010', 'P_011'],
+            falseNodeList: ['GV_115', 'GV_116', 'GV_117', 'GV_118', 'GV_119', 'GV_120'],
+          },
         ],
       },
       {
@@ -3292,7 +3318,51 @@ const map = {
       },
       {
         srcPlaceId: 'BW_5',
-        destList: [{ destPlaceId: 'NCB', trueNodeList: ['P_013'], falseNodeList: ['WD_009'] }],
+        destList: [
+          { destPlaceId: 'NCB', trueNodeList: ['P_013'], falseNodeList: ['WD_007', 'WD_008'] },
+        ],
+      },
+      {
+        srcPlaceId: 'SEB_ONE',
+        srcPlaceName: '수중 태양광 증발지 그룹 1',
+        destList: [
+          {
+            destPlaceId: 'BW_2',
+            trueNodeList: ['GV_101', 'GV_105', 'GV_107', 'GV_109', 'GV_111', 'GV_113'],
+            falseNodeList: ['GV_104', 'GV_106', 'GV_108', 'GV_110', 'GV_112', 'GV_114'],
+          },
+          {
+            destPlaceId: 'BW_3',
+            trueNodeList: ['GV_102', 'GV_104', 'GV_105', 'GV_107', 'GV_109', 'GV_111', 'GV_113'],
+            falseNodeList: ['GV_101', 'GV_103', 'GV_106', 'GV_108', 'GV_110', 'GV_112', 'GV_114'],
+          },
+          {
+            destPlaceId: 'SEA',
+            trueNodeList: ['GV_106', 'GV_108', 'GV_110', 'GV_112', 'GV_114'],
+            falseNodeList: ['GV_105', 'GV_107', 'GV_109', 'GV_111', 'GV_113'],
+          },
+        ],
+      },
+      {
+        srcPlaceId: 'SEB_TWO',
+        srcPlaceName: '수중 태양광 증발지 그룹 2',
+        destList: [
+          {
+            destPlaceId: 'BW_3',
+            trueNodeList: ['GV_102', 'GV_115', 'GV_117', 'GV_119'],
+            falseNodeList: ['GV_103', 'GV_104', 'GV_116', 'GV_118', 'GV_120'],
+          },
+          {
+            destPlaceId: 'BW_4',
+            trueNodeList: ['GV_103', 'GV_115', 'GV_117', 'GV_119'],
+            falseNodeList: ['GV_102', 'GV_104', 'GV_116', 'GV_118', 'GV_120'],
+          },
+          {
+            destPlaceId: 'SEA',
+            trueNodeList: ['GV_116', 'GV_118', 'GV_120'],
+            falseNodeList: ['GV_115', 'GV_117', 'GV_119'],
+          },
+        ],
       },
     ],
     setCmdList: [
@@ -3341,6 +3411,250 @@ const map = {
           'P_011',
           'P_012',
           'P_013',
+        ],
+      },
+      {
+        cmdId: 'rainMode',
+        trueNodeList: [
+          'GV_106',
+          'GV_108',
+          'GV_110',
+          'GV_112',
+          'GV_114',
+          'GV_116',
+          'GV_118',
+          'GV_120',
+          'WD_001',
+          'WD_004',
+          'WD_008',
+        ],
+        falseNodeList: [
+          'GV_101',
+          'GV_102',
+          'GV_103',
+          'GV_104',
+          'GV_105',
+          'GV_107',
+          'GV_109',
+          'GV_111',
+          'GV_113',
+          'GV_115',
+          'GV_117',
+          'GV_119',
+          'WD_002',
+          'WD_003',
+          'WD_005',
+          'WD_006',
+          'WD_007',
+          'P_001',
+          'P_002',
+          'P_003',
+          'P_004',
+          'P_005',
+          'P_006',
+          'P_007',
+          'P_008',
+          'P_009',
+          'P_010',
+          'P_011',
+          'P_012',
+          'P_013',
+        ],
+      },
+    ],
+    scenarioCmdList: [
+      {
+        scenarioId: 'rainMode',
+        scenarioList: [
+          { wrapCmdFormat: 'SET', wrapCmdType: 'CONTROL', setCmdId: 'closeAllDevice' },
+          [
+            [
+              {
+                wrapCmdFormat: 'FLOW',
+                wrapCmdType: 'CONTROL',
+                wrapCmdGoalInfo: {
+                  goalDataList: [{ nodeId: 'WL_017', goalValue: 1, goalRange: 'LOWER' }],
+                },
+                flowSrcPlaceId: 'NCB',
+                flowDestPlaceId: 'BW_5',
+              },
+              {
+                wrapCmdFormat: 'FLOW',
+                wrapCmdType: 'CONTROL',
+                flowSrcPlaceId: 'NCB',
+                flowDestPlaceId: 'SEA',
+              },
+            ],
+            [
+              {
+                wrapCmdFormat: 'FLOW',
+                wrapCmdType: 'CONTROL',
+                wrapCmdGoalInfo: {
+                  goalDataList: [
+                    { nodeId: 'WL_014', goalValue: 2, goalRange: 'LOWER' },
+                    { nodeId: 'WL_015', goalValue: 2, goalRange: 'LOWER' },
+                    { nodeId: 'WL_016', goalValue: 2, goalRange: 'LOWER' },
+                  ],
+                },
+                flowSrcPlaceId: 'SEB_TWO',
+                flowDestPlaceId: 'BW_3',
+              },
+              {
+                wrapCmdFormat: 'FLOW',
+                wrapCmdType: 'CONTROL',
+                flowSrcPlaceId: 'SEB_TWO',
+                flowDestPlaceId: 'SEA',
+              },
+            ],
+            [
+              {
+                wrapCmdFormat: 'FLOW',
+                wrapCmdType: 'CONTROL',
+                wrapCmdGoalInfo: {
+                  goalDataList: [
+                    { nodeId: 'WL_009', goalValue: 2, goalRange: 'LOWER' },
+                    { nodeId: 'WL_010', goalValue: 2, goalRange: 'LOWER' },
+                    { nodeId: 'WL_011', goalValue: 2, goalRange: 'LOWER' },
+                    { nodeId: 'WL_012', goalValue: 2, goalRange: 'LOWER' },
+                    { nodeId: 'WL_013', goalValue: 2, goalRange: 'LOWER' },
+                  ],
+                },
+                flowSrcPlaceId: 'SEB_ONE',
+                flowDestPlaceId: 'BW_2',
+              },
+              {
+                wrapCmdFormat: 'FLOW',
+                wrapCmdType: 'CONTROL',
+                flowSrcPlaceId: 'SEB_ONE',
+                flowDestPlaceId: 'SEA',
+              },
+            ],
+            [
+              {
+                wrapCmdFormat: 'FLOW',
+                wrapCmdType: 'CONTROL',
+                wrapCmdGoalInfo: {
+                  goalDataList: [{ nodeId: 'WL_004', goalValue: 2, goalRange: 'LOWER' }],
+                },
+                flowSrcPlaceId: 'NEB_2',
+                flowDestPlaceId: 'BW_1',
+              },
+              {
+                wrapCmdFormat: 'FLOW',
+                wrapCmdType: 'CONTROL',
+                flowSrcPlaceId: 'NEB_2',
+                flowDestPlaceId: 'SEA',
+              },
+            ],
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdType: 'CONTROL',
+              flowSrcPlaceId: 'NEB_1',
+              flowDestPlaceId: 'SEA',
+            },
+          ],
+          { wrapCmdFormat: 'SET', wrapCmdType: 'CONTROL', setCmdId: 'rainMode' },
+        ],
+      },
+      {
+        scenarioId: 'normalFlowScenario',
+        scenarioList: [
+          { wrapCmdFormat: 'SET', wrapCmdType: 'CONTROL', setCmdId: 'closeAllDevice' },
+          [
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdType: 'CONTROL',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              flowSrcPlaceId: 'RV_2',
+              flowDestPlaceId: 'RV_1',
+            },
+            { wrapCmdFormat: 'FLOW', flowSrcPlaceId: 'RV_2', flowDestPlaceId: 'RV_1' },
+          ],
+          [
+            {
+              wrapCmdFormat: 'SINGLE',
+              wrapCmdType: 'CONTROL',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              singleNodeId: ['P_001', 'WD_002', 'WD_003'],
+              singleControlType: 1,
+            },
+            {
+              wrapCmdFormat: 'SINGLE',
+              wrapCmdType: 'CONTROL',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              singleNodeId: ['P_001', 'WD_002', 'WD_003'],
+              singleControlType: 0,
+            },
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdType: 'CONTROL',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              flowSrcPlaceId: 'NEB_2',
+              flowDestPlaceId: 'BW_2',
+            },
+          ],
+          [
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdType: 'CONTROL',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              flowSrcPlaceId: 'BW_2',
+              flowDestPlaceId: 'SEB_ONE',
+            },
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              flowSrcPlaceId: 'BW_2',
+              flowDestPlaceId: 'SEB_ONE',
+            },
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdType: 'CONTROL',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              flowSrcPlaceId: 'SEB_ONE',
+              flowDestPlaceId: 'BW_3',
+            },
+            { wrapCmdFormat: 'FLOW', flowSrcPlaceId: 'SEB_ONE', flowDestPlaceId: 'BW_3' },
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdType: 'CONTROL',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              flowSrcPlaceId: 'BW_3',
+              flowDestPlaceId: 'SEB_TWO',
+            },
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              flowSrcPlaceId: 'BW_3',
+              flowDestPlaceId: 'SEB_TWO',
+            },
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdType: 'CONTROL',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              flowSrcPlaceId: 'SEB_TWO',
+              flowDestPlaceId: 'BW_4',
+            },
+            { wrapCmdFormat: 'FLOW', flowSrcPlaceId: 'SEB_TWO', flowDestPlaceId: 'BW_4' },
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdType: 'CONTROL',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              flowSrcPlaceId: 'BW_4',
+              flowDestPlaceId: 'NCB',
+            },
+            { wrapCmdFormat: 'FLOW', flowSrcPlaceId: 'BW_4', flowDestPlaceId: 'NCB' },
+          ],
+          [
+            {
+              wrapCmdFormat: 'FLOW',
+              wrapCmdType: 'CONTROL',
+              wrapCmdGoalInfo: { limitTimeSec: 20 },
+              flowSrcPlaceId: 'BW_5',
+              flowDestPlaceId: 'NCB',
+            },
+            { wrapCmdFormat: 'FLOW', flowSrcPlaceId: 'BW_5', flowDestPlaceId: 'NCB' },
+          ],
         ],
       },
     ],
