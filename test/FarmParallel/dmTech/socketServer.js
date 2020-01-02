@@ -31,11 +31,11 @@ const protocolInfo = {
  * @param {{deviceMap: mDeviceMap, socketPort: number, protocolInfo: protocol_info}} serverInfo
  */
 function operationServer(serverInfo) {
-  control = new Control(serverInfo.socketPort);
   echoServer = new EchoServer(serverInfo.protocolInfo, serverInfo.deviceMap);
   mainConverter = new MainConverter(serverInfo.protocolInfo);
   mainConverter.setProtocolConverter();
 
+  control = new Control(serverInfo.socketPort);
   control.attachDevice(serverInfo.protocolInfo, serverInfo.deviceMap);
 }
 

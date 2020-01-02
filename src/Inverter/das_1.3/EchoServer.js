@@ -4,7 +4,7 @@ const { BU } = require('base-util-jh');
 
 const Model = require('../Model');
 
-/** @type {Array.<{id: Buffer, instance: EchoServer}>} */
+/** @type {{id: Buffer, instance: EchoServer}[]} */
 const instanceList = [];
 class EchoServer extends Model {
   /**
@@ -14,15 +14,17 @@ class EchoServer extends Model {
   constructor(protocolInfo) {
     super(protocolInfo);
 
+    const { deviceId, option: { isKwUnit = true } = {} } = protocolInfo;
+
     // kW 단위를 사용할 것인지 여부(default kW)
-    this.isKwUnit = _.get(protocolInfo, 'option.isKwUnit', true) === true;
+    this.isKwUnit = isKwUnit;
 
     // 기존에 객체에 생성되어 있는지 체크
-    const foundInstance = _.find(instanceList, instanceInfo => _.eq(instanceInfo.id, protocolInfo));
+    const foundInstance = _.find(instanceList, insInfo => _.isEqual(insInfo.id, deviceId));
 
     // 없다면 신규로 생성
     if (_.isEmpty(foundInstance)) {
-      instanceList.push({ id: protocolInfo, instance: this });
+      instanceList.push({ id: deviceId, instance: this });
     } else {
       return foundInstance.instance;
     }
@@ -45,8 +47,6 @@ class EchoServer extends Model {
         CMD: 3,
       },
     };
-
-    BU.CLI('Das_1.3 Inverter EchoServer Created', this.dialing);
   }
 
   /**
@@ -77,11 +77,11 @@ class EchoServer extends Model {
       Buffer.from('017'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.BASE.sysIsSingle ? 1 : 3, 1),
+      this.protocolConverter.convertNumToBuf(this.ds.sysIsSingle ? 1 : 3, 1),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.sysCapaKw * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.sysCapaKw * 10), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.sysLineVoltage), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.sysLineVoltage), 3),
       this.DELIMETER,
     ];
 
@@ -96,13 +96,13 @@ class EchoServer extends Model {
       // Buffer.from('128'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.pvVol), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.pvVol), 3),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.pvAmp * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.pvAmp * 10), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.pvKw * pvCurrentScale), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.pvKw * pvCurrentScale), 4),
       this.DELIMETER,
-      // this.protocolConverter.convertNumToBuf(_.round(this.BASE.powerCpKwh / _.random(0.1, 0.2)), 7),
+      // this.protocolConverter.convertNumToBuf(_.round(this.ds.powerCpKwh / _.random(0.1, 0.2)), 7),
       // this.DELIMETER
     ];
 
@@ -115,13 +115,13 @@ class EchoServer extends Model {
       Buffer.from('222'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridRsVol), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridRsVol), 3),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridStVol), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridStVol), 3),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridTrVol), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridTrVol), 3),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridLf * 10), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridLf * 10), 3),
       this.DELIMETER,
     ];
 
@@ -134,11 +134,11 @@ class EchoServer extends Model {
       Buffer.from('321'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridRAmp * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridRAmp * 10), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridSAmp * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridSAmp * 10), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridTAmp * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridTAmp * 10), 4),
       this.DELIMETER,
     ];
 
@@ -152,9 +152,9 @@ class EchoServer extends Model {
       Buffer.from('419'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.powerGridKw * pvCurrentScale), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.powerGridKw * pvCurrentScale), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.powerCpKwh), 7),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.powerCpKwh), 7),
       this.DELIMETER,
     ];
 
@@ -167,9 +167,9 @@ class EchoServer extends Model {
       Buffer.from('612'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.BASE.operIsError, 1),
+      this.protocolConverter.convertNumToBuf(this.ds.operIsError, 1),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.BASE.operIsRun ? 0 : 1, 1),
+      this.protocolConverter.convertNumToBuf(this.ds.operIsRun ? 0 : 1, 1),
       this.DELIMETER,
       this.protocolConverter.convertNumToBuf(2, 1),
       // this.protocolConverter.convertNumToBuf(_.random(0, 9), 1),
@@ -186,7 +186,6 @@ class EchoServer extends Model {
    */
   onData(bufData) {
     // BU.CLI(this.dialing, bufData);
-    // BU.CLI(this.BASE);
     bufData = this.peelFrameMSg(bufData);
     // BU.CLI(bufData);
     const SOP = Buffer.from([_.head(bufData)]);

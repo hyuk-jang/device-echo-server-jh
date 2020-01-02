@@ -1,4 +1,6 @@
 const Control = require('./src/Control');
+const Main = require('./src/Main');
+const config = require('./config');
 
 module.exports = Control;
 
@@ -6,14 +8,12 @@ module.exports = Control;
 if (require !== undefined && require.main === module) {
   console.log('__main__');
 
-  const control = new Control(9000);
-  control.attachDevice(
-    {
-      mainCategory: 'UPSAS',
-      subCategory: 'xbee',
-    },
-    control.deviceMapInfo.UPSAS.muan6kW,
-  );
+  const main = new Main();
+
+  const controlList = main.createServer(config.fp);
+  // const controlList = main.createServer([config.fp[0]]);
+
+  // const control = main.getEchoServer('001')
 
   process.on('uncaughtException', err => {
     // BU.debugConsole();

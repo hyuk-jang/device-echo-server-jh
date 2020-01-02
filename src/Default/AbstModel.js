@@ -53,10 +53,10 @@ class AbstModel extends EventEmitter {
     this.deviceMap = commonUtils.setRepeatNode(deviceMap);
 
     // 실제 장치 데이터
-    this.nodeList = commonUtils.makeNodeList(this.deviceMap);
+    this.nodeList = commonUtils.makeNodeList(deviceMap);
 
     // 장치들의 데이터를 취합하는 데이터 로거
-    this.dataLoggerList = commonUtils.makeDataLoggerList(this.deviceMap);
+    this.dataLoggerList = commonUtils.makeDataLoggerList(deviceMap);
 
     // BU.CLIN(this);
 

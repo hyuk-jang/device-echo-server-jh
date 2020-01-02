@@ -4,7 +4,7 @@ const { BU } = require('base-util-jh');
 const net = require('net');
 const deviceMapInfo = require('./deviceMap');
 
-/** @type {Array.<{id: constructorSocket, instance: Control}>} */
+/** @type {Array.<{id: number, instance: Control}>} */
 const instanceList = [];
 class Control {
   /**
@@ -12,11 +12,18 @@ class Control {
    * @param {Object=} parserInfo
    * @param {string} parserOption.parser
    * @param {string|number} parserOption.option
+   * @param {echoConfig} echoConfig
    */
-  constructor(port, parserInfo = {}) {
+  constructor(port, parserInfo = {}, echoConfig = {}) {
     this.msgLength = 0;
-    this.port = port;
     this.parserInfo = parserInfo;
+
+    const { siteId = '', siteName = '', serverPort } = echoConfig;
+
+    this.port = _.isNumber(serverPort) ? serverPort : port;
+
+    this.siteId = siteId;
+    this.siteName = siteName;
 
     this.returnData;
     this.deviceMapInfo = deviceMapInfo;
@@ -75,7 +82,7 @@ class Control {
   setInit(parserInfo = {}) {
     const server = net
       .createServer(socket => {
-        console.log(`client is Connected ${this.port}`);
+        BU.log(`${this.getServerName()}client is Connected ${this.port}`);
         // socket.end('goodbye\n');
         if (!_.isEmpty(parserInfo)) {
           let stream = null;
@@ -101,7 +108,7 @@ class Control {
           socket.on('data', data => {
             // BU.CLI(data);
             // parseData.data = Buffer.from(parseData.data);
-            BU.CLI(`P: ${this.port}\tReceived Data: `, data.toString());
+            // BU.CLI(`${this.getServerName()}P: ${this.port}\t onData: `, data.toString());
 
             this.spreadMsg(socket, data);
           });
@@ -109,13 +116,13 @@ class Control {
       })
       .on('error', err => {
         // handle errors here
-        console.error('@@@@', err, server.address());
+        BU.error('@@@@', err, server.address());
         // throw err;
       });
 
     // grab an arbitrary unused port.
     server.listen(this.port, () => {
-      console.log('opened server on', server.address());
+      BU.log(`${this.getServerName()} opened server on`, server.address());
     });
 
     server.on('close', () => {
@@ -125,6 +132,10 @@ class Control {
     server.on('error', err => {
       console.error(err);
     });
+  }
+
+  getServerName() {
+    return `${this.siteId}${this.siteName.length ? `(${this.siteName}) ` : ''}`;
   }
 
   /**

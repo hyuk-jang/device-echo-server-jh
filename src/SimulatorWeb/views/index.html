@@ -1,148 +1,151 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+    />
+    <link
+      href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/css/bootstrap-select.min.css"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <title></title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
-  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet" />
-  <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/css/bootstrap-select.min.css" />
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/jquery.panzoom.js"></script>
+    <script src="/js/jquery.mousewheel.js"></script>
 
-  <script src="/js/jquery-3.1.1.min.js"></script>
-  <script src="/js/jquery.panzoom.js"></script>
-  <script src="/js/jquery.mousewheel.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/bootstrap-select.min.js"></script>
 
-  <script src="/js/bootstrap.min.js"></script>
-  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.7/dist/js/bootstrap-select.min.js"></script>
+    <script src="/js/svg.js"></script>
+    <script src="/js/svg.filter.js"></script>
 
-  <script src="/js/svg.js"></script>
-  <script src="/js/svg.filter.js"></script>
+    <script src="/js/lodash.min.js"></script>
 
-  <script src="/js/lodash.min.js"></script>
+    <script src="/js/drawSvg/drawSvg.js"></script>
+  </head>
 
-  <script src="/js/drawSvg/drawSvg.js"></script>
-</head>
-
-<body>
-  <!-- 메인 -->
-  <div class="jumbotron text-center jumbotron_line" style="padding: 1em; margin: 0 auto;">
-    <div class="">
-      <div id="zoom" style="display: flex; justify-content: center;">
-        <button id="zoom-in" class="btn btn-default btn-sm" style="margin-right: 5px">
-          <span class="glyphicon glyphicon-zoom-in"></span> Zoom-in
-        </button>
-        <button id="zoom-out" class="btn btn-default btn-sm" style="margin-right: 5px">
-          <span class="glyphicon glyphicon-zoom-out"></span> Zoom-out
-        </button>
-        <button id="reset" class="btn btn-default btn-sm" style="margin-right: 5px">
-          <span class="glyphicon glyphicon-refresh"></span> Reset
-        </button>
-        <div style="margin-right: 5px">
-          <input id="placeNodeChangeNameToogleBtn" type="checkbox" data-toggle="toggle" />
+  <body>
+    <!-- 메인 -->
+    <div class="jumbotron text-center jumbotron_line" style="padding: 1em; margin: 0 auto;">
+      <div class="">
+        <div id="zoom" style="display: flex; justify-content: center;">
+          <button id="zoom-in" class="btn btn-default btn-sm" style="margin-right: 5px">
+            <span class="glyphicon glyphicon-zoom-in"></span> Zoom-in
+          </button>
+          <button id="zoom-out" class="btn btn-default btn-sm" style="margin-right: 5px">
+            <span class="glyphicon glyphicon-zoom-out"></span> Zoom-out
+          </button>
+          <button id="reset" class="btn btn-default btn-sm" style="margin-right: 5px">
+            <span class="glyphicon glyphicon-refresh"></span> Reset
+          </button>
+          <div style="margin-right: 5px">
+            <input id="placeNodeChangeNameToogleBtn" type="checkbox" data-toggle="toggle" />
+          </div>
+          <select class="selectpicker" id="modeSelect">
+            <option value="view">뷰 모드</option>
+            <option value="control">제어 모드</option>
+            <option value="develop">개발 모드</option>
+          </select>
         </div>
-        <select class="selectpicker" id="modeSelect">
-          <option value="view">뷰 모드</option>
-          <option value="control">제어 모드</option>
-          <option value="develop">개발 모드</option>
-        </select>
-      </div>
-      <!-- canvas -->
-      <div style="height:1800px">
-        <div id="canvas" style=" display: flex; justify-content: center; margin: 5px;"></div>
+        <!-- canvas -->
+        <div style="height:1800px">
+          <div id="canvas" style=" display: flex; justify-content: center; margin: 5px;"></div>
+        </div>
       </div>
     </div>
-  </div>
-  <%- include("./master/socketio.html") %>
-  <script>
-    // 멥 그리기
-    drawSvgBasePlace('canvas');
-    setPanzoom();
+    <%- include("./master/socketio.html") %>
+    <script>
+      // 멥 그리기
+      drawSvgBasePlace('canvas');
+      setPanzoom();
 
+      //모드 선택 설렉트 박스 and 한/영 토글 버튼
+      $('select, #placeNodeChangeNameToogleBtn').change(() => {
+        const selectedModeVal = $('select').selectpicker('val');
+        const isChecked = $('#placeNodeChangeNameToogleBtn').prop('checked'); // 체크 상태 false: off, true: on
 
-    //모드 선택 설렉트 박스 and 한/영 토글 버튼
-    $('select, #placeNodeChangeNameToogleBtn').change(() => {
-      console.log('Change')
-      const selectedModeVal = $('select').selectpicker('val');
-      const isChecked = $('#placeNodeChangeNameToogleBtn').prop('checked'); // 체크 상태 false: off, true: on
+        $(`#canvas`).empty(); // svg가 그려진 공간 초기화
+        drawSvgBasePlace('canvas', isChecked); // 초기화 후 다시 그리기 (체크 상태 포함)
 
-      $(`#canvas`).empty(); // svg가 그려진 공간 초기화
-      drawSvgBasePlace('canvas', isChecked); // 초기화 후 다시 그리기 (체크 상태 포함)
+        bindingClickNodeEvent('', selectedModeVal); // 장치, 센서 클릭 이벤트 다시 바인딩
 
-      bindingClickEventNode('', selectedModeVal); // 장치, 센서 클릭 이벤트 다시 바인딩
+        reDrawNodeData(isChecked);
+        // showNodeData('P_002', 'open', isChecked); // 새롭게 그려진 svg map 다시 데이터 뿌리기 (체크 상태 포함)
+        // showNodeData('WL_004', '100', isChecked);
+      });
 
-      reDrawNodeData(isChecked)
-      // showNodeData('P_002', 'open', isChecked); // 새롭게 그려진 svg map 다시 데이터 뿌리기 (체크 상태 포함)
-      // showNodeData('WL_004', '100', isChecked);
-    });
+      // panzoom 옵션 세팅
+      function setPanzoom() {
+        const svgMap = SVG.get('svgCanvas');
+        const canvas = document.getElementById('canvas');
+        const $canvas = $('#canvas');
+        //FIXME:
+        const { innerWidth, innerHeight } = window;
+        const { width, height } = map.drawInfo.frame.mapInfo;
+        // const matrix = `matrix(1, 0, 0, 1, ${width - width * 1.27}, ${height - height * 1.3})`;
+        const matrix = `matrix(1, 0, 0, 1, 0, 0)`;
+        const filter = 'win16|win32|win64|mac';
 
-    // 시작시 개발 모드로 세팅
-    $('#modeSelect')
-      .val('develop')
-      .trigger('change');
+        // 맵 size 재설정
+        canvas.style.width = svgMap.node.width.baseVal.value + 'px';
+        canvas.style.height = svgMap.node.height.baseVal.value + 'px';
 
-
-    // panzoom 옵션 세팅
-    function setPanzoom() {
-      const svgMap = SVG.get('svgCanvas');
-      const canvas = document.getElementById('canvas');
-      const $canvas = $('#canvas');
-
-      const {
-        width,
-        height
-      } = map.drawInfo.frame.mapInfo;
-      const matrix = `matrix(0.4, 0, 0, 0.4, ${width - width * 1.27}, ${height - height * 1.3})`;
-
-      const filter = 'win16|win32|win64|mac';
-
-      // 맵 size 재설정
-      canvas.style.width = svgMap.node.width.baseVal.value + 'px';
-      canvas.style.height = svgMap.node.height.baseVal.value + 'px';
-
-      //모바일, pc 접속 분별하여 zoom in/out 활셩 여부 설정
-      if (navigator.platform) {
-        if (0 > filter.indexOf(navigator.platform.toLowerCase())) {
-          // mobile
-          // panzoom
-          $canvas.panzoom({
-            disablePan: true,
-            disableZoom: true,
-            startTransform: matrix,
-          });
-          $('#zoom-out', '#zoom-in', '#reset').hide();
-        } else {
-          // pc
-          // panzoom
-          $canvas.panzoom({
-            $reset: $('#reset'),
-            cursor: 'context-menu',
-            startTransform: matrix,
-          });
-
-          // mouseWheel
-          $canvas.panzoom().on('mousewheel.focal', function (e) {
-            e.preventDefault();
-            const delta = e.delta || e.originalEvent.wheelDelta;
-            const zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
-            $canvas.panzoom('zoom', zoomOut, {
-              animate: false,
-              focal: e,
+        //모바일, pc 접속 분별하여 zoom in/out 활셩 여부 설정
+        if (navigator.platform) {
+          if (0 > filter.indexOf(navigator.platform.toLowerCase())) {
+            // mobile
+            // panzoom
+            $canvas.panzoom({
+              disablePan: true,
+              disableZoom: true,
+              startTransform: matrix,
             });
-          });
+            $('#zoom-out', '#zoom-in', '#reset').hide();
+          } else {
+            // pc
+            // panzoom
+            $canvas.panzoom({
+              $reset: $('#reset'),
+              cursor: 'context-menu',
+              startTransform: matrix,
+            });
 
-          // zoom 기능 기준점 재정의
-          $('#zoom-in').click(function (e) {
-            $canvas.panzoom('zoom', {});
-          });
-          $('#zoom-out').click(function (e) {
-            $canvas.panzoom('zoom', 'zoomOut', {});
-          });
+            // mouseWheel
+            $canvas.panzoom().on('mousewheel.focal', function(e) {
+              e.preventDefault();
+              const delta = e.delta || e.originalEvent.wheelDelta;
+              const zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
+              $canvas.panzoom('zoom', zoomOut, {
+                animate: false,
+                focal: e,
+              });
+            });
+
+            // zoom 기능 기준점 재정의
+            $('#zoom-in').click(function(e) {
+              $canvas.panzoom('zoom', {});
+            });
+            $('#zoom-out').click(function(e) {
+              $canvas.panzoom('zoom', 'zoomOut', {});
+            });
+          }
         }
       }
-    }
-  </script>
-</body>
+    </script>
 
+    <script>
+      // 시작시 개발 모드로 세팅
+      $('#modeSelect')
+        .val('develop')
+        .trigger('change');
+    </script>
+  </body>
 </html>

@@ -10,9 +10,11 @@ class Model extends BaseModel.Inverter {
    */
   constructor(protocolInfo) {
     super();
+    const { mainCategory = '', subCategory = '', deviceId } = protocolInfo;
+    console.log(`${mainCategory} ${subCategory} (${deviceId}) EchoServer Created`);
 
     // 국번 세팅
-    const dialing = _.get(protocolInfo, 'deviceId');
+    const dialing = deviceId;
 
     this.protocolInfo = protocolInfo;
     this.dialing = this.protocolConverter.makeMsg2Buffer(dialing);
@@ -25,9 +27,10 @@ class Model extends BaseModel.Inverter {
     // 전압 200을 기본으로 두고. 용량 30kW * 5 = 150kW, 150 A * 200 V = 30000 W -> 30 kW
     this.basePvA = this.amount * 5;
 
-    this.BASE = BaseModel.Inverter.BASE_MODEL;
+    // Data Storage
+    this.ds = BaseModel.Inverter.BASE_MODEL;
     // TEST
-    this.BASE.powerCpKwh = this.amount * _.random(10, 10.5, true); // 100 kWh 부터 시작
+    this.ds.powerCpKwh = this.amount * _.random(10, 10.5, true); // 100 kWh 부터 시작
     this.index = 0;
 
     this.intervalMinute = 1;
@@ -91,31 +94,31 @@ class Model extends BaseModel.Inverter {
     //
     const currHourScale = _.divide(currRealSolar, BASE_SOLAR);
 
-    this.BASE.pvAmp = _.multiply(this.basePvA, currHourScale);
-    this.BASE.pvVol = _.random(180, 220, true);
-    this.BASE.pvKw = _.multiply(_.multiply(this.BASE.pvAmp, this.BASE.pvVol), 0.001);
-    this.BASE.gridLf = _.random(59.7, 60.5);
-    this.BASE.gridRAmp = _.multiply(this.BASE.pvAmp, _.random(0.9, 1, true));
-    this.BASE.gridRsVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1, true));
-    this.BASE.gridSAmp = _.multiply(this.BASE.pvAmp, _.random(0.9, 1, true));
-    this.BASE.gridStVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1, true));
-    this.BASE.gridTAmp = _.multiply(this.BASE.pvAmp, _.random(0.9, 1, true));
-    this.BASE.gridTrVol = _.multiply(this.BASE.pvVol, _.random(0.9, 1, true));
-    this.BASE.operIsError = _.random(0, 1);
-    this.BASE.operIsRun = _.random(0, 1);
-    this.BASE.operTemperature = _.random(15.1, 36.2);
-    this.BASE.operTroubleList = [];
-    this.BASE.operWarningList = [];
-    this.BASE.sysCapaKw = this.amount;
-    this.BASE.sysIsSingle = this.isSingle;
-    this.BASE.sysLineVoltage = this.isSingle ? 220 : 380;
-    this.BASE.sysProductYear = moment().year();
-    this.BASE.sysSn = _.random(1, 9);
-    this.BASE.powerPvKw = this.BASE.pvKw;
-    this.BASE.powerGridKw = _.divide(_.multiply(this.BASE.gridRAmp, this.BASE.gridRsVol), 1000);
-    this.BASE.powerDailyKwh = _.sum([10, this.index]);
-    this.BASE.powerCpKwh += _.multiply(this.cumulativeScale, this.BASE.powerGridKw);
-    this.BASE.powerPf = _.multiply(_.divide(this.BASE.powerGridKw, this.BASE.powerPvKw), 100);
+    this.ds.pvAmp = _.multiply(this.basePvA, currHourScale);
+    this.ds.pvVol = _.random(180, 220, true);
+    this.ds.pvKw = _.multiply(_.multiply(this.ds.pvAmp, this.ds.pvVol), 0.001);
+    this.ds.gridLf = _.random(59.7, 60.5);
+    this.ds.gridRAmp = _.multiply(this.ds.pvAmp, _.random(0.9, 1, true));
+    this.ds.gridRsVol = _.multiply(this.ds.pvVol, _.random(0.9, 1, true));
+    this.ds.gridSAmp = _.multiply(this.ds.pvAmp, _.random(0.9, 1, true));
+    this.ds.gridStVol = _.multiply(this.ds.pvVol, _.random(0.9, 1, true));
+    this.ds.gridTAmp = _.multiply(this.ds.pvAmp, _.random(0.9, 1, true));
+    this.ds.gridTrVol = _.multiply(this.ds.pvVol, _.random(0.9, 1, true));
+    this.ds.operIsError = _.random(0, 1);
+    this.ds.operIsRun = _.random(0, 1);
+    this.ds.operTemperature = _.random(15.1, 36.2);
+    this.ds.operTroubleList = [];
+    this.ds.operWarningList = [];
+    this.ds.sysCapaKw = this.amount;
+    this.ds.sysIsSingle = this.isSingle;
+    this.ds.sysLineVoltage = this.isSingle ? 220 : 380;
+    this.ds.sysProductYear = moment().year();
+    this.ds.sysSn = _.random(1, 9);
+    this.ds.powerPvKw = this.ds.pvKw;
+    this.ds.powerGridKw = _.divide(_.multiply(this.ds.gridRAmp, this.ds.gridRsVol), 1000);
+    this.ds.powerDailyKwh = _.sum([10, this.index]);
+    this.ds.powerCpKwh += _.multiply(this.cumulativeScale, this.ds.powerGridKw);
+    this.ds.powerPf = _.multiply(_.divide(this.ds.powerGridKw, this.ds.powerPvKw), 100);
 
     this.index += 1;
   }

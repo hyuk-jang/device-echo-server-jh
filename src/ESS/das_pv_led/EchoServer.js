@@ -76,11 +76,11 @@ class EchoServer extends Model {
       Buffer.from('017'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.BASE.sysIsSingle ? 1 : 3, 1),
+      this.protocolConverter.convertNumToBuf(this.ds.sysIsSingle ? 1 : 3, 1),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.sysCapaKw * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.sysCapaKw * 10), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.sysLineVoltage), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.sysLineVoltage), 3),
       this.DELIMETER,
     ];
 
@@ -94,11 +94,11 @@ class EchoServer extends Model {
       Buffer.from('120'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.pvVol), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.pvVol), 3),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.pvAmp * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.pvAmp * 10), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.pvKw * currentScale), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.pvKw * currentScale), 4),
       this.DELIMETER,
     ];
 
@@ -111,13 +111,13 @@ class EchoServer extends Model {
       Buffer.from('222'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridRsVol), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridRsVol), 3),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridStVol), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridStVol), 3),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridTrVol), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridTrVol), 3),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridLf * 10), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridLf * 10), 3),
       this.DELIMETER,
     ];
 
@@ -130,11 +130,11 @@ class EchoServer extends Model {
       Buffer.from('321'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridRAmp * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridRAmp * 10), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridSAmp * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridSAmp * 10), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.gridTAmp * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridTAmp * 10), 4),
       this.DELIMETER,
     ];
 
@@ -148,9 +148,9 @@ class EchoServer extends Model {
       Buffer.from('419'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.powerGridKw * currentScale), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.powerGridKw * currentScale), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.powerCpKwh), 7),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.powerCpKwh), 7),
       this.DELIMETER,
     ];
 
@@ -163,7 +163,7 @@ class EchoServer extends Model {
       Buffer.from('612'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.BASE.operIsError, 1),
+      this.protocolConverter.convertNumToBuf(this.ds.operIsError, 1),
       this.DELIMETER,
       this.protocolConverter.convertNumToBuf(_.random(0, 6), 1),
       this.DELIMETER,
@@ -182,23 +182,20 @@ class EchoServer extends Model {
       Buffer.from('741'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.BASE.batteryVol, 3),
+      this.protocolConverter.convertNumToBuf(this.ds.batteryVol, 3),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.batteryAmp * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.batteryAmp * 10), 4),
+      this.DELIMETER,
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.batteryChargingKw * currentScale), 4),
       this.DELIMETER,
       this.protocolConverter.convertNumToBuf(
-        _.round(this.BASE.batteryChargingKw * currentScale),
+        _.round(this.ds.batteryDischargingKw * currentScale),
         4,
       ),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(
-        _.round(this.BASE.batteryDischargingKw * currentScale),
-        4,
-      ),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.batteryTotalChargingKw), 7),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.batteryTotalChargingKw), 7),
-      this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.totalPVGeneratingPowerKwh), 7),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.totalPVGeneratingPowerKwh), 7),
       this.DELIMETER,
     ];
 
@@ -213,17 +210,17 @@ class EchoServer extends Model {
       Buffer.from('828'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.ledDcVol), 3),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.ledDcVol), 3),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.ledDcAmp * 10), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.ledDcAmp * 10), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.ledUsingKw * currentScale), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.ledUsingKw * currentScale), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.ledTotalUsingKwh), 7),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.ledTotalUsingKwh), 7),
       this.DELIMETER,
     ];
 
-    BU.CLI(this.BASE);
+    BU.CLI(this.ds);
     const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
     return Buffer.concat([resBuf, this.calcChecksum(dataBody)]);
   }
@@ -234,9 +231,9 @@ class EchoServer extends Model {
       Buffer.from('919'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.inputLineKw * currentScale), 4),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.inputLineKw * currentScale), 4),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.BASE.inputLineTotalKwh), 7),
+      this.protocolConverter.convertNumToBuf(_.round(this.ds.inputLineTotalKwh), 7),
       this.DELIMETER,
     ];
 
@@ -272,7 +269,6 @@ class EchoServer extends Model {
     );
 
     // 모델 데이터 변화
-    // BU.CLI(this.BASE);
     switch (cmd.toString()) {
       case 'MOD':
         return this.makeSystem();

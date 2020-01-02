@@ -125,15 +125,15 @@ const map = {
         nodeList: [
           {
             target_code: '011',
-            target_name: '영흥 A (33kW 급)',
+            target_name: '영흥 일반 (33kW 급)',
           },
           {
             target_code: '012',
-            target_name: '영흥 B (33kW 급)',
+            target_name: '영흥 투광 (33kW 급)',
           },
           {
             target_code: '013',
-            target_name: '영흥 C (33kW 급)',
+            target_name: '영흥 양면 (33kW 급)',
           },
         ],
       },
@@ -168,14 +168,14 @@ const map = {
             target_code: '014',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
-            nodeList: ['LX_014', 'S_I_014', 'CO2_014', 'WV_S_014', 'T_S_014', 'RH_S_014'],
+            nodeList: ['LX_014', 'S_PU_014', 'CO2_014', 'WV_S_014', 'T_S_014', 'RH_S_014'],
           },
           {
             serial_number: 15,
             target_code: '015',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
-            nodeList: ['LX_015', 'S_I_015', 'CO2_015', 'WV_S_015', 'T_S_015', 'RH_S_015'],
+            nodeList: ['LX_015', 'S_PU_015', 'CO2_015', 'WV_S_015', 'T_S_015', 'RH_S_015'],
           },
         ],
       },
@@ -363,6 +363,12 @@ const map = {
             target_id: 'inclinedSolar',
             target_name: '경사 일사량',
             target_prefix: 'S_I',
+            nodeList: [],
+          },
+          {
+            target_id: 'pvUnderlyingSolar',
+            target_name: '모듈 하부 일사량',
+            target_prefix: 'S_PU',
             nodeList: [
               {
                 target_code: '014',
@@ -496,7 +502,8 @@ const map = {
       {
         target_id: 'vol',
         target_name: '전압',
-        is_sensor: 0,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'V',
         description: null,
@@ -530,7 +537,8 @@ const map = {
       {
         target_id: 'amp',
         target_name: '전류',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'A',
         description: null,
@@ -564,7 +572,8 @@ const map = {
       {
         target_id: 'W',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'W',
         description: '1 와트(기호 W)는 1 초 동안의 1 줄(N·m)에 해당하는 일률의 SI 단위',
@@ -573,7 +582,8 @@ const map = {
       {
         target_id: 'kW',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'kW',
         description: '1 킬로와트(기호 kW)는 1 초 동안의 1,000 줄(N·m)에 해당하는 일률의 SI 단위',
@@ -597,7 +607,8 @@ const map = {
       {
         target_id: 'MW',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'MW',
         description:
@@ -607,7 +618,8 @@ const map = {
       {
         target_id: 'Wh',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'Wh',
         description: '시간당 에너지 단위, 1 W의 일률로 1 시간 동안 하는 일의 양',
@@ -616,7 +628,8 @@ const map = {
       {
         target_id: 'kWh',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'kWh',
         description: '시간당 에너지 단위, 1 kW의 일률로 1 시간 동안 하는 일의 양',
@@ -639,7 +652,8 @@ const map = {
       {
         target_id: 'MWh',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'MWh',
         description: '시간당 에너지 단위, 1 MW의 일률로 1 시간 동안 하는 일의 양',
@@ -648,7 +662,8 @@ const map = {
       {
         target_id: 'powerFactor',
         target_name: '역률',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: '%',
         defList: [],
@@ -656,7 +671,8 @@ const map = {
       {
         target_id: 'frequency',
         target_name: '주파수',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'Hz',
         defList: [
@@ -671,7 +687,8 @@ const map = {
       {
         target_id: 'trouble',
         target_name: '오류 목록',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: TROUBLE,
         description: '장치에서 보내오는 이상 데이터',
         defList: [
@@ -698,27 +715,27 @@ const map = {
             placeList: [
               {
                 target_code: '011',
-                target_name: '영흥 A (33kW 급)',
+                target_name: '영흥 일반 (33kW 급)',
                 chart_color: '#f06595',
                 chart_sort_rank: 11,
                 repeatId: 'RE_PREFIX_IVT',
-                nodeList: ['S_I_015'],
+                nodeList: [],
               },
               {
                 target_code: '012',
-                target_name: '영흥 B (33kW 급)',
+                target_name: '영흥 투광 (33kW 급)',
                 chart_color: '#087f5b',
                 chart_sort_rank: 12,
                 repeatId: 'RE_PREFIX_IVT',
-                nodeList: ['S_I_015'],
+                nodeList: [],
               },
               {
                 target_code: '013',
-                target_name: '영흥 C (33kW 급)',
+                target_name: '영흥 양면 (33kW 급)',
                 chart_color: '#3bc9db',
                 chart_sort_rank: 13,
                 repeatId: 'RE_PREFIX_IVT',
-                nodeList: ['S_I_015'],
+                nodeList: [],
               },
             ],
           },
@@ -739,7 +756,7 @@ const map = {
                 target_name: '하부',
                 chart_color: '#f06595',
                 chart_sort_rank: 14,
-                nodeList: ['LX_014', 'S_I_014', 'CO2_014', 'WV_S_014', 'T_S_014', 'RH_S_014'],
+                nodeList: ['LX_014', 'S_PU_014', 'CO2_014', 'WV_S_014', 'T_S_014', 'RH_S_014'],
               },
             ],
           },
@@ -753,7 +770,7 @@ const map = {
                 target_name: '하부',
                 chart_color: '#087f5b',
                 chart_sort_rank: 15,
-                nodeList: ['LX_015', 'S_I_015', 'CO2_015', 'WV_S_015', 'T_S_015', 'RH_S_015'],
+                nodeList: ['LX_015', 'S_PU_015', 'CO2_015', 'WV_S_015', 'T_S_015', 'RH_S_015'],
               },
             ],
           },

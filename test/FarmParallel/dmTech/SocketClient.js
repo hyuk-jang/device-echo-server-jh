@@ -57,10 +57,10 @@ class SocketClient extends AbstController {
   /**
    * FP 에코서버 설정
    * @param {protocol_info} protocolInfo
-   * @param {mDeviceMap} deviceMap
+   * @param {mDeviceMap} map
    */
-  setEchoServerFP(protocolInfo, deviceMap) {
-    this.echoServerFP = new EchoServerFP(protocolInfo, deviceMap);
+  setEchoServerFP(protocolInfo, map) {
+    this.echoServerFP = new EchoServerFP(protocolInfo, map);
     // this.echoServerFP = new EchoServerFP(protocolInfo, deviceMap.FP.YeongSanPo);
   }
 

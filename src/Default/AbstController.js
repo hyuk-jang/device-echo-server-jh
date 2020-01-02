@@ -72,7 +72,7 @@ class AbstController {
    * @param {*} msgInfo 각 장치에 맞는 명령 정보
    * @return {Promise} 전송 성공시 Resolve, 실패시 Reject
    */
-  async write() {}
+  write() {}
 
   attach(observer) {
     // BU.log('Observer attached');

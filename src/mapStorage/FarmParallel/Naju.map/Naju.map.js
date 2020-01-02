@@ -61,7 +61,7 @@ const map = {
         },
       ],
     },
-    positionList: [{}],
+    positionInfo: {},
   },
   setInfo: {
     mainInfo: {
@@ -156,7 +156,7 @@ const map = {
           {
             serial_number: 1,
             target_code: '001',
-            target_name: '나주 고정식 A',
+            target_name: '나주 고정식 A-1',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
             nodeList: [
@@ -169,26 +169,53 @@ const map = {
               'RH_S_001',
             ],
           },
+          // FIXME:
+          {
+            serial_number: 31,
+            target_code: '031',
+            target_name: '나주 고정식 A-2',
+            dccId: 'DCC_001',
+            dpcId: 'DPC_001',
+            nodeList: ['S_PU_031', 'S_PU_032'],
+          },
           {
             serial_number: 2,
             target_code: '002',
-            target_name: '나주 고정식 B',
+            target_name: '나주 고정식 B-1',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
             nodeList: ['LX_002', 'S_PU_002', 'CO2_002', 'WV_S_002', 'T_S_002', 'RH_S_002'],
           },
+          // FIXME:
+          {
+            serial_number: 32,
+            target_code: '032',
+            target_name: '나주 고정식 B-2',
+            dccId: 'DCC_001',
+            dpcId: 'DPC_001',
+            nodeList: ['S_PU_033', 'S_PU_034', 'S_PU_035', 'S_PU_036'],
+          },
           {
             serial_number: 3,
             target_code: '003',
-            target_name: '나주 고정식 C',
+            target_name: '나주 고정식 C-1',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
             nodeList: ['LX_003', 'CO2_003', 'WV_S_003', 'T_S_003', 'RH_S_003'],
           },
+          // FIXME:
+          {
+            serial_number: 33,
+            target_code: '033',
+            target_name: '나주 고정식 C-2',
+            dccId: 'DCC_001',
+            dpcId: 'DPC_001',
+            nodeList: ['S_PU_037', 'S_PU_038'],
+          },
           {
             serial_number: 4,
             target_code: '004',
-            target_name: '나주 가변식 A',
+            target_name: '나주 가변식 A-1',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
             nodeList: [
@@ -201,21 +228,47 @@ const map = {
               'RH_S_004',
             ],
           },
+          // FIXME:
+          {
+            serial_number: 34,
+            target_code: '034',
+            target_name: '나주 가변식 A-2',
+            dccId: 'DCC_001',
+            dpcId: 'DPC_001',
+            nodeList: ['S_PU_039', 'S_PU_040'],
+          },
           {
             serial_number: 5,
             target_code: '005',
-            target_name: '나주 가변식 B',
+            target_name: '나주 가변식 B-1',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
             nodeList: ['LX_005', 'S_PU_005', 'CO2_005', 'WV_S_005', 'T_S_005', 'RH_S_005'],
           },
           {
+            serial_number: 35,
+            target_code: '035',
+            target_name: '나주 가변식 B-2',
+            dccId: 'DCC_001',
+            dpcId: 'DPC_001',
+            nodeList: ['S_PU_041', 'S_PU_042', 'S_PU_043', 'S_PU_044'], // FIXME:
+          },
+          {
             serial_number: 6,
             target_code: '006',
-            target_name: '나주 가변식 C',
+            target_name: '나주 가변식 C-1',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
             nodeList: ['LX_006', 'CO2_006', 'WV_S_006', 'T_S_006', 'RH_S_006'],
+          },
+          // TODO:
+          {
+            serial_number: 36,
+            target_code: '036',
+            target_name: '나주 가변식 C-2',
+            dccId: 'DCC_001',
+            dpcId: 'DPC_001',
+            nodeList: ['S_PU_045', 'S_PU_046'], // FIXME:
           },
         ],
       },
@@ -462,9 +515,92 @@ const map = {
             nodeList: [
               {
                 target_code: '002',
+                target_name: 'B',
               },
               {
                 target_code: '005',
+                target_name: 'B',
+              },
+              // TODO: dataLoggerIndex 수정
+              {
+                target_code: '031',
+                target_name: 'A-1',
+                data_logger_index: 2,
+              },
+              {
+                target_code: '032',
+                target_name: 'A-2',
+                data_logger_index: 3,
+              },
+              {
+                target_code: '033',
+                target_name: 'B-1',
+                data_logger_index: 0,
+              },
+              {
+                target_code: '034',
+                target_name: 'B-2',
+                data_logger_index: 1,
+              },
+              {
+                target_code: '035',
+                target_name: 'B-3',
+                data_logger_index: 2,
+              },
+              {
+                target_code: '036',
+                target_name: 'B-4',
+                data_logger_index: 3,
+              },
+              {
+                target_code: '037',
+                target_name: 'C-1',
+                data_logger_index: 2,
+              },
+              {
+                target_code: '038',
+                target_name: 'C-2',
+                data_logger_index: 3,
+              },
+              {
+                target_code: '039',
+                target_name: 'A-1',
+                data_logger_index: 2,
+              },
+              {
+                target_code: '040',
+                target_name: 'A-2',
+                data_logger_index: 3,
+              },
+              {
+                target_code: '041',
+                target_name: 'B-1',
+                data_logger_index: 0,
+              },
+              {
+                target_code: '042',
+                target_name: 'B-2',
+                data_logger_index: 1,
+              },
+              {
+                target_code: '043',
+                target_name: 'B-3',
+                data_logger_index: 2,
+              },
+              {
+                target_code: '044',
+                target_name: 'B-4',
+                data_logger_index: 3,
+              },
+              {
+                target_code: '045',
+                target_name: 'C-1',
+                data_logger_index: 2,
+              },
+              {
+                target_code: '046',
+                target_name: 'C-2',
+                data_logger_index: 3,
               },
             ],
           },
@@ -633,7 +769,8 @@ const map = {
       {
         target_id: 'vol',
         target_name: '전압',
-        is_sensor: 0,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'V',
         description: null,
@@ -667,7 +804,8 @@ const map = {
       {
         target_id: 'amp',
         target_name: '전류',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'A',
         description: null,
@@ -701,7 +839,8 @@ const map = {
       {
         target_id: 'W',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'W',
         description: '1 와트(기호 W)는 1 초 동안의 1 줄(N·m)에 해당하는 일률의 SI 단위',
@@ -710,7 +849,8 @@ const map = {
       {
         target_id: 'kW',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'kW',
         description: '1 킬로와트(기호 kW)는 1 초 동안의 1,000 줄(N·m)에 해당하는 일률의 SI 단위',
@@ -734,7 +874,8 @@ const map = {
       {
         target_id: 'MW',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'MW',
         description:
@@ -744,7 +885,8 @@ const map = {
       {
         target_id: 'Wh',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'Wh',
         description: '시간당 에너지 단위, 1 W의 일률로 1 시간 동안 하는 일의 양',
@@ -753,7 +895,8 @@ const map = {
       {
         target_id: 'kWh',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'kWh',
         description: '시간당 에너지 단위, 1 kW의 일률로 1 시간 동안 하는 일의 양',
@@ -776,7 +919,8 @@ const map = {
       {
         target_id: 'MWh',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'MWh',
         description: '시간당 에너지 단위, 1 MW의 일률로 1 시간 동안 하는 일의 양',
@@ -785,7 +929,8 @@ const map = {
       {
         target_id: 'powerFactor',
         target_name: '역률',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: '%',
         defList: [],
@@ -793,7 +938,8 @@ const map = {
       {
         target_id: 'frequency',
         target_name: '주파수',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'Hz',
         defList: [
@@ -808,7 +954,8 @@ const map = {
       {
         target_id: 'trouble',
         target_name: '오류 목록',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: TROUBLE,
         description: '장치에서 보내오는 이상 데이터',
         defList: [
@@ -867,9 +1014,9 @@ const map = {
         description: '농업 병행 태양광 부지로 작물 생육 환경 센서가 존재',
         defList: [
           {
-            target_id: 'fixingPV',
-            target_prefix: 'PV_F',
-            target_name: '고정식 태양광',
+            target_id: 'variablePV',
+            target_prefix: 'PV_V',
+            target_name: '가변식 태양광',
             placeList: [
               {
                 target_code: '001',
@@ -884,6 +1031,9 @@ const map = {
                   'T_PR_001',
                   'T_S_001',
                   'RH_S_001',
+                  // FIXME:
+                  'S_PU_031',
+                  'S_PU_032',
                 ],
               },
               {
@@ -891,21 +1041,42 @@ const map = {
                 target_name: 'B',
                 chart_color: '#fcc2d7',
                 chart_sort_rank: 2,
-                nodeList: ['LX_002', 'S_PU_002', 'CO2_002', 'WV_S_002', 'T_S_002', 'RH_S_002'],
+                nodeList: [
+                  'LX_002',
+                  'S_PU_002',
+                  'CO2_002',
+                  'WV_S_002',
+                  'T_S_002',
+                  'RH_S_002',
+                  // FIXME:
+                  'S_PU_033',
+                  'S_PU_034',
+                  'S_PU_035',
+                  'S_PU_036',
+                ],
               },
               {
                 target_code: '003',
                 target_name: 'C',
                 chart_color: '#d0bfff',
                 chart_sort_rank: 3,
-                nodeList: ['LX_003', 'CO2_003', 'WV_S_003', 'T_S_003', 'RH_S_003'],
+                nodeList: [
+                  'LX_003',
+                  'CO2_003',
+                  'WV_S_003',
+                  'T_S_003',
+                  'RH_S_003',
+                  // FIXME:
+                  'S_PU_037',
+                  'S_PU_038',
+                ],
               },
             ],
           },
           {
-            target_id: 'variablePV',
-            target_prefix: 'PV_V',
-            target_name: '가변식 태양광',
+            target_id: 'fixingPV',
+            target_prefix: 'PV_F',
+            target_name: '고정식 태양광',
             placeList: [
               {
                 target_code: '004',
@@ -920,6 +1091,9 @@ const map = {
                   'T_PR_004',
                   'T_S_004',
                   'RH_S_004',
+                  // FIXME:
+                  'S_PU_039',
+                  'S_PU_040',
                 ],
               },
               {
@@ -927,14 +1101,35 @@ const map = {
                 target_name: 'B',
                 chart_color: '#212529',
                 chart_sort_rank: 5,
-                nodeList: ['LX_005', 'S_PU_005', 'CO2_005', 'WV_S_005', 'T_S_005', 'RH_S_005'],
+                nodeList: [
+                  'LX_005',
+                  'S_PU_005',
+                  'CO2_005',
+                  'WV_S_005',
+                  'T_S_005',
+                  'RH_S_005',
+                  // FIXME:
+                  'S_PU_041',
+                  'S_PU_042',
+                  'S_PU_043',
+                  'S_PU_044',
+                ],
               },
               {
                 target_code: '006',
                 target_name: 'C',
                 chart_color: '#a9e34b',
                 chart_sort_rank: 6,
-                nodeList: ['LX_006', 'CO2_006', 'WV_S_006', 'T_S_006', 'RH_S_006'],
+                nodeList: [
+                  'LX_006',
+                  'CO2_006',
+                  'WV_S_006',
+                  'T_S_006',
+                  'RH_S_006',
+                  // FIXME:
+                  'S_PU_045',
+                  'S_PU_046',
+                ],
               },
             ],
           },

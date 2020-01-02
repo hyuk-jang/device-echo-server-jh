@@ -120,6 +120,7 @@ module.exports = {
    * @return {detailDataloggerIInfo[]}
    */
   makeDataLoggerList: deviceMap => {
+    /** @type {detailDataloggerIInfo[]} */
     const returnList = [];
     // 데이터 로거 대분류 구조 순회
     deviceMap.setInfo.dataLoggerStructureList.forEach(dataLoggerClassInfo => {
