@@ -32,7 +32,7 @@ function operationServer() {
 
     protocolList.push(cloneProtocolInfo);
   }
-  control.attachDevice(protocolList);
+  control.attachEchoServer(protocolList);
 }
 
 function startTest() {

@@ -124,18 +124,18 @@ class EchoServer extends Model {
 
     // SOP 일치 여부 체크
     if (!_.isEqual(SOP, PROTOCOL_SOP)) {
-      BU.CLI(`Not Matching SOP expect: ${PROTOCOL_SOP} res: ${SOP}`);
+      // BU.CLI(`Not Matching SOP expect: ${PROTOCOL_SOP} res: ${SOP}`);
       return;
     }
 
     // 국번 일치 여부 체크(다르다면 응답하지 않음)
     if (!_.isEqual(dialing, this.dialing)) {
-      BU.CLI(`Not Matching dialing expect: ${this.dialing} res: ${dialing}`);
+      // BU.CLI(`Not Matching dialing expect: ${this.dialing} res: ${dialing}`);
       return;
     }
 
     if (!_.isEqual(checkSum, calcCheckSum)) {
-      BU.CLI(`Not Matching checkSum expect: ${calcCheckSum} res: ${checkSum}`);
+      // BU.CLI(`Not Matching checkSum expect: ${calcCheckSum} res: ${checkSum}`);
       return;
     }
 

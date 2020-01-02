@@ -46,15 +46,15 @@ function operationServer() {
   });
 
   // 생성된 에코서버
-  const echoServer = control.attachDevice(deviceList, deviceMap.UPSAS.muan100kW);
+  const echoServer = control.attachEchoServer(deviceList, deviceMap.UPSAS.muan100kW);
 
   // 시뮬레이터 웹 서버 구동
   const simulWeb = new SimulatorWeb(9100, echoServer);
   simulWeb.init();
 
   // 2개 장치 구동
-  if (control.deviceModelList.length !== 1) {
-    throw new Error(`expect ${1}\t res: ${control.deviceModelList.length}`);
+  if (control.echoServerList.length !== 1) {
+    throw new Error(`expect ${1}\t res: ${control.echoServerList.length}`);
   }
 }
 

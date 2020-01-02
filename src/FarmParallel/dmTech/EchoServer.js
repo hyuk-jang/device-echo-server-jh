@@ -109,51 +109,59 @@ class EchoServer extends Model {
     // BU.CLIS(this.protocolInfo, bufData);
     // Frame을 쓴다면 벗겨냄
     const convertedBufData = this.peelFrameMSg(bufData);
-    // BU.CLI(convertedBufData);
-
-    let dataList;
-
     const slaveAddr = convertedBufData.readIntBE(0, 1);
     const fnCode = convertedBufData.readIntBE(1, 1);
 
-    // BU.CLIS(slaveAddr, fnCode);
-    // BU.CLI(this.dataLoggerList);
-    // slaveAddr를 기준으로 dataLogger 찾음
-    const foundDataLogger = this.findDataLogger(slaveAddr);
-    // BU.CLI(foundDataLogger);
+    try {
+      // BU.CLI(convertedBufData);
 
-    if (_.isUndefined(foundDataLogger)) {
-      // BU.CLI(this.deviceMap.setInfo.mainInfo);
-      return;
+      let dataList;
+
+      // BU.CLIS(slaveAddr, fnCode);
+      // BU.CLI(this.dataLoggerList);
+      // slaveAddr를 기준으로 dataLogger 찾음
+      const foundDataLogger = this.findDataLogger(slaveAddr);
+      // BU.CLI(foundDataLogger);
+
+      if (_.isUndefined(foundDataLogger)) {
+        // BU.CLI(this.deviceMap.setInfo.mainInfo);
+        return;
+      }
+
+      switch (fnCode) {
+        case 4:
+          dataList = this.readInputRegister(foundDataLogger, convertedBufData);
+          break;
+
+        default:
+          break;
+      }
+
+      // 데이터가 없으면 반환
+      if (_.isEmpty(dataList)) return undefined;
+
+      // BU.CLI(dataList.length);
+      // Modbus Header 구성
+      const mbapHeader = Buffer.concat([
+        Buffer.from([slaveAddr, fnCode]),
+        this.protocolConverter.convertNumToHxToBuf(dataList.length * 2, 1),
+      ]);
+      // BU.CLI(mbapHeader);
+      // 장치 데이터 Hi-Lo 형태로 변환
+      const bufferDataList = dataList.map(data =>
+        this.protocolConverter.convertNumToHxToBuf(data, 2),
+      );
+
+      // MBAP Header 붙임
+      bufferDataList.unshift(mbapHeader);
+
+      // Wrapping 처리
+      const returnBuffer = this.wrapFrameMsg(Buffer.concat(bufferDataList));
+      return returnBuffer;
+    } catch (error) {
+      BU.CLI(slaveAddr, convertedBufData);
+      throw error;
     }
-
-    switch (fnCode) {
-      case 4:
-        dataList = this.readInputRegister(foundDataLogger, convertedBufData);
-        break;
-
-      default:
-        break;
-    }
-
-    // BU.CLI(dataList.length);
-    // Modbus Header 구성
-    const mbapHeader = Buffer.concat([
-      Buffer.from([slaveAddr, fnCode]),
-      this.protocolConverter.convertNumToHxToBuf(dataList.length * 2, 1),
-    ]);
-    // BU.CLI(mbapHeader);
-    // 장치 데이터 Hi-Lo 형태로 변환
-    const bufferDataList = dataList.map(data =>
-      this.protocolConverter.convertNumToHxToBuf(data, 2),
-    );
-
-    // MBAP Header 붙임
-    bufferDataList.unshift(mbapHeader);
-
-    // Wrapping 처리
-    const returnBuffer = this.wrapFrameMsg(Buffer.concat(bufferDataList));
-    return returnBuffer;
   }
 }
 module.exports = EchoServer;

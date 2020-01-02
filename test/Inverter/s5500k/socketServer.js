@@ -39,7 +39,7 @@ function operationServer() {
 
   // BU.CLI(protocolList);
 
-  control.attachDevice(protocolList);
+  control.attachEchoServer(protocolList);
 }
 
 function startTest() {

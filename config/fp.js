@@ -42,7 +42,7 @@ module.exports = [
   {
     siteId: '001',
     siteName: '나주',
-    serverPort: 9000,
+    serverPort: 9001,
     echoServerList: [
       {
         protocolConfig: protocolSensor,
@@ -65,7 +65,7 @@ module.exports = [
   {
     siteId: '002',
     siteName: '강진',
-    serverPort: 9001,
+    serverPort: 9002,
     echoServerList: [
       {
         protocolConfig: protocolSensor,
@@ -85,7 +85,7 @@ module.exports = [
   {
     siteId: '003',
     siteName: '보성',
-    serverPort: 9002,
+    serverPort: 9003,
     echoServerList: [
       {
         protocolConfig: protocolSensor,
@@ -105,7 +105,7 @@ module.exports = [
   {
     siteId: '004',
     siteName: '오창',
-    serverPort: 9003,
+    serverPort: 9004,
     echoServerList: [
       {
         protocolConfig: protocolSensor,
@@ -128,7 +128,7 @@ module.exports = [
   {
     siteId: '005',
     siteName: '영흥',
-    serverPort: 9004,
+    serverPort: 9005,
     echoServerList: [
       {
         protocolConfig: protocolSensor,

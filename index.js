@@ -10,7 +10,14 @@ if (require !== undefined && require.main === module) {
 
   const main = new Main();
 
-  const controlList = main.createServer(config.fp);
+  main.createDefaultPassiveServer(
+    {
+      port: 9000,
+    },
+    config.fp,
+  );
+
+  // const controlList = main.createServer(config.fp);
   // const controlList = main.createServer([config.fp[0]]);
 
   // const control = main.getEchoServer('001')

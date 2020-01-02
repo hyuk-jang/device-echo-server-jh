@@ -111,9 +111,9 @@ class SocketClient extends AbstController {
         returnValue = this.defaultWrapper.wrapFrameMsg(protocolFP, returnValue);
         break;
       case 'I':
-        this.echoServerInverterList.forEach(deviceModel => {
+        this.echoServerInverterList.forEach(echoServer => {
           // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
-          receiveDataList.push(deviceModel.onData(bufData));
+          receiveDataList.push(echoServer.onData(bufData));
         });
         // BU.CLI(receiveDataList);
         // 응답받지 않은 데이터는 undefined가 들어가므로 이를 제거하고 유효한 데이터 1개를 가져옴

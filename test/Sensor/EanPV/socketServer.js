@@ -22,7 +22,7 @@ function operationServer() {
   ];
   const control = new Control(9001);
 
-  control.attachDevice(deviceList);
+  control.attachEchoServer(deviceList);
 }
 
 operationServer();

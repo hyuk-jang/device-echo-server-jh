@@ -36,7 +36,7 @@ function operationServer(serverInfo) {
   mainConverter.setProtocolConverter();
 
   control = new Control(serverInfo.socketPort);
-  control.attachDevice(serverInfo.protocolInfo, serverInfo.deviceMap);
+  control.attachEchoServer(serverInfo.protocolInfo, serverInfo.deviceMap);
 }
 
 async function startTest() {
