@@ -4,7 +4,7 @@ const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 const Control = require('../../../src/Control');
 
-require('../../../../default-intelligence');
+const { di, dpc } = require('../../../src/module');
 
 const deviceMap = require('../../../src/deviceMap');
 

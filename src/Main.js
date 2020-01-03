@@ -4,17 +4,71 @@ const net = require('net');
 const { BU } = require('base-util-jh');
 
 const {
-  BaseModel: { defaultModule },
-} = require('../../device-protocol-converter-jh');
+  dpc: {
+    BaseModel: { defaultModule },
+  },
+} = require('./module');
 
 const Control = require('./Control');
-
+// 프로젝트 별 사이트에서 사용하고 있는 Map 정보를 동적으로 불러오기 위함
 const deviceMap = require('./deviceMap');
 
-module.exports = class {
+class Main {
   constructor() {
     /** @type {Control[]} */
     this.serverList = [];
+  }
+
+  /**
+   * 프로젝트 별 에코 서버 생성. DBC 접속 정보가 있다면 접속
+   * @param {desConfig} desConfig
+   */
+  init(desConfig) {
+    const { dbcConnConfig, echoConfigList } = desConfig;
+    // Site 단위 서버 생성
+    this.createServer(echoConfigList);
+
+    // DBC 접속 정보가 없다면 DBC 접속하지 않음
+    if (!_.isNumber(dbcConnConfig.port)) return false;
+
+    // 생성된 사이트 목록만큼 순회하면서 DBC에 접속 시도
+    this.serverList.forEach(server => {
+      const client = net.createConnection(dbcConnConfig);
+
+      const logPath = `./log/echo/${server.siteId}/${BU.convertDateToText(new Date(), '', 2)}.log`;
+
+      client.on('data', data => {
+        BU.appendFile(logPath, `onData : ${data}`);
+
+        const returnValue = this.dataParser(server, data);
+        if (!_.isEmpty(returnValue)) {
+          BU.appendFile(logPath, `writeData : ${returnValue}`);
+          // 1 초후 반환
+          setTimeout(() => {
+            client.write(returnValue);
+          }, 0);
+        }
+      });
+
+      client.on('connect', () => {
+        BU.CLI(`${server.getServerName()} connect DBC on`);
+        this.client = client;
+      });
+
+      client.on('close', err => {
+        this.hasCertification = false;
+        this.client = {};
+        BU.CLI(`${server.getServerName()} close DBC on`);
+      });
+
+      // client.on('end', () => {
+      //   BU.log(`${server.getServerName()} end DBC on`);
+      // });
+
+      client.on('error', error => {
+        console.error(error);
+      });
+    });
   }
 
   /**
@@ -26,7 +80,7 @@ module.exports = class {
   }
 
   /**
-   * 에코서버 구동
+   * 에코서버 구동 (사이트 단위 생성)
    * @param {echoConfig[]} echoConfigList
    */
   createServer(echoConfigList) {
@@ -36,80 +90,34 @@ module.exports = class {
       echoOption.echoServerList.forEach(echoServerConfing => {
         const { protocolConfig, mapConfig: { mapId, projectId } = {} } = echoServerConfing;
 
-        let dMap;
-
-        if (_.isString(mapId) && _.isString(projectId)) {
-          dMap = _.get(deviceMap, `${projectId}.${mapId}`);
-        }
+        // 프로젝트 ID와 map Id 가 존재한다면 해당 map Path 지정
+        const dMap =
+          _.isString(mapId) && _.isString(projectId)
+            ? _.get(deviceMap, `${projectId}.${mapId}`)
+            : undefined;
 
         control.attachEchoServer(protocolConfig, dMap);
       });
 
       return control;
     });
-
-    this.serverList = _.union(this.serverList.push(echoServerList));
+    // 추가 생성된 서버를 병합 >>> 중복 서버 제거 >>> serverList 정의
+    this.serverList = _(this.serverList)
+      .concat(echoServerList)
+      .union()
+      .value();
 
     return this.serverList;
   }
 
   /**
-   *
-   * @param {{host: string=, port: number}} connectInfo
-   * @param {*} echoConfigList
-   */
-  createDefaultPassiveServer(connectInfo, echoConfigList) {
-    // 서버 구동
-    this.createServer(echoConfigList);
-
-    this.serverList.forEach(server => {
-      const client = net.createConnection(connectInfo);
-
-      _.set(server, 'client', client);
-
-      const logPath = `./log/echo/${server.siteId}/${BU.convertDateToText(new Date(), '', 2)}.txt`;
-
-      client.on('data', data => {
-        BU.appendFile(logPath, `onData : ${data}`);
-
-        const returnValue = this.dataParser(data, server);
-        if (!_.isEmpty(returnValue)) {
-          BU.appendFile(logPath, `writeData : ${returnValue}`);
-          // 1 초후 반환
-          setTimeout(() => {
-            client.write(returnValue);
-          }, 1000);
-        }
-      });
-
-      client.on('connect', () => {
-        this.client = client;
-      });
-
-      client.on('close', err => {
-        this.hasCertification = false;
-        this.client = {};
-        this.notifyDisconnect(err);
-      });
-
-      client.on('end', () => {
-        // console.log('Client disconnected');
-      });
-
-      client.on('error', error => {
-        this.notifyError(error);
-      });
-    });
-  }
-
-  /**
-   *
+   * DBC와 접속을 맺고 Default Wrapper를 사용할 경우 DBC와의 인증을 Site 단위로 처리하기 위함
+   * 인증만 처리하고 나머지는 각 에코서버에 위임
    * @param {Control} server
    * @param {Buffer} bufData
    */
   dataParser(server, bufData) {
-    // BU.CLI(bufData.toString());
-    // const fnCode = bufData.readIntBE(1, 1);
+    // BU.CLIN(bufData);
     const CMD = String.fromCharCode(bufData.readIntBE(1, 1));
     // BU.CLI(CMD);
     let returnValue;
@@ -122,10 +130,11 @@ module.exports = class {
       default:
         break;
     }
-
+    // 인증 요청이 아니므로 사이트를 관장하는 Server에게 Echo Server로 뿌리라고 요청
     if (returnValue === undefined) {
       return server.spreadMsg(bufData);
     }
     return returnValue;
   }
-};
+}
+module.exports = Main;

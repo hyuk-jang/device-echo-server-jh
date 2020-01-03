@@ -8,10 +8,11 @@ const net = require('net');
 
 const AbstSocketIOManager = require('./AbstSocketIOManager');
 
+const { di } = require('../../../module');
+
 const {
-  reqWrapCmdType,
-  complexCmdStep,
-} = require('../../../../../default-intelligence').dcmConfigModel;
+  dcmConfigModel: { reqWrapCmdType, complexCmdStep },
+} = di;
 /** 무안 6kW TB */
 
 class SocketIOManager extends AbstSocketIOManager {

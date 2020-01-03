@@ -4,8 +4,9 @@ const { BU } = require('base-util-jh');
 const net = require('net');
 const deviceMapInfo = require('./deviceMap');
 
-/** @type {Array.<{id: number, instance: Control}>} */
+/** @type {{id: number, instance: Control}[]} */
 const instanceList = [];
+/** 사이트 단위로 딸려있는 Echo Server 목록을 관리하기 위한 Controller */
 class Control {
   /**
    * @param {number} port
@@ -107,7 +108,7 @@ class Control {
   }
 
   /**
-   * 장치를 세팅
+   * 사이트 하부에 딸려 있는 에코서버를 붙임
    * @param {protocol_info[]|protocol_info} protocolInfo
    * @param {mDeviceMap=} deviceMap SITE 단위를 사용할 경우 해당 프로토콜에서 사용될 MapImg ID
    */
@@ -118,26 +119,32 @@ class Control {
           return this.attachEchoServer(currentItem, deviceMap);
         });
       }
-
-      const path = `./${protocolInfo.mainCategory}/${protocolInfo.subCategory}/EchoServer`;
+      // 프로토콜 정보에 포함되어 있는 Main 및 Sub Category에 따라 에코서버 호출
+      const path = `./EchoServer/${protocolInfo.mainCategory}/${
+        protocolInfo.subCategory
+      }/EchoServer`;
+      // 동적 모듈 선언
       const EchoServer = require(path);
+      // 에코서버 객체화
       const echoServer = new EchoServer(protocolInfo, deviceMap);
-
+      // 동일한 에코서버가 생성되었을 경우에는 추가하지 않음
       const foundIt = _.find(this.echoServerList, eServer => _.isEqual(echoServer, eServer));
       _.isEmpty(foundIt) && this.echoServerList.push(echoServer);
+
       return echoServer;
-      // });
     } catch (error) {
       throw error;
     }
   }
 
+  /** Site Server Name 을 호출 */
   getServerName() {
     return `${this.siteId}${this.siteName.length ? `(${this.siteName}) ` : ''}`;
   }
 
   /**
-   *
+   * Site 하부에 물려있는 Echo Server 목록에 요청 명령을 뿌림
+   * 요청 명령에 부합하는 데이터가 반환되었을 경우 반환
    * @param {Buffer} msg
    */
   spreadMsg(msg) {
@@ -148,13 +155,11 @@ class Control {
       // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
       receiveDataList.push(deviceModel.onData(msg));
     });
-    // BU.CLI(data);
-    // BU.CLI(receiveDataList);
-    // 응답받지 않은 데이터는 undefined가 들어가므로 이를 제거하고 유효한 데이터 1개를 가져옴
-    const data = _(receiveDataList)
-      .reject(receiveData => _.isUndefined(receiveData))
-      .head();
 
+    // 응답받지 않은 데이터는 undefined가 들어가므로 유효한 데이터를 가져옴
+    const data = _.find(receiveDataList, resData => !_.isUndefined(resData));
+
+    // BU.CLI(data);
     const returnValue = Buffer.isBuffer(data) ? data : JSON.stringify(data);
 
     return returnValue;
@@ -166,13 +171,10 @@ class Control {
    */
   writeMsg(socket, data) {
     setTimeout(() => {
-      // BU.CLI(this.returnData);
-      // BU.CLI(_.get(returnValue, 'length'), returnValue);
       if (_.isEmpty(data) || _.isBoolean(data)) return;
 
-      // BU.CLI(data);
       socket.write(data);
-    }, 1);
+    }, 0);
   }
 }
 module.exports = Control;

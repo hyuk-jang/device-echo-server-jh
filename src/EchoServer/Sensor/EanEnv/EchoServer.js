@@ -4,7 +4,9 @@ const { BU } = require('base-util-jh');
 
 const Model = require('../Model');
 
-const { MainConverter } = require('../../../../device-protocol-converter-jh');
+const { dpc } = require('../../../module');
+
+const { MainConverter } = dpc;
 
 class EchoServer {
   /**

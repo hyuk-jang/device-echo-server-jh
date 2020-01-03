@@ -2,11 +2,13 @@ const _ = require('lodash');
 const EventEmitter = require('events');
 const { BU } = require('base-util-jh');
 
-const { BaseModel } = require('../../../device-protocol-converter-jh');
+const { dpc } = require('../../module');
+
+const { BaseModel } = dpc;
 
 const { ESS, FarmParallel, Inverter, UPSAS } = BaseModel;
 
-const commonUtils = require('../util/common');
+const commonUtils = require('../../util/common');
 
 /** @type {Array.<{id: mDeviceMap, instance: EchoServer}>} */
 const instanceList = [];

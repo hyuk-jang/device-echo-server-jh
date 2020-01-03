@@ -1,7 +1,10 @@
 const _ = require('lodash');
 const moment = require('moment');
 const { BU } = require('base-util-jh');
-const { BaseModel } = require('../../../device-protocol-converter-jh');
+
+const { dpc } = require('../../module');
+
+const { BaseModel } = dpc;
 
 class Model extends BaseModel.Inverter {
   /**

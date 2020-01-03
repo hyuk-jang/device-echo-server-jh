@@ -3,17 +3,18 @@ const eventToPromise = require('event-to-promise');
 const _ = require('lodash');
 const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
-require('../../../../default-intelligence');
+
+const { di, dpc } = require('../../../src/module');
 
 const deviceMap = require('../../../src/deviceMap');
 
-const { MainConverter, BaseModel } = require('../../../../device-protocol-converter-jh');
+const { MainConverter, BaseModel } = dpc;
 
-const EchoServerFP = require('../../../src/FarmParallel/dmTech/EchoServer');
-const EchoServerInverterDas = require('../../../src/Inverter/das_1.3/EchoServer');
-const EchoServerInverterS5500k = require('../../../src/Inverter/s5500k/EchoServer');
+const EchoServerFP = require('../../../src/EchoServer/FarmParallel/dmTech/EchoServer');
+const EchoServerInverterDas = require('../../../src/EchoServer/Inverter/das_1.3/EchoServer');
+const EchoServerInverterS5500k = require('../../../src/EchoServer/Inverter/s5500k/EchoServer');
 
-const AbstController = require('../../../src/Default/AbstController');
+const AbstController = require('../../../src/EchoServer/Default/AbstController');
 
 const protocolFP = {
   mainCategory: 'FarmParallel',

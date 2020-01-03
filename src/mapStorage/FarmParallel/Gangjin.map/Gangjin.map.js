@@ -1,8 +1,10 @@
+const { di } = require('../../../module');
+
 const {
-  BLOCK,
-  TROUBLE,
-  NONE,
-} = require('../../../../../default-intelligence').dcmConfigModel.nodeDataType;
+  dcmConfigModel: {
+    nodeDataType: { BLOCK, TROUBLE, NONE },
+  },
+} = di;
 
 /**
  * @type {mDeviceMap}

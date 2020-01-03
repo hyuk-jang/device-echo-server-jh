@@ -1,4 +1,6 @@
-const { BaseModel } = require('../../../../device-protocol-converter-jh');
+const { dpc } = require('../../../module');
+
+const { BaseModel } = dpc;
 
 const Model = BaseModel.FarmParallel;
 

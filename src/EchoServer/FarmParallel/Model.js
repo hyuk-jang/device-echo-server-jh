@@ -1,21 +1,23 @@
 const _ = require('lodash');
 const { BU } = require('base-util-jh');
 
-const { BaseModel } = require('../../../device-protocol-converter-jh');
+const { dpc } = require('../../module');
+
+const { BaseModel } = dpc;
 const AbstModel = require('../Default/AbstModel');
 
-class Model {
+class Model extends AbstModel {
   /**
    * @param {protocol_info} protocolInfo
    * @param {mDeviceMap} deviceMap
    */
   constructor(protocolInfo, deviceMap) {
-    // super(protocolInfo, deviceMap);
+    super(protocolInfo, deviceMap);
 
-    this.nodeDefKeyInfo = BaseModel.Sensor.BASE_KEY;
+    this.nodeDefKeyInfo = BaseModel.FarmParallel.BASE_KEY;
 
     // Intellisense를 위한 device 재정의
-    this.device = new BaseModel.Sensor(protocolInfo).device;
+    this.device = new BaseModel.FarmParallel(protocolInfo).device;
   }
 
   /**
@@ -24,50 +26,18 @@ class Model {
   init() {
     const {
       co2,
-      gridLf,
-      gridRAmp,
-      gridRsVol,
-      gridSAmp,
-      gridStVol,
-      gridTAmp,
-      gridTrVol,
       horizontalSolar,
       inclinedSolar,
       isRain,
       lux,
-      operErrorList,
-      operIsError,
-      operIsRun,
-      operTemperature,
-      operTime,
-      operTroubleList,
-      operWarningList,
       outsideAirReh,
       outsideAirTemperature,
-      powerCpKwh,
-      powerDailyKwh,
-      powerGridKw,
-      powerPf,
-      powerPvKw,
-      pvAmp,
-      pvAmp2,
-      pvKw,
-      pvKw2,
       pvRearTemperature,
       pvUnderlyingSolar,
-      pvVol,
-      pvVol2,
-      pvW,
       r1,
       soilReh,
       soilTemperature,
       soilWaterValue,
-      sysCapaKw,
-      sysIsSingle,
-      sysLineVoltage,
-      sysProductYear,
-      sysSn,
-      waterTemperature,
       windDirection,
       windSpeed,
       writeDate,
@@ -82,7 +52,7 @@ class Model {
           nodeInfo.data = _.random(0, 1);
           break;
         case lux:
-          nodeInfo.data = _.random(0, 130, true);
+          nodeInfo.data = _.random(0, 3800, true);
           break;
         case outsideAirReh:
         case soilReh:
@@ -92,7 +62,7 @@ class Model {
         case outsideAirTemperature:
         case soilTemperature:
         case pvRearTemperature:
-          nodeInfo.data = _.random(15, 35, true);
+          nodeInfo.data = _.random(55, 75, true);
           break;
         case r1:
           nodeInfo.data = _.random(0, 10, true);
@@ -109,7 +79,7 @@ class Model {
           nodeInfo.data = _.random(0, 360);
           break;
         case windSpeed:
-          nodeInfo.data = _.random(0, 7, true);
+          nodeInfo.data = _.random(20, 30, true);
           break;
         case writeDate:
           nodeInfo.data = new Date();

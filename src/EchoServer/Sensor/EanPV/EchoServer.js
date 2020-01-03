@@ -4,7 +4,9 @@ const { BU } = require('base-util-jh');
 
 const Model = require('../Model');
 
-const { MainConverter } = require('../../../../device-protocol-converter-jh');
+const { dpc } = require('../../../module');
+
+const { MainConverter } = dpc;
 
 class EchoServer {
   /**
@@ -75,7 +77,7 @@ module.exports = EchoServer;
 if (require !== undefined && require.main === module) {
   console.log('__main__');
 
-  const deviceMap = require('../../deviceMap');
+  const deviceMap = require('../../../deviceMap');
 
   const protocolInfo = {
     deviceId: '001',

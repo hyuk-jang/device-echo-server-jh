@@ -37,115 +37,120 @@ function convertProtocolConfig(protocol, deviceId) {
   return conProtocolInfo;
 }
 
-/** @type {echoConfig[]} */
-module.exports = [
-  {
-    siteId: '001',
-    siteName: '나주',
-    serverPort: 9001,
-    echoServerList: [
-      {
-        protocolConfig: protocolSensor,
-        mapConfig: {
-          projectId: 'FP',
-          mapId: 'Naju',
-        },
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDasInv, Buffer.from('001')),
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDasInv, Buffer.from('002')),
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDasInv, Buffer.from('003')),
-      },
-    ],
+/** @type {desConfig} */
+module.exports = {
+  dbcConnConfig: {
+    port: 9000,
   },
-  {
-    siteId: '002',
-    siteName: '강진',
-    serverPort: 9002,
-    echoServerList: [
-      {
-        protocolConfig: protocolSensor,
-        mapConfig: {
-          projectId: 'FP',
-          mapId: 'Gangjin',
+  echoConfigList: [
+    {
+      siteId: '001',
+      siteName: '나주',
+      serverPort: 9001,
+      echoServerList: [
+        {
+          protocolConfig: protocolSensor,
+          mapConfig: {
+            projectId: 'FP',
+            mapId: 'Naju',
+          },
         },
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDyInv, Buffer.from([64])),
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDyInv, Buffer.from([65])),
-      },
-    ],
-  },
-  {
-    siteId: '003',
-    siteName: '보성',
-    serverPort: 9003,
-    echoServerList: [
-      {
-        protocolConfig: protocolSensor,
-        mapConfig: {
-          projectId: 'FP',
-          mapId: 'Boseong',
+        {
+          protocolConfig: convertProtocolConfig(protocolDasInv, Buffer.from('001')),
         },
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDyInv, Buffer.from([16])),
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDyInv, Buffer.from([17])),
-      },
-    ],
-  },
-  {
-    siteId: '004',
-    siteName: '오창',
-    serverPort: 9004,
-    echoServerList: [
-      {
-        protocolConfig: protocolSensor,
-        mapConfig: {
-          projectId: 'FP',
-          mapId: 'Ochang',
+        {
+          protocolConfig: convertProtocolConfig(protocolDasInv, Buffer.from('002')),
         },
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDasInv, '001'),
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDasInv, '002'),
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDasInv, '003'),
-      },
-    ],
-  },
-  {
-    siteId: '005',
-    siteName: '영흥',
-    serverPort: 9005,
-    echoServerList: [
-      {
-        protocolConfig: protocolSensor,
-        mapConfig: {
-          projectId: 'FP',
-          mapId: 'Yeongheung',
+        {
+          protocolConfig: convertProtocolConfig(protocolDasInv, Buffer.from('003')),
         },
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDasInv, '001'),
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDasInv, '002'),
-      },
-      {
-        protocolConfig: convertProtocolConfig(protocolDasInv, '003'),
-      },
-    ],
-  },
-];
+      ],
+    },
+    {
+      siteId: '002',
+      siteName: '강진',
+      serverPort: 9002,
+      echoServerList: [
+        {
+          protocolConfig: protocolSensor,
+          mapConfig: {
+            projectId: 'FP',
+            mapId: 'Gangjin',
+          },
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolDyInv, Buffer.from([64])),
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolDyInv, Buffer.from([65])),
+        },
+      ],
+    },
+    {
+      siteId: '003',
+      siteName: '보성',
+      serverPort: 9003,
+      echoServerList: [
+        {
+          protocolConfig: protocolSensor,
+          mapConfig: {
+            projectId: 'FP',
+            mapId: 'Boseong',
+          },
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolDyInv, Buffer.from([16])),
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolDyInv, Buffer.from([17])),
+        },
+      ],
+    },
+    // {
+    //   siteId: '004',
+    //   siteName: '오창',
+    //   serverPort: 9004,
+    //   echoServerList: [
+    //     {
+    //       protocolConfig: protocolSensor,
+    //       mapConfig: {
+    //         projectId: 'FP',
+    //         mapId: 'Ochang',
+    //       },
+    //     },
+    //     {
+    //       protocolConfig: convertProtocolConfig(protocolDasInv, '001'),
+    //     },
+    //     {
+    //       protocolConfig: convertProtocolConfig(protocolDasInv, '002'),
+    //     },
+    //     {
+    //       protocolConfig: convertProtocolConfig(protocolDasInv, '003'),
+    //     },
+    //   ],
+    // },
+    {
+      siteId: '005',
+      siteName: '영흥',
+      serverPort: 9005,
+      echoServerList: [
+        {
+          protocolConfig: protocolSensor,
+          mapConfig: {
+            projectId: 'FP',
+            mapId: 'Yeongheung',
+          },
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolDasInv, '001'),
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolDasInv, '002'),
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolDasInv, '003'),
+        },
+      ],
+    },
+  ],
+};
