@@ -4,22 +4,33 @@ const { BU } = require('base-util-jh');
 const net = require('net');
 const deviceMapInfo = require('./deviceMap');
 
-/** @type {Array.<{id: constructorSocket, instance: Control}>} */
+/** @type {{id: number, instance: Control}[]} */
 const instanceList = [];
+/** 사이트 단위로 딸려있는 Echo Server 목록을 관리하기 위한 Controller */
 class Control {
   /**
    * @param {number} port
    * @param {Object=} parserInfo
    * @param {string} parserOption.parser
    * @param {string|number} parserOption.option
+   * @param {echoConfig} echoConfig
    */
-  constructor(port, parserInfo = {}) {
+  constructor(port, parserInfo = {}, echoConfig = {}) {
     this.msgLength = 0;
-    this.port = port;
     this.parserInfo = parserInfo;
+
+    const { siteId = '', siteName = '', serverPort } = echoConfig;
+
+    this.port = _.isNumber(serverPort) ? serverPort : port;
+
+    this.siteId = siteId;
+    this.siteName = siteName;
 
     this.returnData;
     this.deviceMapInfo = deviceMapInfo;
+
+    /** @type {net.Socket} */
+    this.socketServer;
 
     // 싱글톤 패턴으로 생성
     const foundInstance = _.find(instanceList, instanceInfo =>
@@ -28,41 +39,10 @@ class Control {
 
     if (_.isEmpty(foundInstance)) {
       instanceList.push({ id: this.port, instance: this });
-      this.deviceModelList = [];
-      this.setInit(parserInfo);
+      this.echoServerList = [];
+      this.createServer(parserInfo);
     } else {
       return foundInstance.instance;
-    }
-  }
-
-  /**
-   * 장치를 세팅
-   * @param {protocol_info[]|protocol_info} protocolInfo
-   * @param {mDeviceMap=} deviceMap SITE 단위를 사용할 경우 해당 프로토콜에서 사용될 MapImg ID
-   */
-  attachDevice(protocolInfo, deviceMap) {
-    try {
-      if (_.isArray(protocolInfo)) {
-        let echoModel;
-        protocolInfo.forEach(currentItem => {
-          echoModel = this.attachDevice(currentItem, deviceMap);
-        });
-        return echoModel;
-      }
-      // BU.CLI(protocol_info);
-      // protocol_info.forEach(protocol_info => {
-      const path = `./${protocolInfo.mainCategory}/${protocolInfo.subCategory}/EchoServer`;
-      const DeviceProtocolConverter = require(path);
-      const protocolConverter = new DeviceProtocolConverter(protocolInfo, deviceMap);
-
-      const foundIt = _.find(this.deviceModelList, deviceModel =>
-        _.isEqual(protocolConverter, deviceModel),
-      );
-      _.isEmpty(foundIt) && this.deviceModelList.push(protocolConverter);
-      return protocolConverter;
-      // });
-    } catch (error) {
-      throw error;
     }
   }
 
@@ -72,10 +52,10 @@ class Control {
    * @param {string} parserInfo.parser
    * @param {string|number} parserInfo.option
    */
-  setInit(parserInfo = {}) {
-    const server = net
+  createServer(parserInfo = {}) {
+    this.socketServer = net
       .createServer(socket => {
-        console.log(`client is Connected ${this.port}`);
+        BU.log(`${this.getServerName()}client is Connected ${this.port}`);
         // socket.end('goodbye\n');
         if (!_.isEmpty(parserInfo)) {
           let stream = null;
@@ -84,14 +64,14 @@ class Control {
               stream = socket.pipe(split(this.parserInfo.option));
               stream.on('data', data => {
                 data += this.parserInfo.option;
-                BU.CLI(data);
-                this.spreadMsg(socket, data);
+                // BU.CLI(data);
+                this.writeMsg(socket, this.spreadMsg(data));
               });
               break;
             case 'readLineParser':
               stream = socket.pipe(split(this.parserInfo.option));
               stream.on('data', data => {
-                this.spreadMsg(socket, data);
+                this.writeMsg(socket, this.spreadMsg(data));
               });
               break;
             default:
@@ -101,62 +81,100 @@ class Control {
           socket.on('data', data => {
             // BU.CLI(data);
             // parseData.data = Buffer.from(parseData.data);
-            BU.CLI(`P: ${this.port}\tReceived Data: `, data.toString());
+            // BU.CLI(`${this.getServerName()}P: ${this.port}\t onData: `, data.toString());
 
-            this.spreadMsg(socket, data);
+            this.writeMsg(socket, this.spreadMsg(data));
           });
         }
       })
       .on('error', err => {
         // handle errors here
-        console.error('@@@@', err, server.address());
+        BU.error('@@@@', err, this.socketServer.address());
         // throw err;
       });
 
     // grab an arbitrary unused port.
-    server.listen(this.port, () => {
-      console.log('opened server on', server.address());
+    this.socketServer.listen(this.port, () => {
+      BU.log(`${this.getServerName()} opened this.socketServer on`, this.socketServer.address());
     });
 
-    server.on('close', () => {
+    this.socketServer.on('close', () => {
       console.log('clonse');
     });
 
-    server.on('error', err => {
+    this.socketServer.on('error', err => {
       console.error(err);
     });
   }
 
   /**
-   *
-   * @param {Socket} socket
+   * 사이트 하부에 딸려 있는 에코서버를 붙임
+   * @param {protocol_info[]|protocol_info} protocolInfo
+   * @param {mDeviceMap=} deviceMap SITE 단위를 사용할 경우 해당 프로토콜에서 사용될 MapImg ID
+   */
+  attachEchoServer(protocolInfo, deviceMap) {
+    try {
+      if (_.isArray(protocolInfo)) {
+        return protocolInfo.map(currentItem => {
+          return this.attachEchoServer(currentItem, deviceMap);
+        });
+      }
+      // 프로토콜 정보에 포함되어 있는 Main 및 Sub Category에 따라 에코서버 호출
+      const path = `./EchoServer/${protocolInfo.mainCategory}/${
+        protocolInfo.subCategory
+      }/EchoServer`;
+      // 동적 모듈 선언
+      const EchoServer = require(path);
+      // 에코서버 객체화
+      const echoServer = new EchoServer(protocolInfo, deviceMap);
+      // 동일한 에코서버가 생성되었을 경우에는 추가하지 않음
+      const foundIt = _.find(this.echoServerList, eServer => _.isEqual(echoServer, eServer));
+      _.isEmpty(foundIt) && this.echoServerList.push(echoServer);
+
+      return echoServer;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /** Site Server Name 을 호출 */
+  getServerName() {
+    return `${this.siteId}${this.siteName.length ? `(${this.siteName}) ` : ''}`;
+  }
+
+  /**
+   * Site 하부에 물려있는 Echo Server 목록에 요청 명령을 뿌림
+   * 요청 명령에 부합하는 데이터가 반환되었을 경우 반환
    * @param {Buffer} msg
    */
-  spreadMsg(socket, msg) {
+  spreadMsg(msg) {
     // BU.CLI(data);
     // 응답 받을 데이터 배열
     const receiveDataList = [];
-    this.deviceModelList.forEach(deviceModel => {
+    this.echoServerList.forEach(deviceModel => {
       // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
       receiveDataList.push(deviceModel.onData(msg));
     });
-    // BU.CLI(data);
-    // BU.CLI(receiveDataList);
-    // 응답받지 않은 데이터는 undefined가 들어가므로 이를 제거하고 유효한 데이터 1개를 가져옴
-    const data = _(receiveDataList)
-      .reject(receiveData => _.isUndefined(receiveData))
-      .head();
 
+    // 응답받지 않은 데이터는 undefined가 들어가므로 유효한 데이터를 가져옴
+    const data = _.find(receiveDataList, resData => !_.isUndefined(resData));
+
+    // BU.CLI(data);
     const returnValue = Buffer.isBuffer(data) ? data : JSON.stringify(data);
 
-    setTimeout(() => {
-      // BU.CLI(this.returnData);
-      // BU.CLI(_.get(returnValue, 'length'), returnValue);
-      if (_.isEmpty(returnValue) || _.isBoolean(returnValue)) return;
+    return returnValue;
+  }
 
-      BU.CLI(returnValue);
-      socket.write(returnValue);
-    }, 1);
+  /**
+   * @param {Socket} socket
+   * @param {Buffer} data
+   */
+  writeMsg(socket, data) {
+    setTimeout(() => {
+      if (_.isEmpty(data) || _.isBoolean(data)) return;
+
+      socket.write(data);
+    }, 0);
   }
 }
 module.exports = Control;

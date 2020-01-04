@@ -4,6 +4,7 @@ module.exports = {
   },
   UPSAS: {
     muan6kW: require('./mapStorage/UPSAS/muan6kW'),
+    muan100kW: require('./mapStorage/UPSAS/muan100kW'),
   },
   FP: {
     Naju: require('./mapStorage/FarmParallel/Naju.map'),

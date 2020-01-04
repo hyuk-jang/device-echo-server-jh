@@ -4,13 +4,13 @@ const _ = require('lodash');
 const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 const Control = require('../../../src/Control');
-require('../../../../default-intelligence');
+const { di, dpc } = require('../../../src/module');
 
 const deviceMap = require('../../../src/deviceMap');
 
-const { MainConverter } = require('../../../../device-protocol-converter-jh');
+const { MainConverter } = dpc;
 
-const EchoServer = require('../../../src/FarmParallel/YeongSanPo/EchoServer');
+const EchoServer = require('../../../src/EchoServer/FarmParallel/YeongSanPo/EchoServer');
 
 /** @type {MainConverter} */
 let mainConverter;
@@ -36,11 +36,11 @@ function operationServer() {
   mainConverter = new MainConverter(_.head(deviceList));
   mainConverter.setProtocolConverter();
 
-  control.attachDevice(deviceList, deviceMap.FP.YeongSanPo);
+  control.attachEchoServer(deviceList, deviceMap.FP.YeongSanPo);
 
   // 2개 장치 구동
-  if (control.deviceModelList.length !== 1) {
-    throw new Error(`expect ${1}\t res: ${control.deviceModelList.length}`);
+  if (control.echoServerList.length !== 1) {
+    throw new Error(`expect ${1}\t res: ${control.echoServerList.length}`);
   }
 }
 

@@ -5,7 +5,7 @@ const { BU } = require('base-util-jh');
 // require('../../../src/inverter/s5500k/EchoServer');
 const Control = require('../../../src/Control');
 
-require('../../../../default-intelligence');
+const { di, dpc } = require('../../../src/module');
 
 function operationServer() {
   /**
@@ -39,7 +39,7 @@ function operationServer() {
 
   // BU.CLI(protocolList);
 
-  control.attachDevice(protocolList);
+  control.attachEchoServer(protocolList);
 }
 
 function startTest() {

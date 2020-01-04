@@ -43,11 +43,11 @@ function testConstruct() {
   ];
   const control = new Control(9000);
 
-  control.attachDevice(deviceList);
+  control.attachEchoServer(deviceList);
 
   // 2개 장치 구동
-  if (control.deviceModelList.length !== 2) {
-    throw new Error(`expect ${2}\t res: ${control.deviceModelList.length}`);
+  if (control.echoServerList.length !== 2) {
+    throw new Error(`expect ${2}\t res: ${control.echoServerList.length}`);
   }
 }
 

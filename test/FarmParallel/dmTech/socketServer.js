@@ -4,13 +4,13 @@ const _ = require('lodash');
 const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 const Control = require('../../../src/Control');
-require('../../../../default-intelligence');
+const { di, dpc } = require('../../../src/module');
 
 const deviceMap = require('../../../src/deviceMap');
 
-const { MainConverter } = require('../../../../device-protocol-converter-jh');
+const { MainConverter } = dpc;
 
-const EchoServer = require('../../../src/FarmParallel/dmTech/EchoServer');
+const EchoServer = require('../../../src/EchoServer/FarmParallel/dmTech/EchoServer');
 
 /** @type {MainConverter} */
 let mainConverter;
@@ -31,12 +31,12 @@ const protocolInfo = {
  * @param {{deviceMap: mDeviceMap, socketPort: number, protocolInfo: protocol_info}} serverInfo
  */
 function operationServer(serverInfo) {
-  control = new Control(serverInfo.socketPort);
   echoServer = new EchoServer(serverInfo.protocolInfo, serverInfo.deviceMap);
   mainConverter = new MainConverter(serverInfo.protocolInfo);
   mainConverter.setProtocolConverter();
 
-  control.attachDevice(serverInfo.protocolInfo, serverInfo.deviceMap);
+  control = new Control(serverInfo.socketPort);
+  control.attachEchoServer(serverInfo.protocolInfo, serverInfo.deviceMap);
 }
 
 async function startTest() {

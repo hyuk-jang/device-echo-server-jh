@@ -1,8 +1,10 @@
+const { di } = require('../../../module');
+
 const {
-  BLOCK,
-  TROUBLE,
-  NONE,
-} = require('../../../../../default-intelligence').dcmConfigModel.nodeDataType;
+  dcmConfigModel: {
+    nodeDataType: { BLOCK, TROUBLE, NONE },
+  },
+} = di;
 
 /**
  * @type {mDeviceMap}
@@ -115,11 +117,11 @@ const map = {
         nodeList: [
           {
             target_code: '004',
-            target_name: '강진 A (5.5kW 급)',
+            target_name: 'A',
           },
           {
             target_code: '005',
-            target_name: '강진 A (5.5kW 급)',
+            target_name: 'B',
           },
         ],
       },
@@ -154,7 +156,14 @@ const map = {
             target_code: '008',
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
-            nodeList: ['LX_008', 'S_I_008', 'CO2_008', 'WV_S_008', 'T_S_008', 'RH_S_008'],
+            nodeList: ['LX_008', 'S_PU_008', 'CO2_008', 'WV_S_008', 'T_S_008', 'RH_S_008'],
+          },
+          {
+            serial_number: 51,
+            target_code: '051',
+            dccId: 'DCC_001',
+            dpcId: 'DPC_001',
+            nodeList: ['W_S_051', 'W_D_051', 'S_PU_051', 'S_PU_052'],
           },
         ],
       },
@@ -190,7 +199,7 @@ const map = {
         dataLoggerDeviceList: [
           {
             target_name: '강진 A (5.5kW 급)',
-            serial_number: '\u0001',
+            serial_number: Buffer.from([64]),
             target_code: '004',
             dccId: 'DCC_001',
             dpcId: 'DPC_IVT_002',
@@ -198,7 +207,7 @@ const map = {
           },
           {
             target_name: '강진 B (5.5kW 급)',
-            serial_number: '\u0002',
+            serial_number: Buffer.from([65]),
             target_code: '005',
             dccId: 'DCC_001',
             dpcId: 'DPC_IVT_002',
@@ -286,6 +295,9 @@ const map = {
               {
                 target_code: '009',
               },
+              {
+                target_code: '051',
+              },
             ],
           },
         ],
@@ -302,6 +314,9 @@ const map = {
             nodeList: [
               {
                 target_code: '009',
+              },
+              {
+                target_code: '051',
               },
             ],
           },
@@ -328,9 +343,25 @@ const map = {
             target_id: 'inclinedSolar',
             target_name: '경사 일사량',
             target_prefix: 'S_I',
+            nodeList: [],
+          },
+          {
+            target_id: 'pvUnderlyingSolar',
+            target_name: '모듈 하부 일사량',
+            target_prefix: 'S_PU',
             nodeList: [
               {
                 target_code: '008',
+              },
+              {
+                target_code: '051',
+                target_name: 'A',
+                data_logger_index: 2,
+              },
+              {
+                target_code: '052',
+                target_name: 'B',
+                data_logger_index: 1,
               },
             ],
           },
@@ -449,7 +480,8 @@ const map = {
       {
         target_id: 'vol',
         target_name: '전압',
-        is_sensor: 0,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'V',
         description: null,
@@ -483,7 +515,8 @@ const map = {
       {
         target_id: 'amp',
         target_name: '전류',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'A',
         description: null,
@@ -517,7 +550,8 @@ const map = {
       {
         target_id: 'W',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'W',
         description: '1 와트(기호 W)는 1 초 동안의 1 줄(N·m)에 해당하는 일률의 SI 단위',
@@ -526,7 +560,8 @@ const map = {
       {
         target_id: 'kW',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'kW',
         description: '1 킬로와트(기호 kW)는 1 초 동안의 1,000 줄(N·m)에 해당하는 일률의 SI 단위',
@@ -550,7 +585,8 @@ const map = {
       {
         target_id: 'MW',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'MW',
         description:
@@ -560,7 +596,8 @@ const map = {
       {
         target_id: 'Wh',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'Wh',
         description: '시간당 에너지 단위, 1 W의 일률로 1 시간 동안 하는 일의 양',
@@ -569,7 +606,8 @@ const map = {
       {
         target_id: 'kWh',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'kWh',
         description: '시간당 에너지 단위, 1 kW의 일률로 1 시간 동안 하는 일의 양',
@@ -592,7 +630,8 @@ const map = {
       {
         target_id: 'MWh',
         target_name: '전력량',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'MWh',
         description: '시간당 에너지 단위, 1 MW의 일률로 1 시간 동안 하는 일의 양',
@@ -601,7 +640,8 @@ const map = {
       {
         target_id: 'powerFactor',
         target_name: '역률',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: '%',
         defList: [],
@@ -609,7 +649,8 @@ const map = {
       {
         target_id: 'frequency',
         target_name: '주파수',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: BLOCK,
         data_unit: 'Hz',
         defList: [
@@ -624,7 +665,8 @@ const map = {
       {
         target_id: 'trouble',
         target_name: '오류 목록',
-        is_sensor: 1,
+        is_sensor: 2,
+        is_submit_api: 0,
         save_db_type: TROUBLE,
         description: '장치에서 보내오는 이상 데이터',
         defList: [
@@ -655,7 +697,7 @@ const map = {
                 chart_color: '#0b7285',
                 chart_sort_rank: 4,
                 repeatId: 'RE_PREFIX_IVT',
-                nodeList: ['S_I_008'],
+                nodeList: [],
               },
               {
                 target_code: '005',
@@ -663,7 +705,7 @@ const map = {
                 chart_color: '#7048e8',
                 chart_sort_rank: 5,
                 repeatId: 'RE_PREFIX_IVT',
-                nodeList: ['S_I_008'],
+                nodeList: [],
               },
             ],
           },
@@ -684,7 +726,18 @@ const map = {
                 target_name: '하부',
                 chart_color: '#0b7285',
                 chart_sort_rank: 8,
-                nodeList: ['LX_008', 'S_I_008', 'CO2_008', 'WV_S_008', 'T_S_008', 'RH_S_008'],
+                nodeList: [
+                  'LX_008',
+                  'S_PU_008',
+                  'CO2_008',
+                  'WV_S_008',
+                  'T_S_008',
+                  'RH_S_008',
+                  'W_D_051',
+                  'W_S_051',
+                  'S_PU_051',
+                  'S_PU_052',
+                ],
               },
             ],
           },

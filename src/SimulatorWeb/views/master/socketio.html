@@ -9,7 +9,7 @@
   var socket;
   $(function () {
     socket = io();
-    bindingClickEventNode(socket)
+    bindingClickNodeEvent(socket)
 
     // 노드 관련 갱신 반영
     socket.on("updateNodeList", function (nodeList) {

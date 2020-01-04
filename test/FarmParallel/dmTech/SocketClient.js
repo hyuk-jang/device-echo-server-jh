@@ -3,17 +3,18 @@ const eventToPromise = require('event-to-promise');
 const _ = require('lodash');
 const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
-require('../../../../default-intelligence');
+
+const { di, dpc } = require('../../../src/module');
 
 const deviceMap = require('../../../src/deviceMap');
 
-const { MainConverter, BaseModel } = require('../../../../device-protocol-converter-jh');
+const { MainConverter, BaseModel } = dpc;
 
-const EchoServerFP = require('../../../src/FarmParallel/dmTech/EchoServer');
-const EchoServerInverterDas = require('../../../src/Inverter/das_1.3/EchoServer');
-const EchoServerInverterS5500k = require('../../../src/Inverter/s5500k/EchoServer');
+const EchoServerFP = require('../../../src/EchoServer/FarmParallel/dmTech/EchoServer');
+const EchoServerInverterDas = require('../../../src/EchoServer/Inverter/das_1.3/EchoServer');
+const EchoServerInverterS5500k = require('../../../src/EchoServer/Inverter/s5500k/EchoServer');
 
-const AbstController = require('../../../src/Default/AbstController');
+const AbstController = require('../../../src/EchoServer/Default/AbstController');
 
 const protocolFP = {
   mainCategory: 'FarmParallel',
@@ -57,10 +58,10 @@ class SocketClient extends AbstController {
   /**
    * FP 에코서버 설정
    * @param {protocol_info} protocolInfo
-   * @param {mDeviceMap} deviceMap
+   * @param {mDeviceMap} map
    */
-  setEchoServerFP(protocolInfo, deviceMap) {
-    this.echoServerFP = new EchoServerFP(protocolInfo, deviceMap);
+  setEchoServerFP(protocolInfo, map) {
+    this.echoServerFP = new EchoServerFP(protocolInfo, map);
     // this.echoServerFP = new EchoServerFP(protocolInfo, deviceMap.FP.YeongSanPo);
   }
 
@@ -111,9 +112,9 @@ class SocketClient extends AbstController {
         returnValue = this.defaultWrapper.wrapFrameMsg(protocolFP, returnValue);
         break;
       case 'I':
-        this.echoServerInverterList.forEach(deviceModel => {
+        this.echoServerInverterList.forEach(echoServer => {
           // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
-          receiveDataList.push(deviceModel.onData(bufData));
+          receiveDataList.push(echoServer.onData(bufData));
         });
         // BU.CLI(receiveDataList);
         // 응답받지 않은 데이터는 undefined가 들어가므로 이를 제거하고 유효한 데이터 1개를 가져옴

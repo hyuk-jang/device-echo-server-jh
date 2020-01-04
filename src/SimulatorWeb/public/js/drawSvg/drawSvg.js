@@ -87,7 +87,7 @@ function showNodeData(nodeDefId, data = '', isChangePlaceNodeName = false) {
 
   let dataUnit = getDataUnit(nodeDefId); // 데이터 단위
   if (data === '' || _.isNull(dataUnit)) dataUnit = ''; // 장치일 경우 단위가 없음
-  let [dx, dy, style, nodeName] = [0, 15, 'font-size: 15pt; fill: #7675ff; stroke-width: 0.2', '']; // <Tspan> 속성
+  let [dx, dy, style, nodeName] = [0, 15, 'font-size: 5pt; fill: #7675ff; stroke-width: 0.2', '']; // <Tspan> 속성
 
   // svg로 그려진 Text의 정보를 찾는다. (위치값을 알기위한 용도)
   const foundSvgTextInfo = _.find(writtenSvgTextList, { id: nodeDefId });
@@ -107,7 +107,9 @@ function showNodeData(nodeDefId, data = '', isChangePlaceNodeName = false) {
   ).innerHTML += `<tspan id="nodeData" class ="${nodeDefId}" value="${data}" x="${
     foundSvgTextInfo.textX
   }" style="${style}" dx="${dx}" dy="${dy}">${data}</tspan>`; // data 표시
-  foundNodeTextChild.get(0).innerHTML += `<tspan>${dataUnit}</tspan>`; // data 단위 표시
+  if (_.isString(dataUnit)) {
+    foundNodeTextChild.get(0).innerHTML += `<tspan>${dataUnit}</tspan>`; // data 단위 표시
+  }
 }
 
 /**
@@ -238,6 +240,8 @@ function writeSvgText(svgCanvas, defInfo, resourceInfo, isChangedPlaceNodeName =
   });
   if (foundSvgModelResourceInfo.textStyleInfo) {
     textColor = foundSvgModelResourceInfo.textStyleInfo.color;
+    textSize = foundSvgModelResourceInfo.textStyleInfo.fontSize;
+    leading = foundSvgModelResourceInfo.textStyleInfo.leading;
   }
 
   // 제외 할 텍스트 찾기
@@ -307,7 +311,7 @@ function checkHidableText(defId) {
  *  그려진 svg map 에서 장치,센서 클릭하여 제어할 수 있는 기능을 바인딩.
  * @param {socekt} socket
  */
-function bindingClickEventNode(socket, selectedModeVal = 'view') {
+function bindingClickNodeEvent(socket, selectedModeVal = 'view') {
   /** @type {mDeviceMap} */
   const realMap = map;
 
@@ -366,9 +370,9 @@ function executeCommand(socket, controlType, nodeId) {
   const requestMsg = {
     commandId: 'SINGLE',
     contents: {
-      requestCommandType: 'CONTROL',
+      wrapCmdType: 'CONTROL',
       nodeId,
-      controlValue: controlType,
+      singleControlType: controlType,
       rank: 2,
     },
   };

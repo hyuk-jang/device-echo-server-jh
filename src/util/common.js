@@ -16,10 +16,14 @@ module.exports = {
         const { repeatId = '' } = nodeDefInfo;
         // repeatId가 있을 경우
         if (repeatId.length) {
-          nodeDefInfo.nodeList = _.find(repeatNodeList, {
+          const fountDefInfo = _.find(repeatNodeList, {
             repeatId,
             repeatCategory: 'node',
-          }).nodeList;
+          });
+          if (fountDefInfo !== undefined) {
+            nodeDefInfo.nodeList = fountDefInfo.nodeList;
+          }
+
           // delete nodeDefInfo.repeatId;
         }
       });
@@ -76,6 +80,9 @@ module.exports = {
    */
   makeNodeList: deviceMap => {
     const returnList = [];
+
+    const { placeRelationList } = deviceMap.relationInfo;
+
     deviceMap.setInfo.nodeStructureList.forEach(nodeClassInfo => {
       // 단순 표기를 위한 node는 제외
       if (nodeClassInfo.is_sensor < 0) return false;
@@ -97,6 +104,7 @@ module.exports = {
             defId: nodeDefInfo.target_id,
             defName: nodeDefInfo.target_name,
             isSensor: nodeClassInfo.is_sensor,
+            targetCode: nodeInfo.target_code,
             nodeId,
             data: null,
           };
@@ -112,6 +120,7 @@ module.exports = {
    * @return {detailDataloggerIInfo[]}
    */
   makeDataLoggerList: deviceMap => {
+    /** @type {detailDataloggerIInfo[]} */
     const returnList = [];
     // 데이터 로거 대분류 구조 순회
     deviceMap.setInfo.dataLoggerStructureList.forEach(dataLoggerClassInfo => {
@@ -146,6 +155,7 @@ module.exports = {
  * @property {string} defId
  * @property {string} defName
  * @property {number} isSensor
+ * @property {string} targetCode
  * @property {string} nodeId
  * @property {*} data
  */
