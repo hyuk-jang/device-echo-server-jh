@@ -13,6 +13,8 @@ const Control = require('./Control');
 // 프로젝트 별 사이트에서 사용하고 있는 Map 정보를 동적으로 불러오기 위함
 const deviceMap = require('./deviceMap');
 
+const SimulatorApp = require('./SimulatorWeb/SimulatorApp');
+
 class Main {
   constructor() {
     /** @type {Control[]} */
@@ -84,26 +86,34 @@ class Main {
    * @param {echoConfig[]} echoConfigList
    */
   createServer(echoConfigList) {
-    const echoServerList = echoConfigList.map(echoOption => {
-      const control = new Control(echoOption.serverPort, {}, echoOption);
+    const serverList = echoConfigList.map(echoOption => {
+      const { serverPort, echoServerList } = echoOption;
+      const control = new Control(serverPort, {}, echoOption);
 
-      echoOption.echoServerList.forEach(echoServerConfing => {
-        const { protocolConfig, mapConfig: { mapId, projectId } = {} } = echoServerConfing;
+      echoServerList.forEach(echoServerConfing => {
+        const {
+          protocolConfig,
+          mapConfig: { mapId = '', projectId = '', simulatorPort = serverPort + 500 } = {},
+        } = echoServerConfing;
 
         // 프로젝트 ID와 map Id 가 존재한다면 해당 map Path 지정
         const dMap =
-          _.isString(mapId) && _.isString(projectId)
-            ? _.get(deviceMap, `${projectId}.${mapId}`)
-            : undefined;
+          mapId.length && projectId.length ? _.get(deviceMap, `${projectId}.${mapId}`) : undefined;
 
-        control.attachEchoServer(protocolConfig, dMap);
+        const echoServer = control.attachEchoServer(protocolConfig, dMap);
+
+        // 맵 정보가 존재할 경우 에코서버와 통신할 시뮬레이터 웹 구동
+        if (mapId.length && projectId.length) {
+          const simulatorWeb = new SimulatorApp(simulatorPort, echoServer);
+          simulatorWeb.init();
+        }
       });
 
       return control;
     });
     // 추가 생성된 서버를 병합 >>> 중복 서버 제거 >>> serverList 정의
     this.serverList = _(this.serverList)
-      .concat(echoServerList)
+      .concat(serverList)
       .union()
       .value();
 

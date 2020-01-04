@@ -53,6 +53,7 @@ module.exports = {
           mapConfig: {
             projectId: 'FP',
             mapId: 'Naju',
+            simulatorPort: 10001,
           },
         },
         {
@@ -76,6 +77,7 @@ module.exports = {
           mapConfig: {
             projectId: 'FP',
             mapId: 'Gangjin',
+            simulatorPort: 10002,
           },
         },
         {

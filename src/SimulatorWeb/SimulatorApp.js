@@ -12,7 +12,7 @@ const SocketIO = require('socket.io');
 
 const { BU } = require('base-util-jh');
 
-const AbstModel = require('../Default/AbstModel');
+const AbstModel = require('../EchoServer/Default/AbstModel');
 
 app.use(express.static(path.join(__dirname, '/public')));
 

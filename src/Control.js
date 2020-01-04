@@ -79,7 +79,7 @@ class Control {
           }
         } else {
           socket.on('data', data => {
-            // BU.CLI(data);
+            BU.CLI(data);
             // parseData.data = Buffer.from(parseData.data);
             // BU.CLI(`${this.getServerName()}P: ${this.port}\t onData: `, data.toString());
 
@@ -109,20 +109,20 @@ class Control {
 
   /**
    * 사이트 하부에 딸려 있는 에코서버를 붙임
-   * @param {protocol_info[]|protocol_info} protocolInfo
+   * @param {protocol_info} protocolInfo
    * @param {mDeviceMap=} deviceMap SITE 단위를 사용할 경우 해당 프로토콜에서 사용될 MapImg ID
    */
   attachEchoServer(protocolInfo, deviceMap) {
     try {
+      // 프로토콜을 배열로 보낼 경우
       if (_.isArray(protocolInfo)) {
         return protocolInfo.map(currentItem => {
           return this.attachEchoServer(currentItem, deviceMap);
         });
       }
+      const { mainCategory, subCategory } = protocolInfo;
       // 프로토콜 정보에 포함되어 있는 Main 및 Sub Category에 따라 에코서버 호출
-      const path = `./EchoServer/${protocolInfo.mainCategory}/${
-        protocolInfo.subCategory
-      }/EchoServer`;
+      const path = `./EchoServer/${mainCategory}/${subCategory}/EchoServer`;
       // 동적 모듈 선언
       const EchoServer = require(path);
       // 에코서버 객체화

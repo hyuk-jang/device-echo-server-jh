@@ -26,8 +26,9 @@
 
 /**
  * @typedef {Object} mapConfig
- * @property {string} projectId
- * @property {string} mapId
+ * @property {string} projectId Map Main ID
+ * @property {string} mapId Map Sub ID
+ * @property {number=} simulatorPort 시뮬래이터 웹을 열 port. 없을 경우 echoConfig.serverPort + 500 처리
  */
 
 module;
