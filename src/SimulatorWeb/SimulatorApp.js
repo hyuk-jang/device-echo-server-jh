@@ -6,8 +6,7 @@ const path = require('path');
 const ejs = require('ejs');
 
 const app = express();
-const server = require('http').createServer(app);
-// const io = require('socket.io')(server);
+const http = require('http');
 const SocketIO = require('socket.io');
 
 const { BU } = require('base-util-jh');
@@ -38,6 +37,8 @@ class SimulatorApp {
 
     this.ioSocketList = [];
 
+    this.server = http.createServer(app);
+
     echoServer.on('reload', () => this.emitNodeList());
   }
 
@@ -50,9 +51,9 @@ class SimulatorApp {
   }
 
   init() {
-    BU.CLI('Simulator Init');
+    console.log('Simulator Init', this.appPort);
 
-    this.setSocketIO(server);
+    this.setSocketIO(this.server);
 
     app.get('/', (req, res) => {
       // BU.CLIN(this.deviceMap);
@@ -62,7 +63,7 @@ class SimulatorApp {
       });
     });
 
-    server.listen(this.appPort, () => {
+    this.server.listen(this.appPort, () => {
       console.log(`Socket IO server listening on port ${this.appPort}`);
     });
   }
@@ -72,7 +73,7 @@ class SimulatorApp {
    * @param {Object} httpServer
    */
   setSocketIO(httpServer) {
-    this.io = new SocketIO(server);
+    this.io = new SocketIO(this.server);
 
     this.io.on('connection', socket => {
       this.ioSocketList.push(socket);

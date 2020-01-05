@@ -60,7 +60,7 @@ class Main {
       client.on('close', err => {
         this.hasCertification = false;
         this.client = {};
-        BU.CLI(`${server.getServerName()} close DBC on`);
+        BU.error(`${server.getServerName()} close DBC on`);
       });
 
       // client.on('end', () => {
@@ -68,7 +68,7 @@ class Main {
       // });
 
       client.on('error', error => {
-        console.error(error);
+        console.error(error.message);
       });
     });
   }

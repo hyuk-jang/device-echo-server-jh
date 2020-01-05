@@ -1,5 +1,8 @@
+// const dpc = require('device-protocol-converter-jh');
+const di = require('default-intelligence');
+
 const dpc = require('../../device-protocol-converter-jh');
-const di = require('../../default-intelligence');
+// const di = require('../../default-intelligence');
 
 module.exports = {
   dpc,

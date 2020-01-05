@@ -6,10 +6,22 @@
   "directories": {
     "test": "test"
   },
+  "bin": {
+    "app": "./index.js"
+  },
+  "pkg": {
+    "assets": [
+      "./src/**/*"
+    ]
+  },
   "scripts": {
     "test": "node_modules/.bin/mocha -w",
     "start": "nodemon index.js",
-    "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json"
+    "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json",
+    "build": "pkg . --out-path dist",
+    "build:win": "pkg . --out-path dist --targets node8-win-x64",
+    "build:linux": "pkg . --out-path dist --targets node8-linux-x64",
+    "build:macos": "pkg . --out-path dist --targets node8-macos-x64"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +44,8 @@
   "dependencies": {
     "base-util-jh": "^1.2.4",
     "bluebird": "^3.5.5",
+    "default-intelligence": "^0.1.7",
+    "device-protocol-converter-jh": "^0.1.16",
     "ejs": "^2.6.1",
     "event-to-promise": "^0.8.0",
     "express": "^4.17.1",
