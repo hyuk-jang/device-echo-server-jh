@@ -38,7 +38,7 @@ function convertProtocolConfig(protocol, deviceId) {
 /** @type {desConfig} */
 module.exports = {
   dbcConnConfig: {
-    port: 9000,
+    port: 15300,
   },
   echoConfigList: [
     {

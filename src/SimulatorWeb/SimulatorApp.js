@@ -5,19 +5,12 @@ const path = require('path');
 // http server를 socket.io server로 upgrade한다
 const ejs = require('ejs');
 
-const app = express();
 const http = require('http');
 const SocketIO = require('socket.io');
 
 const { BU } = require('base-util-jh');
 
 const AbstModel = require('../EchoServer/Default/AbstModel');
-
-app.use(express.static(path.join(__dirname, '/public')));
-
-app.engine('html', ejs.renderFile);
-app.set('view engine', 'html');
-app.set('views', path.join(__dirname, '/views'));
 
 class SimulatorApp {
   /**
@@ -31,7 +24,18 @@ class SimulatorApp {
     /** @type {mDeviceMap} */
     this.deviceMap = echoServer.deviceMap;
 
+    // BU.CLIN(this.deviceMap);
+
     // this.backgroudMap = backgroudMap;
+    const app = express();
+
+    app.use(express.static(path.join(__dirname, '/public')));
+
+    app.engine('html', ejs.renderFile);
+    app.set('view engine', 'html');
+    app.set('views', path.join(__dirname, '/views'));
+
+    this.app = app;
 
     this.nodeList = echoServer.nodeList;
 
@@ -55,8 +59,8 @@ class SimulatorApp {
 
     this.setSocketIO(this.server);
 
-    app.get('/', (req, res) => {
-      // BU.CLIN(this.deviceMap);
+    this.app.get('/', (req, res) => {
+      // BU.CLI(this.deviceMap.setInfo.mainInfo);
       res.render('./index', {
         map: this.deviceMap,
         backgroudMap: this.backgroudMap,

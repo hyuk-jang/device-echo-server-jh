@@ -12,13 +12,11 @@ if (require !== undefined && require.main === module) {
 
   let serverConfig;
 
-  if (process.env.NODE_ENV !== 'develop') {
-    process.env.NODE_ENV = 'production';
+  if (process.env.NODE_ENV === 'production') {
     const serverPath = path.join(process.cwd(), 'server.config');
-    console.log(serverPath);
     serverConfig = require(serverPath);
   } else {
-    serverConfig = config.upsas;
+    serverConfig = config.fp;
   }
 
   // console.log(process.env);

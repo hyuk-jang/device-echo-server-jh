@@ -12,63 +12,379 @@ const {
 const map = {
   drawInfo: {
     frame: {
-      mapSize: {
-        width: 880,
+      mapInfo: {
+        width: 2000,
         height: 1230,
+        backgroundInfo: { backgroundData: '', backgroundPosition: [0, 0] },
       },
       svgModelResourceList: [
         {
-          id: 'salternBlock_001',
+          id: 'farmParallelSite',
           type: 'rect',
-          elementDrawInfo: {
-            width: 100,
-            height: 150,
-            color: '#33ffff',
-          },
+          elementDrawInfo: { width: 250, height: 350, color: 'red', opacity: 0.5 },
+          textStyleInfo: { color: 'white' },
         },
         {
-          id: 'salternBlock_002',
+          id: 'outside',
           type: 'rect',
-          elementDrawInfo: {
-            width: 100,
-            height: 150,
-            color: '#33ffff',
-          },
+          elementDrawInfo: { width: 700, height: 200, color: '#009432', opacity: 0.5 },
+          textStyleInfo: { color: 'white' },
         },
         {
-          id: 'salternLine_001',
-          type: 'line',
-          elementDrawInfo: {
-            strokeWidth: 100,
-            color: '#33ccff',
-          },
+          id: 'inverter',
+          type: 'rect',
+          elementDrawInfo: { width: 100, height: 100, color: '#0652DD', opacity: 0.5 },
+          textStyleInfo: { color: 'white' },
         },
         {
-          id: 'pump_001',
-          type: 'circle',
-          elementDrawInfo: {
-            radius: 20,
-            color: '#9fe667',
-          },
-        },
-        {
-          id: 'valve_001',
-          type: 'rhombus',
-          elementDrawInfo: {
-            width: 20,
-            height: 20,
-            rotate: 45,
-            color: '#efb4ce',
-          },
+          id: 'sensor',
+          type: 'rect',
+          elementDrawInfo: { width: 100, height: 30, color: '#f0f0f0' },
         },
       ],
     },
-    positionList: [{}],
+    positionInfo: {
+      svgPlaceList: [
+        {
+          placeId: 'farmParallelSite',
+          defList: [
+            { id: 'PV_N_062', name: '좌측_062', resourceId: 'farmParallelSite', point: [300, 100] },
+            { id: 'PV_N_061', name: '중앙_061', resourceId: 'farmParallelSite', point: [600, 100] },
+            { id: 'PV_N_010', name: '우측_010', resourceId: 'farmParallelSite', point: [900, 100] },
+          ],
+        },
+        {
+          placeId: 'outside',
+          defList: [
+            { id: 'OS_011', name: '외기 환경_011', resourceId: 'outside', point: [400, 600] },
+          ],
+        },
+        {
+          placeId: 'inverter',
+          defList: [
+            { id: 'IVT_A', name: '인버터_A', resourceId: 'inverter', point: [800, 470] },
+            { id: 'IVT_B', name: '인버터_B', resourceId: 'inverter', point: [550, 470] },
+          ],
+        },
+      ],
+      svgNodeList: [
+        {
+          nodeDefId: 'co2',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'CO2_010',
+              name: '이산화탄소_010',
+              placeId: 'PV_N_010',
+              resourceId: 'sensor',
+              point: [975, 134],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'lux',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'LX_010',
+              name: '조도_010',
+              placeId: 'PV_N_010',
+              resourceId: 'sensor',
+              point: [975, 224],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'soilReh',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'RH_S_010',
+              name: '토양 습도_010',
+              placeId: 'PV_N_010',
+              resourceId: 'sensor',
+              point: [975, 179],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'pvUnderlyingSolar',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'S_PU_010',
+              name: '모듈 하부 일사량_010',
+              placeId: 'PV_N_010',
+              resourceId: 'sensor',
+              point: [975, 341],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'soilTemperature',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'T_S_010',
+              name: '토양 온도_010',
+              placeId: 'PV_N_010',
+              resourceId: 'sensor',
+              point: [975, 296],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'soilWaterValue',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'WV_S_010',
+              name: '토양 EC 값_010',
+              placeId: 'PV_N_010',
+              resourceId: 'sensor',
+              point: [975, 386],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'outsideAirReh',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'RH_OA_061',
+              name: '외기 습도_061',
+              placeId: 'PV_N_061',
+              resourceId: 'sensor',
+              point: [675, 134],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'pvUnderlyingSolar',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'S_PU_061',
+              name: '모듈 하부 일사량_061',
+              placeId: 'PV_N_061',
+              resourceId: 'sensor',
+              point: [675, 224],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'outsideAirTemperature',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'T_OA_061',
+              name: '외기 온도_061',
+              placeId: 'PV_N_061',
+              resourceId: 'sensor',
+              point: [675, 179],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'windDirection',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'W_D_061',
+              name: '풍향_061',
+              placeId: 'PV_N_061',
+              resourceId: 'sensor',
+              point: [675, 341],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'windSpeed',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'W_S_061',
+              name: '풍속_061',
+              placeId: 'PV_N_061',
+              resourceId: 'sensor',
+              point: [675, 296],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'pvUnderlyingSolar',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'S_PU_062',
+              name: '모듈 하부 일사량_062',
+              placeId: 'PV_N_062',
+              resourceId: 'sensor',
+              point: [375, 185],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'pvUnderlyingSolar',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'S_PU_063',
+              name: '모듈 하부 일사량_063',
+              placeId: 'PV_N_062',
+              resourceId: 'sensor',
+              point: [375, 230],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'co2',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'CO2_011',
+              name: '이산화탄소_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [480, 655],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'lux',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'LX_011',
+              name: '조도_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [630, 655],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'r1',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'RF1_011',
+              name: '시간당 강우량_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [770, 655],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'outsideAirReh',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'RH_OA_011',
+              name: '외기 습도_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [920, 655],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'soilReh',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'RH_S_011',
+              name: '토양 습도_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [480, 691],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'horizontalSolar',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'S_H_011',
+              name: '수평 일사량_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [920, 691],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'outsideAirTemperature',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'T_OA_011',
+              name: '외기 온도_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [480, 727],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'soilTemperature',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'T_S_011',
+              name: '토양 온도_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [920, 727],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'soilWaterValue',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'WV_S_011',
+              name: '토양 EC 값_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [590, 727],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'windDirection',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'W_D_011',
+              name: '풍향_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [700, 727],
+            },
+          ],
+        },
+        {
+          nodeDefId: 'windSpeed',
+          is_sensor: 1,
+          defList: [
+            {
+              id: 'W_S_011',
+              name: '풍속_011',
+              placeId: 'OS_011',
+              resourceId: 'sensor',
+              point: [810, 727],
+            },
+          ],
+        },
+      ],
+    },
   },
   setInfo: {
-    mainInfo: {
-      uuid: '003',
-    },
+    mainInfo: { uuid: '003' },
     dccConstructorList: [
       {
         dccId: 'DCC_001',
@@ -88,7 +404,7 @@ const map = {
           mainCategory: 'FarmParallel',
           subCategory: 'dmTech',
           wrapperCategory: 'default',
-          cmdExecTimeoutMs: 1000 * 2,
+          cmdExecTimeoutMs: 2000,
         },
       },
       {
@@ -97,7 +413,7 @@ const map = {
           mainCategory: 'Inverter',
           subCategory: 'das_1.3',
           wrapperCategory: 'default',
-          cmdExecTimeoutMs: 1000 * 6,
+          cmdExecTimeoutMs: 6000,
         },
       },
       {
@@ -106,7 +422,7 @@ const map = {
           mainCategory: 'Inverter',
           subCategory: 's5500k',
           wrapperCategory: 'default',
-          cmdExecTimeoutMs: 1000 * 10,
+          cmdExecTimeoutMs: 10000,
         },
       },
     ],
@@ -115,14 +431,8 @@ const map = {
         repeatId: 'RE_NODE_IVT',
         repeatCategory: 'node',
         nodeList: [
-          {
-            target_code: '006',
-            target_name: 'A',
-          },
-          {
-            target_code: '007',
-            target_name: 'B',
-          },
+          { target_code: '006', target_name: 'A' },
+          { target_code: '007', target_name: 'B' },
         ],
       },
       {
@@ -146,7 +456,6 @@ const map = {
         ],
       },
     ],
-
     dataLoggerStructureList: [
       {
         target_prefix: 'D_CE',
@@ -159,7 +468,6 @@ const map = {
             dpcId: 'DPC_001',
             nodeList: ['LX_010', 'S_PU_010', 'CO2_010', 'WV_S_010', 'T_S_010', 'RH_S_010'],
           },
-          // TODO:
           {
             serial_number: 61,
             target_code: '061',
@@ -208,7 +516,7 @@ const map = {
         dataLoggerDeviceList: [
           {
             target_name: '보성 A (5.5kW 급)',
-            serial_number: Buffer.from([16]),
+            serial_number: { type: 'Buffer', data: [16] },
             target_code: '006',
             dccId: 'DCC_001',
             dpcId: 'DPC_IVT_002',
@@ -216,7 +524,7 @@ const map = {
           },
           {
             target_name: '보성 B (5.5kW 급)',
-            serial_number: Buffer.from([67]),
+            serial_number: { type: 'Buffer', data: [17] },
             target_code: '007',
             dccId: 'DCC_001',
             dpcId: 'DPC_IVT_002',
@@ -238,12 +546,8 @@ const map = {
             target_prefix: 'T_S',
             target_name: '토양 온도',
             nodeList: [
-              {
-                target_code: '010',
-              },
-              {
-                target_code: '011',
-              },
+              { target_code: '010', axisScale: [0, 0], moveScale: [0, 0] },
+              { target_code: '011', axisScale: [0, 0], moveScale: [0.7, 0.9] },
             ],
           },
           {
@@ -251,12 +555,8 @@ const map = {
             target_prefix: 'T_OA',
             target_name: '외기 온도',
             nodeList: [
-              {
-                target_code: '011',
-              },
-              {
-                target_code: '061',
-              },
+              { target_code: '011', axisScale: [0, 0], moveScale: [-0.7, 0.9] },
+              { target_code: '061', axisScale: [0, 0], moveScale: [-1.2, -1.5] },
             ],
           },
         ],
@@ -273,12 +573,8 @@ const map = {
             target_prefix: 'RH_S',
             target_name: '토양 습도',
             nodeList: [
-              {
-                target_code: '010',
-              },
-              {
-                target_code: '011',
-              },
+              { target_code: '010', axisScale: [0, 0], moveScale: [-1.2, -1.5] },
+              { target_code: '011', axisScale: [0, 0], moveScale: [-0.7, 0.7] },
             ],
           },
           {
@@ -286,12 +582,8 @@ const map = {
             target_prefix: 'RH_OA',
             target_name: '외기 습도',
             nodeList: [
-              {
-                target_code: '011',
-              },
-              {
-                target_code: '061',
-              },
+              { target_code: '011', axisScale: [0, 0], moveScale: [0.7, 0] },
+              { target_code: '061', axisScale: [0, 0], moveScale: [1.2, -3] },
             ],
           },
         ],
@@ -306,14 +598,10 @@ const map = {
           {
             target_id: 'windSpeed',
             target_prefix: 'W_S',
+            target_name: '풍속',
             nodeList: [
-              {
-                target_code: '011',
-              },
-              // TODO:
-              {
-                target_code: '061',
-              },
+              { target_code: '011', axisScale: [0, 0], moveScale: [0.4, 0.4] },
+              { target_code: '061', axisScale: [0, 0], moveScale: [0, 0] },
             ],
           },
         ],
@@ -327,14 +615,10 @@ const map = {
           {
             target_id: 'windDirection',
             target_prefix: 'W_D',
+            target_name: '풍향',
             nodeList: [
-              {
-                target_code: '011',
-              },
-              // TODO:
-              {
-                target_code: '061',
-              },
+              { target_code: '011', axisScale: [0, 0], moveScale: [0.7, 0.4] },
+              { target_code: '061', axisScale: [0, 0], moveScale: [1.2, 2.7] },
             ],
           },
         ],
@@ -350,11 +634,7 @@ const map = {
             target_id: 'horizontalSolar',
             target_name: '수평 일사량',
             target_prefix: 'S_H',
-            nodeList: [
-              {
-                target_code: '011',
-              },
-            ],
+            nodeList: [{ target_code: '011', axisScale: [0, 0], moveScale: [0.7, 0.7] }],
           },
           {
             target_id: 'inclinedSolar',
@@ -367,23 +647,27 @@ const map = {
             target_name: '모듈 하부 일사량',
             target_prefix: 'S_PU',
             nodeList: [
-              {
-                target_code: '010',
-              },
+              { target_code: '010', axisScale: [0, 0], moveScale: [1.2, 2.7] },
               {
                 target_code: '061',
                 target_name: 'A',
                 data_logger_index: 1,
+                axisScale: [0, 0],
+                moveScale: [0, 0],
               },
               {
                 target_code: '062',
                 target_name: 'B',
                 data_logger_index: 1,
+                axisScale: [0, 0],
+                moveScale: [1, -1.5],
               },
               {
                 target_code: '063',
                 target_name: 'C',
                 data_logger_index: 2,
+                axisScale: [0, 0],
+                moveScale: [-1, 0],
               },
             ],
           },
@@ -400,11 +684,7 @@ const map = {
             target_id: 'r1',
             target_prefix: 'RF1',
             target_name: '시간당 강우량',
-            nodeList: [
-              {
-                target_code: '011',
-              },
-            ],
+            nodeList: [{ target_code: '011', axisScale: [0, 0], moveScale: [0, 0] }],
           },
         ],
       },
@@ -417,13 +697,9 @@ const map = {
         defList: [
           {
             target_id: 'isRain',
-            target_prefix: 'IR',
+            target_prefix: 'I_R',
             target_name: '강우 감지 여부',
-            nodeList: [
-              {
-                target_code: '011',
-              },
-            ],
+            nodeList: [{ target_code: '011', axisScale: [0, 0], moveScale: [0, 0] }],
           },
         ],
       },
@@ -437,13 +713,10 @@ const map = {
           {
             target_id: 'co2',
             target_prefix: 'CO2',
+            target_name: '이산화탄소',
             nodeList: [
-              {
-                target_code: '010',
-              },
-              {
-                target_code: '011',
-              },
+              { target_code: '010', axisScale: [0, 0], moveScale: [1.2, -3] },
+              { target_code: '011', axisScale: [0, 0], moveScale: [-0.7, 0] },
             ],
           },
         ],
@@ -466,13 +739,10 @@ const map = {
           {
             target_id: 'lux',
             target_prefix: 'LX',
+            target_name: '조도',
             nodeList: [
-              {
-                target_code: '010',
-              },
-              {
-                target_code: '011',
-              },
+              { target_code: '010', axisScale: [0, 0], moveScale: [0, 0] },
+              { target_code: '011', axisScale: [0, 0], moveScale: [0, 0] },
             ],
           },
         ],
@@ -489,12 +759,8 @@ const map = {
             target_prefix: 'WV_S',
             target_name: '토양 EC 값',
             nodeList: [
-              {
-                target_code: '010',
-              },
-              {
-                target_code: '011',
-              },
+              { target_code: '010', axisScale: [0, 0], moveScale: [1.2, 3] },
+              { target_code: '011', axisScale: [0, 0], moveScale: [0.4, 0.4] },
             ],
           },
         ],
@@ -504,7 +770,7 @@ const map = {
         target_name: '전압',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: BLOCK,
+        save_db_type: 'block',
         data_unit: 'V',
         description: null,
         defList: [
@@ -539,7 +805,7 @@ const map = {
         target_name: '전류',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: BLOCK,
+        save_db_type: 'block',
         data_unit: 'A',
         description: null,
         defList: [
@@ -574,7 +840,7 @@ const map = {
         target_name: '전력량',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: BLOCK,
+        save_db_type: 'block',
         data_unit: 'W',
         description: '1 와트(기호 W)는 1 초 동안의 1 줄(N·m)에 해당하는 일률의 SI 단위',
         defList: [],
@@ -584,7 +850,7 @@ const map = {
         target_name: '전력량',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: BLOCK,
+        save_db_type: 'block',
         data_unit: 'kW',
         description: '1 킬로와트(기호 kW)는 1 초 동안의 1,000 줄(N·m)에 해당하는 일률의 SI 단위',
         defList: [
@@ -609,7 +875,7 @@ const map = {
         target_name: '전력량',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: BLOCK,
+        save_db_type: 'block',
         data_unit: 'MW',
         description:
           '1 메가와트(기호 MW)는 1 초 동안의 1,000,000 줄(N·m)에 해당하는 일률의 SI 단위',
@@ -620,7 +886,7 @@ const map = {
         target_name: '전력량',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: BLOCK,
+        save_db_type: 'block',
         data_unit: 'Wh',
         description: '시간당 에너지 단위, 1 W의 일률로 1 시간 동안 하는 일의 양',
         defList: [],
@@ -630,7 +896,7 @@ const map = {
         target_name: '전력량',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: BLOCK,
+        save_db_type: 'block',
         data_unit: 'kWh',
         description: '시간당 에너지 단위, 1 kW의 일률로 1 시간 동안 하는 일의 양',
         defList: [
@@ -654,7 +920,7 @@ const map = {
         target_name: '전력량',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: BLOCK,
+        save_db_type: 'block',
         data_unit: 'MWh',
         description: '시간당 에너지 단위, 1 MW의 일률로 1 시간 동안 하는 일의 양',
         defList: [],
@@ -664,7 +930,7 @@ const map = {
         target_name: '역률',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: BLOCK,
+        save_db_type: 'block',
         data_unit: '%',
         defList: [],
       },
@@ -673,7 +939,7 @@ const map = {
         target_name: '주파수',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: BLOCK,
+        save_db_type: 'block',
         data_unit: 'Hz',
         defList: [
           {
@@ -689,7 +955,7 @@ const map = {
         target_name: '오류 목록',
         is_sensor: 2,
         is_submit_api: 0,
-        save_db_type: TROUBLE,
+        save_db_type: 'trouble',
         description: '장치에서 보내오는 이상 데이터',
         defList: [
           {
@@ -748,23 +1014,14 @@ const map = {
                 target_name: '하부',
                 chart_color: '#2b8a3e',
                 chart_sort_rank: 10,
-                nodeList: [
-                  'LX_010',
-                  'S_PU_010',
-                  'CO2_010',
-                  'WV_S_010',
-                  'T_S_010',
-                  'RH_S_010',
-                  'W_S_061',
-                  'W_D_061',
-                  'T_OA_061',
-                  'RH_OA_061',
-                  // FIXME:
-                  'S_PU_061',
-                  'S_PU_062',
-                  'S_PU_063',
-                ],
+                nodeList: ['CO2_010', 'LX_010', 'RH_S_010', 'S_PU_010', 'T_S_010', 'WV_S_010'],
               },
+              {
+                target_code: '061',
+                nodeList: ['RH_OA_061', 'S_PU_061', 'T_OA_061', 'W_D_061', 'W_S_061'],
+                depth: 0,
+              },
+              { target_code: '062', nodeList: ['S_PU_062', 'S_PU_063'], depth: 0 },
             ],
           },
         ],
@@ -784,23 +1041,59 @@ const map = {
                 chart_color: '#ff6b6b',
                 chart_sort_rank: 11,
                 nodeList: [
-                  'LX_011',
-                  'S_H_011',
                   'CO2_011',
-                  'WV_S_011',
-                  'T_S_011',
-                  'RH_S_011',
-                  'T_OA_011',
+                  'I_R_911',
+                  'LX_011',
+                  'RF1_011',
                   'RH_OA_011',
+                  'RH_S_011',
+                  'S_H_011',
+                  'T_OA_011',
+                  'T_S_011',
+                  'WV_S_011',
                   'W_D_011',
                   'W_S_011',
-                  'RF1_011',
-                  'IR_011',
                 ],
               },
             ],
           },
         ],
+      },
+    ],
+    svgResourceConnectionList: [
+      {
+        targetIdList: ['PV_N_062', '\bPV_N_061', 'PV_N_010'],
+        resourceIdList: ['farmParallelSite'],
+      },
+      {
+        targetIdList: [
+          'S_PU_063',
+          'S_PU_062',
+          'RH_OA_061',
+          'S_PU_061',
+          'T_OA_061',
+          'W_D_061',
+          'W_S_061',
+          'CO2_010',
+          'LX_010',
+          'RH_S_010',
+          'S_PU_010',
+          'T_S_010',
+          'WV_S_010',
+          'CO2_011',
+          'I_R_011',
+          'LX_011',
+          'RF1_011',
+          'RH_OA_011',
+          'RH_S_011',
+          'S_H_011',
+          'T_OA_011',
+          'T_S_011',
+          'WV_S_011',
+          'W_D_011',
+          'W_S_011',
+        ],
+        resourceIdList: ['sensor'],
       },
     ],
   },

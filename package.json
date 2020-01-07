@@ -11,7 +11,8 @@
   },
   "pkg": {
     "assets": [
-      "./src/**/*"
+      "./src/**/*",
+      "../device-protocol-converter-jh/**/*"
     ]
   },
   "scripts": {

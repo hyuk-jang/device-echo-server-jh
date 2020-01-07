@@ -104,6 +104,7 @@ class Main {
 
         // 맵 정보가 존재할 경우 에코서버와 통신할 시뮬레이터 웹 구동
         if (mapId.length && projectId.length) {
+          // BU.CLI(dMap.setInfo.mainInfo);
           const simulatorWeb = new SimulatorApp(simulatorPort, echoServer);
           simulatorWeb.init();
         }

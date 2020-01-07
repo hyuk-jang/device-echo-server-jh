@@ -15,11 +15,12 @@ function drawSvgBasePlace(documentId, isText, isShow = true) {
   const realMap = map;
 
   // svgCanvas 생성
-  const { width: svgCanvasWidth, height: svgCanvasHeight } = realMap.drawInfo.frame.mapInfo;
   const {
-    backgroundData,
-    backgroundPosition = [0, 0],
-  } = realMap.drawInfo.frame.mapInfo.backgroundInfo;
+    mapInfo: { width: svgCanvasWidth, height: svgCanvasHeight } = {},
+  } = realMap.drawInfo.frame;
+  const {
+    mapInfo: { backgroundInfo: { backgroundData, backgroundPosition = [0, 0] } = {} } = {},
+  } = realMap.drawInfo.frame;
   const svgCanvas = SVG(documentId).size(svgCanvasWidth, svgCanvasHeight);
 
   // 팬줌 초기 맵 사이즈를 지정하기 위한 그려지는 공간의 id 지정
