@@ -72,9 +72,10 @@ class AbstModel extends EventEmitter {
   reload() {
     this.nodeList.forEach(nodeInfo => {
       // 센서이고 현재 데이터가 숫자이면서 float형인 경우만 랜덤 수치를 적용
-      if (nodeInfo.isSensor && _.isNumber(nodeInfo.data) && nodeInfo.data % 1 !== 0) {
+      // if (nodeInfo.isSensor && _.isNumber(nodeInfo.data) && nodeInfo.data % 1 !== 0) {
+      if (nodeInfo.isSensor && _.isNumber(nodeInfo.data)) {
         // 현재 값을 기준으로 95% ~ 105% 사이의 랜덤 값을 사용
-        // nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.99, 1.01, true));
+        nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.995, 1.005, true));
       }
     });
 
