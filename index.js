@@ -1,5 +1,7 @@
 const path = require('path');
 
+const { BU } = require('base-util-jh');
+
 const Control = require('./src/Control');
 const Main = require('./src/Main');
 const config = require('./config');
@@ -16,7 +18,7 @@ if (require !== undefined && require.main === module) {
     const serverPath = path.join(process.cwd(), 'server.config');
     serverConfig = require(serverPath);
   } else {
-    serverConfig = config.fp;
+    serverConfig = config[process.env.PROJECT_ID];
   }
 
   // console.log(process.env);
