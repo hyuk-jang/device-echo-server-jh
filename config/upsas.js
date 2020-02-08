@@ -6,7 +6,7 @@ const protocolHexInv = {
   subCategory: 'hexTriple',
   deviceId: '',
   option: {
-    amount: 33.3,
+    amount: 25,
   },
 };
 
@@ -36,7 +36,7 @@ module.exports = {
   dbcConnConfig: {},
   echoConfigList: [
     {
-      siteId: 'bbbb',
+      siteId: 'upsas100kW',
       siteName: '무안 100kW 실증부지',
       serverPort: 9001,
       echoServerList: [
@@ -48,15 +48,18 @@ module.exports = {
             simulatorPort: 10001,
           },
         },
-        // {
-        //   protocolConfig: convertProtocolConfig(protocolHexInv, Buffer.from('001')),
-        // },
-        // {
-        //   protocolConfig: convertProtocolConfig(protocolHexInv, Buffer.from('002')),
-        // },
-        // {
-        //   protocolConfig: convertProtocolConfig(protocolHexInv, Buffer.from('003')),
-        // },
+        {
+          protocolConfig: convertProtocolConfig(protocolHexInv, Buffer.from('01')),
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolHexInv, Buffer.from('02')),
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolHexInv, Buffer.from('03')),
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolHexInv, Buffer.from('04')),
+        },
       ],
     },
   ],

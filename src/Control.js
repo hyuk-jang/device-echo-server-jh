@@ -79,7 +79,7 @@ class Control {
           }
         } else {
           socket.on('data', data => {
-            BU.CLI(data);
+            // BU.CLI(data);
             // parseData.data = Buffer.from(parseData.data);
             // BU.CLI(`${this.getServerName()}P: ${this.port}\t onData: `, data.toString());
 
@@ -149,32 +149,55 @@ class Control {
    */
   spreadMsg(msg) {
     // BU.CLI(data);
+    const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(new Date(), '', 2)}.log`;
+    BU.appendFile(logPath, `onData : ${msg}`);
+
     // 응답 받을 데이터 배열
-    const receiveDataList = [];
-    this.echoServerList.forEach(deviceModel => {
+    /** @type {echoDataInfo} */
+    let echoDataInfo = {};
+
+    // Echo Server 중 요청한 명령에 대한 응답은 1개이어야만 함.
+    this.echoServerList.forEach(echoServer => {
       // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
-      receiveDataList.push(deviceModel.onData(msg));
+      const echoData = echoServer.onData(msg);
+      if (_.isEmpty(echoData)) return false;
+
+      // 데이터를 정상적으로 생성한 Echo Server의 생성 정보를 가져옴
+      const {
+        protocolInfo: { mainCategory = '', subCategory = '', deviceId = '' },
+      } = echoServer;
+
+      // Log 정보를 남길 Echo Server의 이름을 지정
+      echoDataInfo = {
+        echoData: _.isBuffer(echoData) ? echoData : JSON.stringify(echoData),
+        echoName: `echoServer: ${mainCategory} ${subCategory} ${deviceId}`,
+      };
     });
 
-    // 응답받지 않은 데이터는 undefined가 들어가므로 유효한 데이터를 가져옴
-    const data = _.find(receiveDataList, resData => !_.isUndefined(resData));
-
-    // BU.CLI(data);
-    const returnValue = Buffer.isBuffer(data) ? data : JSON.stringify(data);
-
-    return returnValue;
+    return echoDataInfo;
   }
 
   /**
+   * 요청한 대상에게 Echo Server 응답 데이터를 전송
    * @param {Socket} socket
-   * @param {Buffer} data
+   * @param {echoDataInfo} echoDataInfo
    */
-  writeMsg(socket, data) {
+  writeMsg(socket, echoDataInfo) {
     setTimeout(() => {
-      if (_.isEmpty(data) || _.isBoolean(data)) return;
+      const { echoData, echoName } = echoDataInfo;
+      if (_.isEmpty(echoData) || _.isBoolean(echoData)) return;
 
-      socket.write(data);
+      const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(new Date(), '', 2)}.log`;
+      BU.appendFile(logPath, `${echoName} - echoData: ${echoData}`);
+
+      socket.write(echoData);
     }, 0);
   }
 }
 module.exports = Control;
+
+/**
+ * @typedef {Object} echoDataInfo
+ * @property {Buffer} echoData
+ * @property {string} echoName
+ */

@@ -37,19 +37,25 @@ class Main {
     this.serverList.forEach(server => {
       const client = net.createConnection(dbcConnConfig);
 
-      const logPath = `./log/echo/${server.siteId}/${BU.convertDateToText(new Date(), '', 2)}.log`;
+      // const logPath = `./log/echo/${server.siteId}/${BU.convertDateToText(new Date(), '', 2)}.log`;
+
+      // BU.CLI(logPath);
 
       client.on('data', data => {
-        BU.appendFile(logPath, `onData : ${data}`);
+        // BU.appendFile(logPath, `onData : ${data}`);
 
         const returnValue = this.dataParser(server, data);
-        if (!_.isEmpty(returnValue)) {
-          BU.appendFile(logPath, `writeData : ${returnValue}`);
-          // 1 초후 반환
-          setTimeout(() => {
-            client.write(returnValue);
-          }, 0);
-        }
+
+        server.writeMsg(client, returnValue);
+
+        // FIXME: Control 단에서 로깅하는 것으로 처리함. DBC에서도 커버할 수 있도록 바꿈. 테스트가 완료되었을 경우 삭제
+        // if (!_.isEmpty(returnValue)) {
+        //   BU.appendFile(logPath, `writeData : ${returnValue}`);
+        //   // 1 초후 반환
+        //   setTimeout(() => {
+        //     client.write(returnValue);
+        //   }, 0);
+        // }
       });
 
       client.on('connect', () => {

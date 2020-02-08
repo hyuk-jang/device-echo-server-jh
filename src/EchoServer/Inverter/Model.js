@@ -66,6 +66,12 @@ class Model extends BaseModel.Inverter {
       899, // 12시
       841, // 13시
       689, // 14시
+      //
+      // 866, // 11시
+      // 899, // 12시
+      // 841, // 13시
+      // 689, // 14시
+      //
       444, // 15시
       162, // 16시
       39, // 17시
@@ -92,21 +98,30 @@ class Model extends BaseModel.Inverter {
     // 시간, 분을 적용한 현재 일사량을 구함
     const currRealSolar = _.sum([currSolar, _.nth(minuteSolarList, minute)]);
 
+    const ROOT_THREE = 1.732;
+
     // 일사량 1000일 경우 100% 달성한다고 가정
     const BASE_SOLAR = 1000;
     //
     const currHourScale = _.divide(currRealSolar, BASE_SOLAR);
 
     this.ds.pvAmp = _.multiply(this.basePvA, currHourScale);
-    this.ds.pvVol = _.random(180, 220, true);
+    this.ds.pvVol = this.isSingle ? _.random(180, 220, true) : _.random(460, 540, true);
     this.ds.pvKw = _.multiply(_.multiply(this.ds.pvAmp, this.ds.pvVol), 0.001);
     this.ds.gridLf = _.random(59.7, 60.5);
-    this.ds.gridRAmp = _.multiply(this.ds.pvAmp, _.random(0.9, 1, true));
-    this.ds.gridRsVol = _.multiply(this.ds.pvVol, _.random(0.9, 1, true));
-    this.ds.gridSAmp = _.multiply(this.ds.pvAmp, _.random(0.9, 1, true));
-    this.ds.gridStVol = _.multiply(this.ds.pvVol, _.random(0.9, 1, true));
-    this.ds.gridTAmp = _.multiply(this.ds.pvAmp, _.random(0.9, 1, true));
-    this.ds.gridTrVol = _.multiply(this.ds.pvVol, _.random(0.9, 1, true));
+
+    const basePvVol = this.isSingle ? this.ds.pvVol : _.random(380, 420, true);
+    const basePvAmp = this.isSingle
+      ? this.ds.pvAmp
+      : // 삼상 계산식 루트3을 위한 전류 감산. 전압 수치가 낮아지기때문에 낮아진 만큼 보존
+        (this.ds.pvAmp / ROOT_THREE) * (this.ds.pvVol / basePvVol);
+
+    this.ds.gridRAmp = _.multiply(basePvAmp, _.random(0.95, 1, true));
+    this.ds.gridRsVol = _.multiply(basePvVol, _.random(0.95, 1, true));
+    this.ds.gridSAmp = _.multiply(basePvAmp, _.random(0.95, 1, true));
+    this.ds.gridStVol = _.multiply(basePvVol, _.random(0.95, 1, true));
+    this.ds.gridTAmp = _.multiply(basePvAmp, _.random(0.95, 1, true));
+    this.ds.gridTrVol = _.multiply(basePvVol, _.random(0.95, 1, true));
     this.ds.operIsError = _.random(0, 1);
     this.ds.operIsRun = _.random(0, 1);
     this.ds.operTemperature = _.random(15.1, 36.2);
@@ -119,9 +134,13 @@ class Model extends BaseModel.Inverter {
     this.ds.sysSn = _.random(1, 9);
     this.ds.powerPvKw = this.ds.pvKw;
     this.ds.powerGridKw = _.divide(_.multiply(this.ds.gridRAmp, this.ds.gridRsVol), 1000);
+    this.ds.powerGridKw = this.isSingle ? this.ds.powerGridKw : this.ds.powerGridKw * ROOT_THREE;
     this.ds.powerDailyKwh = _.sum([10, this.index]);
     this.ds.powerCpKwh += _.multiply(this.cumulativeScale, this.ds.powerGridKw);
     this.ds.powerPf = _.multiply(_.divide(this.ds.powerGridKw, this.ds.powerPvKw), 100);
+    this.ds.powerPf = _.isNaN(this.ds.powerPf) ? 0 : this.ds.powerPf;
+
+    // BU.CLI(this.ds);
 
     this.index += 1;
   }
@@ -140,7 +159,7 @@ class Model extends BaseModel.Inverter {
    * passiveClient를 사용하지 않을 경우 원본 데이터 반환
    * @param {Buffer} msg 인버터 프로토콜에 따른 실제 데이터
    */
-  peelFrameMSg(msg) {
+  peelFrameMsg(msg) {
     return BaseModel.defaultWrapper.peelFrameMsg(this.protocolInfo, msg);
   }
 }

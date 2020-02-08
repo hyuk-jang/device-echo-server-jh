@@ -419,7 +419,7 @@ class EchoServer extends Model {
     }
 
     // this.reload();
-    xbeeApi0x10 = this.peelFrameMSg(xbeeApi0x10);
+    xbeeApi0x10 = this.peelFrameMsg(xbeeApi0x10);
     // BU.CLI(this.nodeList)
 
     const foundDataLogger = this.findDataLogger(xbeeApi0x10.destination64);

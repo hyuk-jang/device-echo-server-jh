@@ -104,21 +104,21 @@ class EchoServer extends Model {
 
   /**
    *
-   * @param {Buffer} bufData
+   * @param {Buffer} receiveBuffer
    */
-  onData(bufData) {
+  onData(receiveBuffer) {
     // BU.CLI(this.dialing, bufData);
     // BU.CLI(this.ds);
-    bufData = this.peelFrameMSg(bufData);
+    receiveBuffer = this.peelFrameMsg(receiveBuffer);
 
     const PROTOCOL_SOP = Buffer.from([0x0a, 0x96]);
     const PROTOCOL_CMD = Buffer.from([0x54]);
 
-    const SOP = bufData.slice(0, 2);
-    const dialing = bufData.slice(2, 3);
-    const bodyBuffer = bufData.slice(2, 5);
-    const cmd = bufData.slice(3, 4);
-    const checkSum = bufData.slice(6);
+    const SOP = receiveBuffer.slice(0, 2);
+    const dialing = receiveBuffer.slice(2, 3);
+    const bodyBuffer = receiveBuffer.slice(2, 5);
+    const cmd = receiveBuffer.slice(3, 4);
+    const checkSum = receiveBuffer.slice(6);
     // 체크섬 체크
     const calcCheckSum = this.calcChecksum(bodyBuffer);
 

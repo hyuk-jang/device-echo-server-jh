@@ -182,13 +182,13 @@ class EchoServer extends Model {
 
   /**
    *
-   * @param {Buffer} bufData
+   * @param {Buffer} receiveBuffer
    */
-  onData(bufData) {
+  onData(receiveBuffer) {
     // BU.CLI(this.dialing, bufData);
-    bufData = this.peelFrameMSg(bufData);
+    receiveBuffer = this.peelFrameMsg(receiveBuffer);
     // BU.CLI(bufData);
-    const SOP = Buffer.from([_.head(bufData)]);
+    const SOP = Buffer.from([_.head(receiveBuffer)]);
 
     // SOP 일치 여부 체크
     if (!_.isEqual(SOP, Buffer.from('^'))) {
@@ -197,9 +197,9 @@ class EchoServer extends Model {
     }
 
     // check Length (SOP, CODE, ADDRESS 제외)
-    const dialing = bufData.slice(
+    const dialing = receiveBuffer.slice(
       _.sum([this.HEADER_INFO.BYTE.SOP, this.HEADER_INFO.BYTE.CODE]),
-      _.subtract(bufData.length, this.HEADER_INFO.BYTE.CMD),
+      _.subtract(receiveBuffer.length, this.HEADER_INFO.BYTE.CMD),
     );
 
     // 국번 일치 여부 체크(다르다면 응답하지 않음)
@@ -209,7 +209,7 @@ class EchoServer extends Model {
 
     // BU.CLI('bufData', bufData);
 
-    const cmd = bufData.slice(
+    const cmd = receiveBuffer.slice(
       _.sum([this.HEADER_INFO.BYTE.SOP, this.HEADER_INFO.BYTE.CODE, this.HEADER_INFO.BYTE.ID]),
     );
 

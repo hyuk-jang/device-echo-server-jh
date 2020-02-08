@@ -134,9 +134,9 @@ class EchoServer extends Model {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    BU.CLI(bufData);
+    // BU.CLI(bufData);
     // frame을 쓰고 있다면 벗겨냄
-    const convertedBufData = this.peelFrameMSg(bufData);
+    const convertedBufData = this.peelFrameMsg(bufData);
     // Buffer를 문자로 변경
     const strData = convertedBufData.toString();
     /** @type {modbusReadFormat} */

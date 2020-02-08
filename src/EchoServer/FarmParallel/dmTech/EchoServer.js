@@ -110,7 +110,7 @@ class EchoServer extends Model {
   onData(bufData) {
     // BU.CLIS(this.protocolInfo, bufData);
     // Frame을 쓴다면 벗겨냄
-    const convertedBufData = this.peelFrameMSg(bufData);
+    const convertedBufData = this.peelFrameMsg(bufData);
     const slaveAddr = convertedBufData.readIntBE(0, 1);
     const fnCode = convertedBufData.readIntBE(1, 1);
 

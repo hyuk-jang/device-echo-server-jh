@@ -104,7 +104,7 @@ class AbstModel extends EventEmitter {
    * passiveClient를 사용하지 않을 경우 원본 데이터 반환
    * @param {Buffer} msg 인버터 프로토콜에 따른 실제 데이터
    */
-  peelFrameMSg(msg) {
+  peelFrameMsg(msg) {
     return BaseModel.defaultWrapper.peelFrameMsg(this.protocolInfo, msg);
   }
 }
