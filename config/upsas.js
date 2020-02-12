@@ -11,13 +11,20 @@ const protocolHexInv = {
 };
 
 /** @type {protocol_info} */
+const protocolDkCnt = {
+  mainCategory: 'Sensor',
+  subCategory: 'CNT_DK_v2.2',
+  deviceId: '',
+  option: {
+    amount: 25,
+    chCount: 6,
+  },
+};
+
+/** @type {protocol_info} */
 const protocolSensor = {
   mainCategory: 'UPSAS',
   subCategory: 'muan100kW',
-  parserOption: {
-    parser: 'delimiterParser',
-    option: '}',
-  },
 };
 
 /**
@@ -39,6 +46,10 @@ module.exports = {
       siteId: 'upsas100kW',
       siteName: '무안 100kW 실증부지',
       serverPort: 9001,
+      parserInfo: {
+        parser: 'delimiterParser',
+        option: '}',
+      },
       echoServerList: [
         {
           protocolConfig: protocolSensor,
@@ -48,6 +59,13 @@ module.exports = {
             simulatorPort: 10001,
           },
         },
+      ],
+    },
+    {
+      siteId: 'upsas100kW',
+      siteName: '무안 100kW 실증부지',
+      serverPort: 9002,
+      echoServerList: [
         {
           protocolConfig: convertProtocolConfig(protocolHexInv, Buffer.from('01')),
         },
@@ -59,6 +77,29 @@ module.exports = {
         },
         {
           protocolConfig: convertProtocolConfig(protocolHexInv, Buffer.from('04')),
+        },
+      ],
+    },
+    {
+      siteId: 'upsas100kW',
+      siteName: '무안 100kW 실증부지',
+      serverPort: 9003,
+      parserInfo: {
+        parser: 'delimiterParser',
+        option: '}',
+      },
+      echoServerList: [
+        {
+          protocolConfig: convertProtocolConfig(protocolDkCnt, 1),
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolDkCnt, 2),
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolDkCnt, 3),
+        },
+        {
+          protocolConfig: convertProtocolConfig(protocolDkCnt, 4),
         },
       ],
     },

@@ -11,14 +11,13 @@ class Control {
   /**
    * @param {number} port
    * @param {Object=} parserInfo
-   * @param {string} parserOption.parser
-   * @param {string|number} parserOption.option
+   * @param {string} parserInfo.parser
+   * @param {string|number} parserInfo.option
    * @param {echoConfig} echoConfig
    */
   constructor(port, parserInfo = {}, echoConfig = {}) {
     this.msgLength = 0;
     this.parserInfo = parserInfo;
-
     const { siteId = '', siteName = '', serverPort } = echoConfig;
 
     this.port = _.isNumber(serverPort) ? serverPort : port;
@@ -127,6 +126,7 @@ class Control {
       const EchoServer = require(path);
       // 에코서버 객체화
       const echoServer = new EchoServer(protocolInfo, deviceMap);
+
       // 동일한 에코서버가 생성되었을 경우에는 추가하지 않음
       const foundIt = _.find(this.echoServerList, eServer => _.isEqual(echoServer, eServer));
       _.isEmpty(foundIt) && this.echoServerList.push(echoServer);
@@ -189,7 +189,6 @@ class Control {
 
       const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(new Date(), '', 2)}.log`;
       BU.appendFile(logPath, `${echoName} - echoData: ${echoData}`);
-
       socket.write(echoData);
     }, 0);
   }

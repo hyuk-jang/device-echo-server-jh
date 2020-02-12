@@ -23,7 +23,7 @@ class Model extends BaseModel.Inverter {
     this.dialing = this.protocolConverter.makeMsg2Buffer(dialing);
 
     // 인버터 용량 불러옴. default: 30 kW
-    this.amount = _.get(protocolInfo.option, 'amount', 30);
+    this.amount = _.get(protocolInfo.option, 'amount', 25);
     // 단상, 삼상 여부
     this.isSingle = this.amount <= 3 ? 1 : 0;
 

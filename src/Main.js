@@ -93,8 +93,8 @@ class Main {
    */
   createServer(echoConfigList) {
     const serverList = echoConfigList.map(echoOption => {
-      const { serverPort, echoServerList } = echoOption;
-      const control = new Control(serverPort, {}, echoOption);
+      const { serverPort, parserInfo = {}, echoServerList } = echoOption;
+      const control = new Control(serverPort, parserInfo, echoOption);
 
       echoServerList.forEach(echoServerConfing => {
         const {

@@ -6,7 +6,7 @@ const { dpc } = require('../../module');
 
 const { BaseModel } = dpc;
 
-const { ESS, FarmParallel, Inverter, UPSAS } = BaseModel;
+const { ESS, FarmParallel, Inverter, UPSAS, Sensor } = BaseModel;
 
 const commonUtils = require('../../util/common');
 
@@ -39,7 +39,11 @@ class AbstModel extends EventEmitter {
       case 'FarmParallel':
         this.model = new FarmParallel(protocolInfo);
         break;
+      case 'Sensor':
+        this.model = new Sensor(protocolInfo);
+        break;
       default:
+        this.model = {};
         break;
     }
 
@@ -56,12 +60,10 @@ class AbstModel extends EventEmitter {
 
     // 실제 장치 데이터
     this.nodeList = commonUtils.makeNodeList(deviceMap);
-
     // 장치들의 데이터를 취합하는 데이터 로거
     this.dataLoggerList = commonUtils.makeDataLoggerList(deviceMap);
 
     // BU.CLIN(this);
-
     this.reload();
     setInterval(() => {
       this.reload();
@@ -70,16 +72,23 @@ class AbstModel extends EventEmitter {
 
   /** 장치가 수치를 측정하는 센서이고  */
   reload() {
-    this.nodeList.forEach(nodeInfo => {
-      // 센서이고 현재 데이터가 숫자이면서 float형인 경우만 랜덤 수치를 적용
-      // if (nodeInfo.isSensor && _.isNumber(nodeInfo.data) && nodeInfo.data % 1 !== 0) {
-      if (nodeInfo.isSensor && _.isNumber(nodeInfo.data)) {
-        // 현재 값을 기준으로 95% ~ 105% 사이의 랜덤 값을 사용
-        nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.995, 1.005, true));
-      }
-    });
+    // BU.log(this.nodeList.length);
+    try {
+      this.nodeList.forEach(nodeInfo => {
+        // 센서이고 현재 데이터가 숫자이면서 float형인 경우만 랜덤 수치를 적용
+        // if (nodeInfo.isSensor && _.isNumber(nodeInfo.data) && nodeInfo.data % 1 !== 0) {
+        if (nodeInfo.isSensor && _.isNumber(nodeInfo.data)) {
+          // 현재 값을 기준으로 95% ~ 105% 사이의 랜덤 값을 사용
+          nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.995, 1.005, true));
+        }
+      });
 
-    this.emit('reload');
+      this.emit('reload');
+    } catch (error) {
+      // BU.CLIN(this);
+      BU.error(error.message);
+      // BU.debugConsole(20);
+    }
   }
 
   /**
