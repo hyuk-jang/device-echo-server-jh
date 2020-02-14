@@ -36,7 +36,7 @@ class Model extends BaseModel.Sensor {
     this.isSingle = this.amount <= 3 ? 1 : 0;
 
     // 전압 200을 기본으로 두고. 용량 30kW * 5 = 150kW, 150 A * 200 V = 30000 W -> 30 kW
-    this.basePvA = this.amount * 5;
+    this.basePvA = this.isSingle ? this.amount * 5 : this.amount * 2;
 
     // Data Storage
     this.ds = BaseModel.Sensor.BASE_MODEL;
