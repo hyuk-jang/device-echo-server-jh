@@ -192,9 +192,9 @@ class EchoServer extends Model {
     const DEVICE = this.device.WATER_DOOR;
     let deviceHex;
     switch (nodeInfo.data) {
-      case DEVICE.STATUS.STOP:
-        deviceHex = [0x30, 0x30];
-        break;
+      // case DEVICE.STATUS.STOP:
+      //   deviceHex = [0x30, 0x34];
+      //   break;
       case DEVICE.STATUS.OPEN:
         deviceHex = [0x30, 0x32];
         break;
@@ -212,24 +212,24 @@ class EchoServer extends Model {
     }
     // BU.CLI(deviceHex);
 
-    // 염도 센서 값
-    const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
-    const nodeS = _.find(nodeList, { defId: this.device.SALINITY.KEY });
+    // // 염도 센서 값
+    // const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
+    // const nodeS = _.find(nodeList, { defId: this.device.SALINITY.KEY });
 
-    let tempData;
+    // let tempData;
 
-    tempData = _.isEmpty(nodeWL) ? 0 : _.round(nodeWL.data * 10);
-    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
+    // tempData = _.isEmpty(nodeWL) ? 0 : _.round(nodeWL.data * 10);
+    // const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
 
-    tempData = _.isEmpty(nodeS) ? 0 : _.round(nodeS.data * 1);
-    const bufDataS = this.protocolConverter.convertNumToBuf(tempData, 4);
+    // tempData = _.isEmpty(nodeS) ? 0 : _.round(nodeS.data * 1);
+    // const bufDataS = this.protocolConverter.convertNumToBuf(tempData, 4);
 
     // Level: 2, Salinity: 4, Batter: 4
     return Buffer.concat([
       bufHeader,
       Buffer.from(deviceHex),
-      bufDataWL,
-      bufDataS,
+      // bufDataWL,
+      // bufDataS,
       this.bufDataBattery,
     ]);
   }
@@ -300,54 +300,54 @@ class EchoServer extends Model {
     const DEVICE = this.device.VALVE;
     let deviceHex;
     switch (nodeInfo.data) {
-      case DEVICE.STATUS.UNDEF:
-        deviceHex = [0x30, 0x30];
-        break;
+      // case DEVICE.STATUS.UNDEF:
+      //   deviceHex = [0x30, 0x30];
+      //   break;
       case DEVICE.STATUS.CLOSE:
         deviceHex = [0x30, 0x31];
         break;
       case DEVICE.STATUS.OPEN:
         deviceHex = [0x30, 0x32];
         break;
-      case DEVICE.STATUS.OPENING:
-        deviceHex = [0x30, 0x34];
-        break;
-      case DEVICE.STATUS.CLOSING:
-        deviceHex = [0x30, 0x35];
-        break;
+      // case DEVICE.STATUS.OPENING:
+      //   deviceHex = [0x30, 0x34];
+      //   break;
+      // case DEVICE.STATUS.CLOSING:
+      //   deviceHex = [0x30, 0x35];
+      //   break;
       default:
         break;
     }
 
-    const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
-    // 염도 센서 값
-    const nodeS = _.find(nodeList, { defId: this.device.SALINITY.KEY });
-    const nodeBT = _.find(nodeList, { defId: this.device.BRINE_TEMPERATURE.KEY });
-    const nodeMRT = _.find(nodeList, { defId: this.device.MODULE_REAR_TEMPERATURE.KEY });
+    // const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
+    // // 염도 센서 값
+    // const nodeS = _.find(nodeList, { defId: this.device.SALINITY.KEY });
+    // const nodeBT = _.find(nodeList, { defId: this.device.BRINE_TEMPERATURE.KEY });
+    // const nodeMRT = _.find(nodeList, { defId: this.device.MODULE_REAR_TEMPERATURE.KEY });
 
-    let tempData;
-    // 수위 : 200 - 현재 수위
-    tempData = _.isEmpty(nodeWL) ? 200 : _.round(_.subtract(20, nodeWL.data) * 10);
-    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
+    // let tempData;
+    // // 수위 : 200 - 현재 수위
+    // tempData = _.isEmpty(nodeWL) ? 200 : _.round(_.subtract(20, nodeWL.data) * 10);
+    // const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
 
-    tempData = _.isEmpty(nodeS) ? 0 : _.round(nodeS.data * 1);
-    const bufDataS = this.protocolConverter.convertNumToBuf(tempData, 4);
+    // tempData = _.isEmpty(nodeS) ? 0 : _.round(nodeS.data * 1);
+    // const bufDataS = this.protocolConverter.convertNumToBuf(tempData, 4);
 
-    // 모듈 염수 온도
-    tempData = _.isEmpty(nodeBT) ? 0 : _.round(nodeBT.data, 1);
-    const bufDataBT = this.protocolConverter.convertNumToBuf(tempData, 6);
+    // // 모듈 염수 온도
+    // tempData = _.isEmpty(nodeBT) ? 0 : _.round(nodeBT.data, 1);
+    // const bufDataBT = this.protocolConverter.convertNumToBuf(tempData, 6);
 
-    // 모듈 후면 온도
-    tempData = _.isEmpty(nodeMRT) ? 0 : _.round(nodeMRT.data, 1);
-    const bufDataMRT = this.protocolConverter.convertNumToBuf(tempData, 6);
+    // // 모듈 후면 온도
+    // tempData = _.isEmpty(nodeMRT) ? 0 : _.round(nodeMRT.data, 1);
+    // const bufDataMRT = this.protocolConverter.convertNumToBuf(tempData, 6);
 
     return Buffer.concat([
       bufHeader,
       Buffer.from(deviceHex),
-      bufDataWL,
-      bufDataS,
-      bufDataBT,
-      bufDataMRT,
+      // bufDataWL,
+      // bufDataS,
+      // bufDataBT,
+      // bufDataMRT,
       this.bufDataBattery,
     ]);
   }
@@ -363,10 +363,10 @@ class EchoServer extends Model {
     let deviceHex;
     switch (nodeInfo.data) {
       case DEVICE.STATUS.OFF:
-        deviceHex = [0x30, 0x30];
+        deviceHex = [0x30, 0x31];
         break;
       case DEVICE.STATUS.ON:
-        deviceHex = [0x30, 0x31];
+        deviceHex = [0x30, 0x32];
         break;
       default:
         break;
