@@ -24,7 +24,6 @@ class EchoServer extends Model {
 
     // 없다면 신규로 생성
     if (_.isEmpty(foundInstance)) {
-      BU.CLI('신규');
       instanceList.push({ id: deviceId, instance: this });
     } else {
       return foundInstance.instance;

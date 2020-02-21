@@ -131,7 +131,7 @@ class EchoServer extends Model {
       // 현재 상태가 열려있는 상태라면
       if (nodeInfo.data === DEVICE.STATUS.OPEN) {
         // 닫는 상태로 변경
-        nodeInfo.data = DEVICE.STATUS.CLOSING;
+        // nodeInfo.data = DEVICE.STATUS.CLOSING;
         setTimeout(() => {
           nodeInfo.data = DEVICE.STATUS.CLOSE;
         }, this.normalDeviceOperTime);
@@ -140,7 +140,7 @@ class EchoServer extends Model {
       // 현재 상태가 닫혀있다면
       if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
         // 여는 상태로 변경
-        nodeInfo.data = DEVICE.STATUS.OPENING;
+        // nodeInfo.data = DEVICE.STATUS.OPENING;
         // BU.CLI(nodeInfo);
         setTimeout(() => {
           nodeInfo.data = DEVICE.STATUS.OPEN;
@@ -472,7 +472,7 @@ class EchoServer extends Model {
    * @param {xbeeApi_0x10} xbeeApi0x10
    */
   onData(xbeeApi0x10) {
-    // BU.CLI(xbeeApi0x10);
+    BU.CLI(xbeeApi0x10);
     const strData = xbeeApi0x10.toString();
     if (BU.IsJsonString(strData)) {
       const jsonData = JSON.parse(strData);
@@ -486,7 +486,7 @@ class EchoServer extends Model {
 
     // this.reload();
     xbeeApi0x10 = this.peelFrameMsg(xbeeApi0x10);
-    // BU.CLI(this.nodeList)
+    BU.CLI(xbeeApi0x10);
 
     const foundDataLogger = this.findDataLogger(xbeeApi0x10.destination64);
 
@@ -496,7 +496,7 @@ class EchoServer extends Model {
 
     // BU.CLI(foundDataLogger.nodeList)
     const foundNodeList = foundDataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
-    // BU.CLI(foundNodeList);
+    BU.CLI(foundNodeList);
 
     let findDevice;
     let dataLoggerData;
