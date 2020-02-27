@@ -19,8 +19,8 @@ class EchoServer extends Model {
 
     this.bufDataBattery = Buffer.from([0x31, 0x30, 0x2e, 0x32]);
 
-    this.normalDeviceOperTime = 30;
-    this.pumpDeviceOperTime = 50;
+    this.normalDeviceOperTime = 3;
+    this.pumpDeviceOperTime = 5;
   }
 
   /**
@@ -472,7 +472,7 @@ class EchoServer extends Model {
    * @param {xbeeApi_0x10} xbeeApi0x10
    */
   onData(xbeeApi0x10) {
-    BU.CLI(xbeeApi0x10);
+    // BU.CLI(xbeeApi0x10);
     const strData = xbeeApi0x10.toString();
     if (BU.IsJsonString(strData)) {
       const jsonData = JSON.parse(strData);
@@ -486,7 +486,7 @@ class EchoServer extends Model {
 
     // this.reload();
     xbeeApi0x10 = this.peelFrameMsg(xbeeApi0x10);
-    BU.CLI(xbeeApi0x10);
+    // BU.CLI(xbeeApi0x10);
 
     const foundDataLogger = this.findDataLogger(xbeeApi0x10.destination64);
 
@@ -496,7 +496,7 @@ class EchoServer extends Model {
 
     // BU.CLI(foundDataLogger.nodeList)
     const foundNodeList = foundDataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
-    BU.CLI(foundNodeList);
+    // BU.CLI(foundNodeList);
 
     let findDevice;
     let dataLoggerData;
