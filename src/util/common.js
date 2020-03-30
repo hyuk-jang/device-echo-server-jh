@@ -109,6 +109,7 @@ module.exports = {
             defName: nodeDefInfo.target_name,
             isSensor: nodeClassInfo.is_sensor,
             targetCode: nodeInfo.target_code,
+            dlIdx: nodeInfo.data_logger_index || 0,
             nodeId,
             data: null,
           };
@@ -165,6 +166,7 @@ module.exports = {
  * @property {number} isSensor
  * @property {string} targetCode
  * @property {string} nodeId
+ * @property {number} dlIdx
  * @property {*} data
  */
 

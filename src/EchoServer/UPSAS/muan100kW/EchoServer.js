@@ -20,7 +20,7 @@ class EchoServer extends Model {
     this.bufDataBattery = Buffer.from([0x31, 0x30, 0x2e, 0x32]);
 
     this.normalDeviceOperTime = 30;
-    this.pumpDeviceOperTime = 50;
+    this.pumpValveOperTime = 0;
   }
 
   /**
@@ -130,22 +130,18 @@ class EchoServer extends Model {
     if (cmd === CLOSE) {
       // 현재 상태가 열려있는 상태라면
       if (nodeInfo.data === DEVICE.STATUS.OPEN) {
-        // 닫는 상태로 변경
-        nodeInfo.data = DEVICE.STATUS.CLOSING;
         setTimeout(() => {
           nodeInfo.data = DEVICE.STATUS.CLOSE;
-        }, this.normalDeviceOperTime);
+        }, this.pumpValveOperTime);
       }
     } else if (cmd === OPEN) {
       // 현재 상태가 닫혀있다면
       if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
-        // 여는 상태로 변경
-        nodeInfo.data = DEVICE.STATUS.OPENING;
         // BU.CLI(nodeInfo);
         setTimeout(() => {
           nodeInfo.data = DEVICE.STATUS.OPEN;
           // BU.CLI(nodeInfo);
-        }, this.normalDeviceOperTime);
+        }, this.pumpValveOperTime);
       }
     }
   }
@@ -168,7 +164,7 @@ class EchoServer extends Model {
       // 닫는 상태로 변경
       setTimeout(() => {
         nodeInfo.data = DEVICE.STATUS.OFF;
-      }, this.pumpDeviceOperTime);
+      }, this.pumpValveOperTime);
       // }
     } else if (cmd === ON) {
       // 현재 상태가 닫혀있다면
@@ -176,7 +172,7 @@ class EchoServer extends Model {
       // 여는 상태로 변경
       setTimeout(() => {
         nodeInfo.data = DEVICE.STATUS.ON;
-      }, this.pumpDeviceOperTime);
+      }, this.pumpValveOperTime);
       // }
     }
   }
@@ -244,20 +240,11 @@ class EchoServer extends Model {
     const DEVICE = this.device.VALVE;
     let deviceHex;
     switch (nodeInfo.data) {
-      case DEVICE.STATUS.UNDEF:
+      case DEVICE.STATUS.CLOSE:
         deviceHex = [0x30, 0x30];
         break;
-      case DEVICE.STATUS.CLOSE:
-        deviceHex = [0x30, 0x31];
-        break;
       case DEVICE.STATUS.OPEN:
-        deviceHex = [0x30, 0x32];
-        break;
-      case DEVICE.STATUS.OPENING:
-        deviceHex = [0x30, 0x34];
-        break;
-      case DEVICE.STATUS.CLOSING:
-        deviceHex = [0x30, 0x35];
+        deviceHex = [0x30, 0x31];
         break;
       default:
         break;
@@ -298,58 +285,27 @@ class EchoServer extends Model {
     // BU.CLI('getValve', nodeInfo)
     const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x32]);
     const DEVICE = this.device.VALVE;
-    let deviceHex;
-    switch (nodeInfo.data) {
-      case DEVICE.STATUS.UNDEF:
-        deviceHex = [0x30, 0x30];
-        break;
-      case DEVICE.STATUS.CLOSE:
-        deviceHex = [0x30, 0x31];
-        break;
-      case DEVICE.STATUS.OPEN:
-        deviceHex = [0x30, 0x32];
-        break;
-      case DEVICE.STATUS.OPENING:
-        deviceHex = [0x30, 0x34];
-        break;
-      case DEVICE.STATUS.CLOSING:
-        deviceHex = [0x30, 0x35];
-        break;
-      default:
-        break;
-    }
 
-    const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
-    // 염도 센서 값
-    const nodeS = _.find(nodeList, { defId: this.device.SALINITY.KEY });
-    const nodeBT = _.find(nodeList, { defId: this.device.BRINE_TEMPERATURE.KEY });
-    const nodeMRT = _.find(nodeList, { defId: this.device.MODULE_REAR_TEMPERATURE.KEY });
+    const gateValveBufList = this.nodeList
+      .filter(node => node.defId === 'gateValve')
+      .sort(node => node.dlIdx)
+      .reduce((results, node) => {
+        let deviceHex;
+        switch (node.data) {
+          case DEVICE.STATUS.CLOSE:
+            deviceHex = [0x30];
+            break;
+          case DEVICE.STATUS.OPEN:
+            deviceHex = [0x31];
+            break;
+          default:
+            deviceHex = [0x31];
+            break;
+        }
+        return results.push(deviceHex);
+      }, []);
 
-    let tempData;
-    // 수위 : 200 - 현재 수위
-    tempData = _.isEmpty(nodeWL) ? 200 : _.round(_.subtract(20, nodeWL.data) * 10);
-    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
-
-    tempData = _.isEmpty(nodeS) ? 0 : _.round(nodeS.data * 1);
-    const bufDataS = this.protocolConverter.convertNumToBuf(tempData, 4);
-
-    // 모듈 염수 온도
-    tempData = _.isEmpty(nodeBT) ? 0 : _.round(nodeBT.data, 1);
-    const bufDataBT = this.protocolConverter.convertNumToBuf(tempData, 6);
-
-    // 모듈 후면 온도
-    tempData = _.isEmpty(nodeMRT) ? 0 : _.round(nodeMRT.data, 1);
-    const bufDataMRT = this.protocolConverter.convertNumToBuf(tempData, 6);
-
-    return Buffer.concat([
-      bufHeader,
-      Buffer.from(deviceHex),
-      bufDataWL,
-      bufDataS,
-      bufDataBT,
-      bufDataMRT,
-      this.bufDataBattery,
-    ]);
+    return Buffer.concat([bufHeader, gateValveBufList, this.bufDataBattery]);
   }
 
   /**
@@ -504,22 +460,26 @@ class EchoServer extends Model {
     switch (foundDataLogger.prefix) {
       case 'D_G':
         findDevice = _.find(foundNodeList, { defId: this.device.WATER_DOOR.KEY });
+        // 무슨 명령인지 모르니 일단 제어 요청
         this.controlWaterDoor(xbeeApi0x10.data, findDevice);
         dataLoggerData = this.getWaterDoor(findDevice, foundNodeList);
         break;
       case 'D_V':
         findDevice = _.find(foundNodeList, { defId: this.device.VALVE.KEY });
+        // 무슨 명령인지 모르니 일단 제어 요청
         this.controlValve(xbeeApi0x10.data, findDevice);
         dataLoggerData = this.getValve(findDevice, foundNodeList);
         break;
       case 'D_GV':
         findDevice = _.find(foundNodeList, { defId: this.device.GATE_VALVE.KEY });
-        this.controlValve(xbeeApi0x10.data, findDevice);
+        // 무슨 명령인지 모르니 일단 제어 요청
+        this.controlValve(xbeeApi0x10.data, foundDataLogger);
         dataLoggerData = this.getGateValve(findDevice, foundNodeList);
         break;
       case 'D_P':
         findDevice = _.find(foundNodeList, { defId: this.device.PUMP.KEY });
-        this.controlPump(xbeeApi0x10.data, findDevice);
+        // 무슨 명령인지 모르니 일단 제어 요청
+        this.controlPump(xbeeApi0x10.data, foundDataLogger);
         dataLoggerData = this.getPump(findDevice, foundNodeList);
         break;
       case 'D_EP':
