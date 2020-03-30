@@ -533,23 +533,3 @@ if (require !== undefined && require.main === module) {
   });
   BU.CLI(msg.toString());
 }
-
-/**
- * @typedef {Object} detailNodeInfo
- * @property {string} classId
- * @property {string} className
- * @property {string} defId
- * @property {string} defName
- * @property {number} isSensor
- * @property {string} nodeId
- * @property {*} data
- */
-
-/**
- * @typedef {Object} detailDataloggerIInfo
- * @property {string} className
- * @property {string} prefix
- * @property {string} dataLoggerId
- * @property {string} serialNumber
- * @property {string[]} nodeList
- */

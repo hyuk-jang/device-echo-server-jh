@@ -194,39 +194,3 @@ if (require !== undefined && require.main === module) {
 
   // echoServer.reload();
 }
-
-/**
- * @typedef {Object} detailNodeInfo
- * @property {string} classId
- * @property {string} className
- * @property {string} defId
- * @property {string} defName
- * @property {number} isSensor
- * @property {string} nodeId
- * @property {*} data
- */
-
-/**
- * @typedef {Object} detailDataloggerIInfo
- * @property {string} className
- * @property {string} prefix
- * @property {string} dataLoggerId
- * @property {string} serialNumber
- * @property {string[]} nodeList
- */
-
-// const DEVICE = this.model.device;
-// const pickIndex = [
-//   DEVICE.LUX.KEY,
-//   DEVICE.SOLAR.KEY,
-//   DEVICE.SOIL_TEMPERATURE.KEY,
-//   DEVICE.SOIL_REH.KEY,
-//   DEVICE.CO2.KEY,
-//   DEVICE.SOIL_WATER_VALUE.KEY,
-//   DEVICE.OUTSIDE_AIR_TEMPERATURE.KEY,
-//   DEVICE.OUTSIDE_AIR_REH.KEY,
-//   DEVICE.WIND_SPEED.KEY,
-//   DEVICE.WIND_DIRECTRION.KEY,
-//   DEVICE.R1.KEY,
-//   DEVICE.IS_RAIN.KEY,
-// ];

@@ -122,14 +122,14 @@ module.exports = {
   },
   /**
    * @param {mDeviceMap} deviceMap
-   * @return {detailDataloggerIInfo[]}
+   * @return {detailDataloggerInfo[]}
    */
   makeDataLoggerList: (deviceMap = {}) => {
     const { setInfo = {}, relationInfo: { placeRelationList = [] } = {} } = deviceMap;
 
     const { dataLoggerStructureList = [], nodeStructureList = [], repeatNodeList = [] } = setInfo;
 
-    /** @type {detailDataloggerIInfo[]} */
+    /** @type {detailDataloggerInfo[]} */
     const returnList = [];
     // 데이터 로거 대분류 구조 순회
     dataLoggerStructureList.forEach(dataLoggerClassInfo => {
@@ -143,38 +143,16 @@ module.exports = {
           dataLoggerId += `_${dataLoggerDeviceInfo.target_code}`;
         }
 
-        const detailDataloggerIInfo = {
+        const detailDataloggerInfo = {
           className: dataLoggerClassInfo.target_name,
           prefix: dataLoggerClassInfo.target_prefix,
           dataLoggerId,
           serialNumber: dataLoggerDeviceInfo.serial_number,
           nodeList: dataLoggerDeviceInfo.nodeList,
         };
-        returnList.push(detailDataloggerIInfo);
+        returnList.push(detailDataloggerInfo);
       });
     });
     return returnList;
   },
 };
-
-/**
- * @typedef {Object} detailNodeInfo
- * @property {string} classId
- * @property {string} className
- * @property {string} defId
- * @property {string} defName
- * @property {number} isSensor
- * @property {string} targetCode
- * @property {string} nodeId
- * @property {number} dlIdx
- * @property {*} data
- */
-
-/**
- * @typedef {Object} detailDataloggerIInfo
- * @property {string} className
- * @property {string} prefix
- * @property {string} dataLoggerId
- * @property {string} serialNumber
- * @property {string[]} nodeList
- */
