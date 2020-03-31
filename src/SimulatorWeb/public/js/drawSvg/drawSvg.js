@@ -377,7 +377,7 @@ function executeCommand(socket, controlType, nodeId) {
       rank: 2,
     },
   };
-  console.log(requestMsg);
+  // console.log(requestMsg);
   socket.emit('executeCommand', requestMsg);
 }
 

@@ -75,7 +75,7 @@
         $(`#canvas`).empty(); // svg가 그려진 공간 초기화
         drawSvgBasePlace('canvas', isChecked); // 초기화 후 다시 그리기 (체크 상태 포함)
 
-        bindingClickNodeEvent('', selectedModeVal); // 장치, 센서 클릭 이벤트 다시 바인딩
+        bindingClickNodeEvent(socket, selectedModeVal); // 장치, 센서 클릭 이벤트 다시 바인딩
 
         reDrawNodeData(isChecked);
         // showNodeData('P_002', 'open', isChecked); // 새롭게 그려진 svg map 다시 데이터 뿌리기 (체크 상태 포함)
@@ -144,6 +144,7 @@
     <script>
       // 시작시 개발 모드로 세팅
       $('#modeSelect')
+        // .val('control')
         .val('develop')
         .trigger('change');
     </script>

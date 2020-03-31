@@ -44,7 +44,7 @@ module.exports = {
   echoConfigList: [
     {
       siteId: 'upsas100kW',
-      siteName: '무안 100kW 실증부지',
+      siteName: '무안 100kW 실증부지 염전',
       serverPort: 9001,
       parserInfo: {
         parser: 'delimiterParser',
@@ -63,7 +63,7 @@ module.exports = {
     },
     {
       siteId: 'upsas100kW',
-      siteName: '무안 100kW 실증부지',
+      siteName: '무안 100kW 실증부지 인버터',
       serverPort: 9002,
       echoServerList: [
         {
@@ -82,7 +82,7 @@ module.exports = {
     },
     {
       siteId: 'upsas100kW',
-      siteName: '무안 100kW 실증부지',
+      siteName: '무안 100kW 실증부지 접속반',
       serverPort: 9003,
       parserInfo: {
         parser: 'delimiterParser',

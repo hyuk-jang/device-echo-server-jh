@@ -1,5 +1,5 @@
-<script src="/socket.io/socket.io.js" defer></script>
-<script defer>
+<script src="/socket.io/socket.io.js"></script>
+<script>
   var map = <%- JSON.stringify(map) %>;
 
   // 초기 페이지에 접속하면 자동으로 데이터를 갱신하기 위함
@@ -7,7 +7,7 @@
   // var $MS_node_table = $('#MS_node_list');
   var currNodeList = [];
   var socket;
-  $(function () {
+  // $(function () {
     socket = io();
     bindingClickNodeEvent(socket)
 
@@ -32,7 +32,7 @@
     //   document.getElementById("CMD_order_date").innerText = new Date().toLocaleString();
     // });
 
-  });
+  // });
 
   // 노드 데이터 변경
   function changeNodeData(nodeId, nodeData) {

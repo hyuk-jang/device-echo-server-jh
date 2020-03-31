@@ -89,7 +89,7 @@ class SimulatorApp {
       socket.on('changeNodeData', (nodeId, nodeData) => {
         const foundNode = _.find(this.nodeList, { nodeId });
         if (foundNode) {
-          foundNode.data = nodeData;
+          foundNode.data = foundNode.isSensor === 1 ? nodeData : _.toUpper(nodeData);
           this.emitNodeList();
         }
       });

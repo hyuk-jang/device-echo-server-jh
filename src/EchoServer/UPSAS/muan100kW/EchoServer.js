@@ -152,66 +152,48 @@ class EchoServer extends Model {
    * @param {detailDataloggerInfo} dlInfo
    */
   controlGateValve(cmd, dlInfo) {
-    BU.CLI(cmd, dlInfo);
-    const DEVICE = this.device.VALVE;
-    BU.CLI(DEVICE);
-    const { CLOSE, OPEN } = DEVICE.COMMAND;
+    const {
+      STATUS: { OPEN, CLOSE },
+    } = this.device.VALVE;
 
     const realCmd = cmd.slice(0, 4);
-    BU.CLI(realCmd);
+
     const nodeIndex = Number(cmd.slice(4, 6));
 
-    const nodeInfo = this.nodeList.find(node => node.nodeId === dlInfo.nodeList[nodeIndex]);
+    const nodeInfo = this.nodeList.find(node => node.nodeId === dlInfo.nodeList[nodeIndex - 1]);
 
     // 요청 명령이 닫는 명령이라면
-    if (realCmd === CLOSE) {
-      // 현재 상태가 열려있는 상태라면
-      if (nodeInfo.data === DEVICE.STATUS.OPEN) {
-        setTimeout(() => {
-          nodeInfo.data = DEVICE.STATUS.CLOSE;
-        }, this.pumpValveOperTime);
-      }
-    } else if (realCmd === OPEN) {
-      BU.CLI('문을 여시오');
-      // 현재 상태가 닫혀있다면
-      if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
-        // BU.CLI(nodeInfo);
-        setTimeout(() => {
-          nodeInfo.data = DEVICE.STATUS.OPEN;
-          // BU.CLI(nodeInfo);
-        }, this.pumpValveOperTime);
-      }
+    if (realCmd === '@ctc') {
+      nodeInfo.data = CLOSE;
+    } else if (realCmd === '@cto') {
+      nodeInfo.data = OPEN;
     }
   }
 
   /**
    * 펌프 제어 요청이 들어왔을 경우
    * @param {string} cmd
-   * @param {detailNodeInfo} nodeInfo
+   * @param {detailDataloggerInfo} dlInfo
    */
-  controlPump(cmd, nodeInfo) {
-    // BU.CLI('controlPump', cmd)
-    const DEVICE = this.device.PUMP;
-    const OFF = _.get(_.head(DEVICE.COMMAND.OFF), 'cmd');
-    const ON = _.get(_.head(DEVICE.COMMAND.ON), 'cmd');
+  controlPump(cmd, dlInfo) {
+    const {
+      STATUS: { OFF, ON },
+    } = this.device.PUMP;
+
+    // BU.CLIN(dlInfo);
+    const realCmd = cmd.slice(0, 4);
+
+    const nodeIndex = Number(cmd.slice(4, 6));
+    // BU.CLI(nodeIndex);
+
+    const nodeInfo = this.nodeList.find(node => node.nodeId === dlInfo.nodeList[nodeIndex - 1]);
+    // BU.CLI(nodeInfo);
 
     // 요청 명령이 닫는 명령이라면
-    if (cmd === OFF) {
-      // 현재 상태가 열려있는 상태라면
-      // if (nodeInfo.data === DEVICE.STATUS.ON) {
-      // 닫는 상태로 변경
-      setTimeout(() => {
-        nodeInfo.data = DEVICE.STATUS.OFF;
-      }, this.pumpValveOperTime);
-      // }
-    } else if (cmd === ON) {
-      // 현재 상태가 닫혀있다면
-      // if (nodeInfo.data === DEVICE.STATUS.OFF) {
-      // 여는 상태로 변경
-      setTimeout(() => {
-        nodeInfo.data = DEVICE.STATUS.ON;
-      }, this.pumpValveOperTime);
-      // }
+    if (realCmd === '@ctc') {
+      nodeInfo.data = OFF;
+    } else if (realCmd === '@cto') {
+      nodeInfo.data = ON;
     }
   }
 
@@ -300,11 +282,10 @@ class EchoServer extends Model {
   getGateValve(dlInfo) {
     // BU.CLI('getValve', nodeInfo)
     const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x34]);
-    const DEVICE = this.device.VALVE;
+    const {
+      STATUS: { OPEN, CLOSE },
+    } = this.device.VALVE;
 
-    // BU.CLIN(this.nodeList);
-
-    // BU.CLIN(dlInfo);
     // FIXME: index에 맞는 장치가 정확히 세팅되어 있다고 가정함
     const gateValveBufList = this.nodeList
       .filter(node => dlInfo.nodeList.includes(node.nodeId))
@@ -312,138 +293,109 @@ class EchoServer extends Model {
       .reduce((results, node, index) => {
         let deviceStatus;
         switch (node.data) {
-          case DEVICE.STATUS.CLOSE:
+          case CLOSE:
             deviceStatus = '0';
             break;
-          case DEVICE.STATUS.OPEN:
+          case OPEN:
             deviceStatus = '1';
             break;
           default:
             deviceStatus = '0';
             break;
         }
-        // results[index] = deviceStatus;
+
         results.write(deviceStatus, index);
 
         return results;
       }, Buffer.alloc(16, '0'));
 
-    BU.CLI(gateValveBufList);
     return Buffer.concat([bufHeader, gateValveBufList, this.bufDataBattery]);
   }
 
   /**
-   * @param {detailNodeInfo} nodeInfo
-   * @param {detailNodeInfo[]} nodeList
+   * @param {detailDataloggerInfo} dlInfo
    */
-  getPump(nodeInfo, nodeList) {
+  getPump(dlInfo) {
     // BU.CLI('getValve', nodeInfo)
-    const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x33]);
-    const DEVICE = this.device.PUMP;
-    let deviceHex;
-    switch (nodeInfo.data) {
-      case DEVICE.STATUS.OFF:
-        deviceHex = [0x30, 0x30];
-        break;
-      case DEVICE.STATUS.ON:
-        deviceHex = [0x30, 0x31];
-        break;
-      default:
-        break;
-    }
-
-    return Buffer.concat([bufHeader, Buffer.from(deviceHex), this.bufDataBattery]);
-  }
-
-  /**
-   * @param {detailNodeInfo} nodeInfo
-   * @param {detailNodeInfo[]} nodeList
-   */
-  getEarthPV(nodeInfo, nodeList) {
-    // BU.CLI('getEarthPV', nodeList);
     const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x35]);
-    const deviceHex = [0x30, 0x30];
+    const {
+      STATUS: { OFF, ON },
+    } = this.device.PUMP;
 
-    const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
-    const nodeMRTList = _.filter(nodeList, { defId: this.device.MODULE_REAR_TEMPERATURE.KEY });
+    // FIXME: index에 맞는 장치가 정확히 세팅되어 있다고 가정함
+    const pumpBufList = this.nodeList
+      .filter(node => dlInfo.nodeList.includes(node.nodeId))
+      .sort((prevNode, nextNode) => prevNode.dlIdx - nextNode.dlIdx)
+      .reduce((results, node, index) => {
+        let deviceStatus;
+        switch (node.data) {
+          case OFF:
+            deviceStatus = '0';
+            break;
+          case ON:
+            deviceStatus = '1';
+            break;
+          default:
+            deviceStatus = '0';
+            break;
+        }
 
-    let tempData;
+        results.write(deviceStatus, index);
 
-    // 수위 : 200 - 현재 수위
-    tempData = _.isEmpty(nodeWL) ? 200 : _.round(_.subtract(20, nodeWL.data) * 10);
-    const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
+        return results;
+      }, Buffer.alloc(16, '0'));
 
-    // 모듈 후면 온도
-    tempData = _.isEmpty(_.nth(nodeMRTList, 0)) ? 0 : _.round(_.nth(nodeMRTList, 0).data, 1);
-    const bufDataMRT001 = this.protocolConverter.convertNumToBuf(tempData, 6);
-    tempData = _.isEmpty(_.nth(nodeMRTList, 1)) ? 0 : _.round(_.nth(nodeMRTList, 1).data, 1);
-    const bufDataMRT002 = this.protocolConverter.convertNumToBuf(tempData, 6);
-
-    return Buffer.concat([
-      bufHeader,
-      Buffer.from(deviceHex),
-      bufDataWL,
-      bufDataMRT001,
-      bufDataMRT002,
-      this.bufDataBattery,
-    ]);
+    return Buffer.concat([bufHeader, pumpBufList, this.bufDataBattery]);
   }
 
   /**
-   * @param {detailNodeInfo} nodeInfo
    * @param {detailNodeInfo[]} nodeList
    */
-  getGroundRelay(nodeInfo, nodeList) {
-    // BU.CLI('getGroundRelay', nodeList);
-    const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x36]);
-
-    const cgrList = ['00', '01', '10', '11'];
-
-    return Buffer.concat([
-      bufHeader,
-      Buffer.from([30]),
-      Buffer.from(cgrList[_.random(0, cgrList.length - 1)]),
-      this.bufDataBattery,
-    ]);
-  }
-
-  /**
-   * @param {detailNodeInfo} nodeInfo
-   * @param {detailNodeInfo[]} nodeList
-   */
-  getSensor(nodeInfo, nodeList) {
-    const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x30, 0x37]);
+  getSensor(nodeList) {
+    const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x31, 0x31]);
 
     // 염도 센서 값
     const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
     const nodeS = _.find(nodeList, { defId: this.device.SALINITY.KEY });
-    const nodeBT = _.find(nodeList, { defId: this.device.BRINE_TEMPERATURE });
-    const nodeMRT = _.find(nodeList, { defId: this.device.MODULE_REAR_TEMPERATURE });
+    const nodeBT = _.find(nodeList, { defId: this.device.BRINE_TEMPERATURE.KEY });
+    const nodeMRT = _.find(nodeList, { defId: this.device.MODULE_REAR_TEMPERATURE.KEY });
 
     let tempData;
-    // 수위 : 200 - 현재 수위
-    tempData = _.isEmpty(nodeWL) ? 200 : _.round(_.subtract(20, nodeWL.data) * 10);
+    tempData = _.isEmpty(nodeWL) ? 0 : _.round(nodeWL.data, 1);
     const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 4);
 
-    tempData = _.isEmpty(nodeS) ? 0 : _.round(nodeS.data * 1);
+    tempData = _.isEmpty(nodeS) ? 0 : _.round(nodeS.data, 1);
     const bufDataS = this.protocolConverter.convertNumToBuf(tempData, 4);
 
     // 모듈 염수 온도
-    tempData = _.isEmpty(nodeBT) ? 0 : _.round(nodeBT.data, 1);
-    const bufDataBT = this.protocolConverter.convertNumToBuf(tempData, 6);
+    const bufDataBT = _.isEmpty(nodeBT)
+      ? '+0.000'
+      : _.chain(nodeBT.data)
+          .round(1)
+          .thru(num => {
+            const mathSign = num >= 0 ? '+' : '-';
+            return Buffer.from(mathSign + _.padStart(num, 5, '0'));
+          })
+          .value();
 
     // 모듈 후면 온도
-    tempData = _.isEmpty(nodeMRT) ? 0 : _.round(nodeMRT.data, 1);
-    const bufDataMRT = this.protocolConverter.convertNumToBuf(tempData, 6);
+    const bufDataMRT = _.isEmpty(nodeMRT)
+      ? '+0.000'
+      : _.chain(nodeMRT.data)
+          .round(1)
+          .thru(num => {
+            const mathSign = num >= 0 ? '+' : '-';
+            return Buffer.from(mathSign + _.padStart(num, 5, '0'));
+          })
+          .value();
 
-    // Level: 2, Salinity: 4, Batter: 4
     return Buffer.concat([
       bufHeader,
-      bufDataWL,
+      this.bufDataBattery,
       bufDataS,
+      bufDataWL,
       bufDataBT,
       bufDataMRT,
-      this.bufDataBattery,
     ]);
   }
 
@@ -474,49 +426,35 @@ class EchoServer extends Model {
       return;
     }
 
-    BU.CLIN(dataLoggerInfo);
+    // BU.CLIN(dataLoggerInfo);
 
     // BU.CLI(foundDataLogger.nodeList)
-    const foundNodeList = dataLoggerInfo.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
-    // BU.CLI(foundNodeList);
+    const dlNodeList = dataLoggerInfo.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
+    // BU.CLI(dlNodeList);
 
-    let findDevice;
+    let nodeInfo;
     let dataLoggerData;
     // 찾은 데이터로거 접두사로 판별
     switch (dataLoggerInfo.prefix) {
       case 'D_G':
-        findDevice = _.find(foundNodeList, { defId: this.device.WATER_DOOR.KEY });
+        nodeInfo = _.find(dlNodeList, { defId: this.device.WATER_DOOR.KEY });
         // 무슨 명령인지 모르니 일단 제어 요청
-        this.controlWaterDoor(xbeeApi0x10.data, findDevice);
-        dataLoggerData = this.getWaterDoor(findDevice, foundNodeList);
-        break;
-      case 'D_V':
-        findDevice = _.find(foundNodeList, { defId: this.device.VALVE.KEY });
-        // 무슨 명령인지 모르니 일단 제어 요청
-        this.controlValve(xbeeApi0x10.data, findDevice);
-        dataLoggerData = this.getValve(findDevice, foundNodeList);
+        this.controlWaterDoor(xbeeApi0x10.data, nodeInfo);
+        dataLoggerData = this.getWaterDoor(nodeInfo, dlNodeList);
         break;
       case 'D_GV':
-        BU.CLI('미ㅏㅓㅇ리ㅓㅁㄴ아ㅣㄹ');
-        findDevice = _.find(foundNodeList, { defId: this.device.GATE_VALVE.KEY });
         // 무슨 명령인지 모르니 일단 제어 요청
         this.controlGateValve(xbeeApi0x10.data, dataLoggerInfo);
         dataLoggerData = this.getGateValve(dataLoggerInfo);
         break;
       case 'D_P':
-        findDevice = _.find(foundNodeList, { defId: this.device.PUMP.KEY });
+        nodeInfo = _.find(dlNodeList, { defId: this.device.PUMP.KEY });
         // 무슨 명령인지 모르니 일단 제어 요청
         this.controlPump(xbeeApi0x10.data, dataLoggerInfo);
         dataLoggerData = this.getPump(dataLoggerInfo);
         break;
-      case 'D_EP':
-        dataLoggerData = this.getEarthPV(findDevice, foundNodeList);
-        break;
-      case 'D_GR':
-        dataLoggerData = this.getGroundRelay(findDevice, foundNodeList);
-        break;
       case 'D_S':
-        dataLoggerData = this.getSensor(findDevice, foundNodeList);
+        dataLoggerData = this.getSensor(dlNodeList);
         break;
       default:
         break;
@@ -557,7 +495,7 @@ if (require !== undefined && require.main === module) {
 
   echoServer.reload();
   // 수문
-  let msg = echoServer.onData({
+  const msg = echoServer.onData({
     destination64: '0013A20040E58A22',
     data: '@cto',
   });
@@ -567,7 +505,20 @@ if (require !== undefined && require.main === module) {
     destination64: '0013A2004190EC8A',
     data: '@cto04',
   });
-  BU.CLI(echoServer.msg);
+  // BU.CLI(echoServer.msg);
+  // 펌프
+  echoServer.msg = echoServer.onData({
+    destination64: '0013A2004190EC6B',
+    data: '@cto07',
+  });
+  // BU.CLI(echoServer.msg);
+
+  // 센서
+  echoServer.msg = echoServer.onData({
+    destination64: '0013A20040E589FC',
+    data: '@sts',
+  });
+  BU.CLI(echoServer.msg.data.toString());
 
   // // 게이트형 밸브
   // msg = echoServer.onData({
