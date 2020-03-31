@@ -81,67 +81,49 @@ class EchoServer extends Model {
 
   /**
    * 수문 제어 요청이 들어왔을 경우
+   * @param {detailNodeInfo} nodeInfo
+   * @param {*} newData
+   */
+  controlDevice(nodeInfo, newData) {
+    nodeInfo.data = newData;
+    this.emitReload();
+  }
+
+  /**
+   * 수문 제어 요청이 들어왔을 경우
    * @param {string} cmd
    * @param {detailNodeInfo} nodeInfo
    */
   controlWaterDoor(cmd, nodeInfo) {
     // BU.CLI('controlWaterDoor');
     const DEVICE = this.device.WATER_DOOR;
-    const CLOSE = _.get(_.head(DEVICE.COMMAND.CLOSE), 'cmd');
-    const OPEN = _.get(_.head(DEVICE.COMMAND.OPEN), 'cmd');
+    const cmdClose = _.get(_.head(DEVICE.COMMAND.CLOSE), 'cmd');
+    const cmdOpen = _.get(_.head(DEVICE.COMMAND.OPEN), 'cmd');
+    const {
+      STATUS: { CLOSE, CLOSING, OPEN, OPENING },
+    } = this.device.WATER_DOOR;
 
     // 요청 명령이 닫는 명령이라면
-    if (cmd === CLOSE) {
+    if (cmd === cmdClose) {
       // 현재 상태가 열려있는 상태라면
-      if (nodeInfo.data === DEVICE.STATUS.OPEN) {
+      if (nodeInfo.data === OPEN) {
         // 닫는 상태로 변경
-        nodeInfo.data = DEVICE.STATUS.CLOSING;
+        this.controlDevice(nodeInfo, CLOSING);
         setTimeout(() => {
-          nodeInfo.data = DEVICE.STATUS.CLOSE;
+          this.controlDevice(nodeInfo, CLOSE);
         }, this.normalDeviceOperTime);
       }
-    } else if (cmd === OPEN) {
+    } else if (cmd === cmdOpen) {
+      // BU.CLI('열어라', nodeInfo);
       // 현재 상태가 닫혀있다면
       if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
         // 여는 상태로 변경
         // BU.CLI('여는 상태로 변경');
-        // BU.CLI(nodeInfo.data);
-        nodeInfo.data = DEVICE.STATUS.OPENING;
+        this.controlDevice(nodeInfo, OPENING);
         setTimeout(() => {
           // BU.CLI('열림');
-          nodeInfo.data = DEVICE.STATUS.OPEN;
+          this.controlDevice(nodeInfo, OPEN);
         }, this.normalDeviceOperTime);
-      }
-    }
-  }
-
-  /**
-   * 밸브 제어 요청이 들어왔을 경우
-   * @param {string} cmd
-   * @param {detailNodeInfo} nodeInfo
-   */
-  controlValve(cmd, nodeInfo) {
-    // BU.CLI(cmd, nodeInfo)
-    const DEVICE = this.device.VALVE;
-    const CLOSE = _.get(_.head(DEVICE.COMMAND.CLOSE), 'cmd');
-    const OPEN = _.get(_.head(DEVICE.COMMAND.OPEN), 'cmd');
-
-    // 요청 명령이 닫는 명령이라면
-    if (cmd === CLOSE) {
-      // 현재 상태가 열려있는 상태라면
-      if (nodeInfo.data === DEVICE.STATUS.OPEN) {
-        setTimeout(() => {
-          nodeInfo.data = DEVICE.STATUS.CLOSE;
-        }, this.pumpValveOperTime);
-      }
-    } else if (cmd === OPEN) {
-      // 현재 상태가 닫혀있다면
-      if (nodeInfo.data === DEVICE.STATUS.CLOSE) {
-        // BU.CLI(nodeInfo);
-        setTimeout(() => {
-          nodeInfo.data = DEVICE.STATUS.OPEN;
-          // BU.CLI(nodeInfo);
-        }, this.pumpValveOperTime);
       }
     }
   }
@@ -158,15 +140,18 @@ class EchoServer extends Model {
 
     const realCmd = cmd.slice(0, 4);
 
-    const nodeIndex = Number(cmd.slice(4, 6));
+    const nodeIndex = Number(cmd.slice(4, 6)) - 1;
 
-    const nodeInfo = this.nodeList.find(node => node.nodeId === dlInfo.nodeList[nodeIndex - 1]);
+    const nodeInfo = this.nodeList
+      .filter(node => dlInfo.nodeList.includes(node.nodeId))
+      .sort((prevNode, nextNode) => prevNode.dlIdx - nextNode.dlIdx)
+      .find(node => node.dlIdx === nodeIndex);
 
     // 요청 명령이 닫는 명령이라면
     if (realCmd === '@ctc') {
-      nodeInfo.data = CLOSE;
+      this.controlDevice(nodeInfo, CLOSE);
     } else if (realCmd === '@cto') {
-      nodeInfo.data = OPEN;
+      this.controlDevice(nodeInfo, OPEN);
     }
   }
 
@@ -183,17 +168,18 @@ class EchoServer extends Model {
     // BU.CLIN(dlInfo);
     const realCmd = cmd.slice(0, 4);
 
-    const nodeIndex = Number(cmd.slice(4, 6));
-    // BU.CLI(nodeIndex);
+    const nodeIndex = Number(cmd.slice(4, 6)) - 1;
 
-    const nodeInfo = this.nodeList.find(node => node.nodeId === dlInfo.nodeList[nodeIndex - 1]);
-    // BU.CLI(nodeInfo);
+    const nodeInfo = this.nodeList
+      .filter(node => dlInfo.nodeList.includes(node.nodeId))
+      .sort((prevNode, nextNode) => prevNode.dlIdx - nextNode.dlIdx)
+      .find(node => node.dlIdx === nodeIndex);
 
     // 요청 명령이 닫는 명령이라면
     if (realCmd === '@ctc') {
-      nodeInfo.data = OFF;
+      this.controlDevice(nodeInfo, OFF);
     } else if (realCmd === '@cto') {
-      nodeInfo.data = ON;
+      this.controlDevice(nodeInfo, ON);
     }
   }
 

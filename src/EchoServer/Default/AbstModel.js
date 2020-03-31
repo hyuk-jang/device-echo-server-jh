@@ -83,12 +83,17 @@ class AbstModel extends EventEmitter {
         }
       });
 
-      this.emit('reload');
+      this.emitReload();
     } catch (error) {
       // BU.CLIN(this);
       BU.error(error.message);
       // BU.debugConsole(20);
     }
+  }
+
+  /** SimulApp의 노드에게 전파 */
+  emitReload() {
+    this.emit('reload');
   }
 
   /**
