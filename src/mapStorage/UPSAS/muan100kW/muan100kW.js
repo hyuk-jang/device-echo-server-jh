@@ -1386,7 +1386,6 @@ var map = {
           {
             serial_number: '0013A20040E58A22',
             target_code: '001',
-            target_name: '일증1 > 바다',
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_002',
             nodeList: ['WD_001'],
@@ -1394,7 +1393,6 @@ var map = {
           {
             serial_number: '0013A2004190ED70',
             target_code: '002',
-            target_name: '일증1 > 일증2-A',
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_002',
             nodeList: ['WD_002'],
@@ -1402,7 +1400,6 @@ var map = {
           {
             serial_number: '0013A20040E58A01',
             target_code: '003',
-            target_name: '일증1 > 일증2-B',
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_002',
             nodeList: ['WD_003'],
@@ -1410,7 +1407,6 @@ var map = {
           {
             serial_number: '0013A20040E58A69',
             target_code: '004',
-            target_name: '일증2 > 바다',
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_002',
             nodeList: ['WD_004'],
@@ -1418,7 +1414,6 @@ var map = {
           {
             serial_number: '0013A20040E58A5B',
             target_code: '005',
-            target_name: '일증2 > 해주1',
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_002',
             nodeList: ['WD_005'],
@@ -1426,7 +1421,6 @@ var map = {
           {
             serial_number: '0013A2004190EDBA',
             target_code: '006',
-            target_name: '일증2 > 해주2',
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_002',
             nodeList: ['WD_006'],
@@ -1434,7 +1428,6 @@ var map = {
           {
             serial_number: '0013A2004190ED8B',
             target_code: '007',
-            target_name: '결정지 > 해주5',
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_002',
             nodeList: ['WD_007'],
@@ -1442,7 +1435,6 @@ var map = {
           {
             serial_number: '0013A2004190F068',
             target_code: '008',
-            target_name: '결정지 > 바다',
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_002',
             nodeList: ['WD_008'],
@@ -1481,6 +1473,7 @@ var map = {
           {
             serial_number: '0013A2004190EC8A',
             target_code: '102',
+            target_name: '나머지 게이트밸브',
             dccId: 'DCC_SSCS_001',
             dpcId: 'DPC_002',
             nodeList: ['GV_101', 'GV_102', 'GV_103', 'GV_104'],
@@ -1803,27 +1796,26 @@ var map = {
               {
                 target_code: '102',
                 target_name: '수증그룹2 > 해주3',
-                data_logger_index: 1,
+                data_logger_index: 2,
                 axisScale: [0, 0],
                 moveScale: [-0.1, -0.2],
               },
               {
                 target_code: '103',
                 target_name: '수증그룹2 > 해주4',
-                data_logger_index: 2,
+                data_logger_index: 3,
                 axisScale: [0, 0],
                 moveScale: [-0.1, -0.2],
               },
               {
                 target_code: '104',
                 target_name: '수증그룹1 <> 수중그룹2',
-                data_logger_index: 3,
+                data_logger_index: 1,
                 axisScale: [1, 0],
                 moveScale: [-9, 0],
               },
               {
                 target_code: '105',
-                target_name: '수증1 > 해주2',
                 data_logger_index: 0,
                 axisScale: [0, 0],
                 moveScale: [-0.1, 0.5],
@@ -2040,15 +2032,15 @@ var map = {
               },
               {
                 target_code: '014',
-                target_name: '수로 염수 > 바다',
-                data_logger_index: 0,
+                target_name: '저수지 > 바다',
+                data_logger_index: 3,
                 axisScale: [1, 0],
                 moveScale: [-2.3, 0],
               },
               {
                 target_code: '015',
-                target_name: '저수지 > 바다',
-                data_logger_index: 3,
+                target_name: '수로 염수 > 바다',
+                data_logger_index: 0,
                 axisScale: [1, 0],
                 moveScale: [0, 0],
               },
@@ -2270,6 +2262,7 @@ var map = {
           {
             target_id: 'powerGridKw',
             target_name: '인버터 현재 전력',
+            is_submit_api: 1,
             target_prefix: 'IVT_PW_G_KW',
             description: 'Power',
             repeatId: 'RE_NODE_IVT',
