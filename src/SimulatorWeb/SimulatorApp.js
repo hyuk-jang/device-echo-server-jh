@@ -10,8 +10,6 @@ const SocketIO = require('socket.io');
 
 const { BU } = require('base-util-jh');
 
-const AbstModel = require('../EchoServer/Default/AbstModel');
-
 class SimulatorApp {
   /**
    *
@@ -20,13 +18,10 @@ class SimulatorApp {
    */
   constructor(appPort, echoServer) {
     this.appPort = appPort;
-    // BU.CLIN(echoServer);
+
     /** @type {mDeviceMap} */
     this.deviceMap = echoServer.deviceMap;
 
-    // BU.CLIN(this.deviceMap);
-
-    // this.backgroudMap = backgroudMap;
     const app = express();
 
     app.use(express.static(path.join(__dirname, '/public')));
@@ -60,7 +55,6 @@ class SimulatorApp {
     this.setSocketIO(this.server);
 
     this.app.get('/', (req, res) => {
-      // BU.CLI(this.deviceMap.setInfo.mainInfo);
       res.render('./index', {
         map: this.deviceMap,
         backgroudMap: this.backgroudMap,
@@ -128,31 +122,27 @@ class SimulatorApp {
    * @param {nodeInfo[]} updatedNodeList
    */
   compareNodeList(updatedNodeList) {
-    try {
-      /** @type {nodeInfo[]} */
-      const renewalList = [];
-      // 수신 받은 노드 리스트를 순회
-      _.forEach(updatedNodeList, updatedNodeInfo => {
-        const currNodeInfo = _.find(this.nodeList, {
-          node_real_id: updatedNodeInfo.node_real_id,
-        });
-
-        // 데이터가 서로 다르다면 갱신된 데이터
-        if (!_.isEqual(updatedNodeInfo.data, currNodeInfo.data)) {
-          currNodeInfo.data = updatedNodeInfo.data;
-          renewalList.push(currNodeInfo);
-        }
+    /** @type {nodeInfo[]} */
+    const renewalList = [];
+    // 수신 받은 노드 리스트를 순회
+    _.forEach(updatedNodeList, updatedNodeInfo => {
+      const currNodeInfo = _.find(this.nodeList, {
+        node_real_id: updatedNodeInfo.node_real_id,
       });
 
-      // 업데이트 내역이 있다면 전송
-      if (renewalList.length) {
-        this.emitNodeList();
+      // 데이터가 서로 다르다면 갱신된 데이터
+      if (!_.isEqual(updatedNodeInfo.data, currNodeInfo.data)) {
+        currNodeInfo.data = updatedNodeInfo.data;
+        renewalList.push(currNodeInfo);
       }
-      // BU.CLI(renewalList);
-      return renewalList;
-    } catch (error) {
-      throw error;
+    });
+
+    // 업데이트 내역이 있다면 전송
+    if (renewalList.length) {
+      this.emitNodeList();
     }
+    // BU.CLI(renewalList);
+    return renewalList;
   }
 }
 module.exports = SimulatorApp;
