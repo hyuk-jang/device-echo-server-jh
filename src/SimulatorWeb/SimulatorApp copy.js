@@ -22,21 +22,16 @@ class SimulatorApp {
     /** @type {mDeviceMap} */
     this.deviceMap = echoServer.deviceMap;
 
-    // BU.CLIN(echoServer.deviceMap);
-
     const app = express();
 
     app.use(express.static(path.join(__dirname, '/public')));
 
-    // app.engine('html', ejs.renderFile);
-    app.set('view engine', 'ejs');
+    app.engine('html', ejs.renderFile);
+    app.set('view engine', 'html');
     app.set('views', path.join(__dirname, '/views'));
 
     this.app = app;
 
-    this.echoServer = echoServer;
-
-    /** @type {detailNodeInfo[]} */
     this.nodeList = echoServer.nodeList;
 
     this.ioSocketList = [];
@@ -82,7 +77,7 @@ class SimulatorApp {
       this.ioSocketList.push(socket);
 
       // NodeList 에서 선택한 key 만을 정제해서 전송
-      socket.emit('updateNode', this.pickNodeList());
+      socket.emit('updateNodeList', this.pickNodeList());
 
       // 사용자 브라우저에서 데이터 갱신 요청이 들어올 경우 처리
       socket.on('changeNodeData', (nodeId, nodeData) => {
@@ -104,26 +99,21 @@ class SimulatorApp {
    * 노드 정보에서 UI에 보여줄 내용만을 반환
    */
   pickNodeList() {
-    // BU.CLIN(this.nodeList);
+    const pickList = ['nodeId', 'defName', 'data'];
+
     return _(this.nodeList)
       .map(nodeInfo => {
         _.isNumber(nodeInfo.data) && _.set(nodeInfo, 'data', _.round(nodeInfo.data, 2));
-        const { nodeId: ni, data: d } = nodeInfo;
-
-        return {
-          ni,
-          d,
-        };
+        return _.pick(nodeInfo, pickList);
       })
-      .sortBy('ni')
+      .sortBy('nodeId')
       .value();
   }
 
   /** 브라우저로 노트 목록 전송 */
   emitNodeList() {
-    // BU.CLI('emitNodeList', this.nodeList[0]);
     this.ioSocketList.forEach(socket => {
-      socket.emit('updateNode', this.pickNodeList());
+      socket.emit('updateNodeList', this.pickNodeList());
     });
   }
 

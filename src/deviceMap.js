@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 module.exports = {
   Inverter: {
     'das_1.3': 'das_1.3',
@@ -12,5 +13,8 @@ module.exports = {
     Boseong: require('./mapStorage/FarmParallel/Boseong.map'),
     Ochang: require('./mapStorage/FarmParallel/Ochang.map'),
     Yeongheung: require('./mapStorage/FarmParallel/Yeongheung.map'),
+  },
+  S2W: {
+    grapeFarm: require('./mapStorage/S2W/grapeFarm.map'),
   },
 };

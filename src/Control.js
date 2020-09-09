@@ -63,7 +63,6 @@ class Control {
               stream = socket.pipe(split(this.parserInfo.option));
               stream.on('data', data => {
                 data += this.parserInfo.option;
-                // BU.CLI(data);
                 this.writeMsg(socket, this.spreadMsg(data));
               });
               break;
@@ -112,34 +111,32 @@ class Control {
    * @param {mDeviceMap=} deviceMap SITE 단위를 사용할 경우 해당 프로토콜에서 사용될 MapImg ID
    */
   attachEchoServer(protocolInfo, deviceMap) {
-    try {
-      // 프로토콜을 배열로 보낼 경우
-      if (_.isArray(protocolInfo)) {
-        return protocolInfo.map(currentItem => {
-          return this.attachEchoServer(currentItem, deviceMap);
-        });
-      }
-      const { mainCategory, subCategory } = protocolInfo;
-      // 프로토콜 정보에 포함되어 있는 Main 및 Sub Category에 따라 에코서버 호출
-      const path = `./EchoServer/${mainCategory}/${subCategory}/EchoServer`;
-      // 동적 모듈 선언
-      const EchoServer = require(path);
-      // 에코서버 객체화
-      const echoServer = new EchoServer(protocolInfo, deviceMap);
-
-      // 동일한 에코서버가 생성되었을 경우에는 추가하지 않음
-      const foundIt = _.find(this.echoServerList, eServer => _.isEqual(echoServer, eServer));
-      _.isEmpty(foundIt) && this.echoServerList.push(echoServer);
-
-      return echoServer;
-    } catch (error) {
-      throw error;
+    // 프로토콜을 배열로 보낼 경우
+    if (_.isArray(protocolInfo)) {
+      return protocolInfo.map(currentItem => {
+        return this.attachEchoServer(currentItem, deviceMap);
+      });
     }
+    const { mainCategory, subCategory } = protocolInfo;
+    // 프로토콜 정보에 포함되어 있는 Main 및 Sub Category에 따라 에코서버 호출
+    const path = `./EchoServer/${mainCategory}/${subCategory}/EchoServer`;
+    // 동적 모듈 선언
+    const EchoServer = require(path);
+    // 에코서버 객체화
+    const echoServer = new EchoServer(protocolInfo, deviceMap);
+    echoServer.init;
+
+    // 동일한 에코서버가 생성되었을 경우에는 추가하지 않음
+    const existEchoServer = _.find(this.echoServerList, eServer => _.isEqual(echoServer, eServer));
+    _.isEmpty(existEchoServer) && this.echoServerList.push(echoServer);
+
+    return echoServer;
   }
 
   /** Site Server Name 을 호출 */
   getServerName() {
-    return `${this.siteId}${this.siteName.length ? `(${this.siteName}) ` : ''}`;
+    const siteName = this.siteName.length ? this.siteName : '';
+    return `${this.siteId} ${siteName}`;
   }
 
   /**
@@ -156,6 +153,7 @@ class Control {
     /** @type {echoDataInfo} */
     let echoDataInfo = {};
 
+    // BU.CLIN(this.echoServerList);
     // Echo Server 중 요청한 명령에 대한 응답은 1개이어야만 함.
     this.echoServerList.forEach(echoServer => {
       // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입

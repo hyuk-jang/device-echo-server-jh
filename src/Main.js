@@ -110,8 +110,9 @@ class Main {
 
         // 맵 정보가 존재할 경우 에코서버와 통신할 시뮬레이터 웹 구동
         if (mapId.length && projectId.length) {
-          // BU.CLI(dMap.setInfo.mainInfo);
-          const simulatorWeb = new SimulatorApp(simulatorPort, echoServer);
+          const simulatorEchoServer = Array.isArray(echoServer) ? echoServer[0] : echoServer;
+
+          const simulatorWeb = new SimulatorApp(simulatorPort, simulatorEchoServer);
           simulatorWeb.init();
         }
       });
@@ -119,10 +120,7 @@ class Main {
       return control;
     });
     // 추가 생성된 서버를 병합 >>> 중복 서버 제거 >>> serverList 정의
-    this.serverList = _(this.serverList)
-      .concat(serverList)
-      .union()
-      .value();
+    this.serverList = _(this.serverList).concat(serverList).union().value();
 
     return this.serverList;
   }

@@ -1,7 +1,4 @@
-const fp = require('./fp');
-const upsas = require('./upsas');
+// eslint-disable-next-line import/no-dynamic-require
+const dynamicModule = require(`./${process.env.P_MAIN_ID}/${process.env.P_SUB_ID}`);
 
-module.exports = {
-  fp,
-  upsas,
-};
+module.exports = dynamicModule;

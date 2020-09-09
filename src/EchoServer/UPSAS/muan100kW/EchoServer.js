@@ -14,7 +14,7 @@ class EchoServer extends Model {
   constructor(protocolInfo, deviceMap) {
     super(protocolInfo, deviceMap);
 
-    this.init();
+    this.initSetNode();
     // BU.CLI(this.nodeList);
 
     this.bufDataBattery = Buffer.from([0x31, 0x30, 0x2e, 0x32]);
@@ -26,7 +26,7 @@ class EchoServer extends Model {
   /**
    * 장치들의 초기값을 설정
    */
-  init() {
+  initSetNode() {
     this.nodeList.forEach(nodeInfo => {
       const numCode = _.toNumber(nodeInfo.targetCode);
 

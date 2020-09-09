@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 
 const { BU } = require('base-util-jh');
@@ -10,15 +11,13 @@ module.exports = Control;
 
 // if __main process
 if (require !== undefined && require.main === module) {
-  require('dotenv').config();
-
   let serverConfig;
 
   if (process.env.NODE_ENV === 'production') {
     const serverPath = path.join(process.cwd(), 'server.config');
     serverConfig = require(serverPath);
   } else {
-    serverConfig = config[process.env.PROJECT_ID];
+    serverConfig = config;
   }
 
   // console.log(process.env);
@@ -27,6 +26,7 @@ if (require !== undefined && require.main === module) {
 
   const main = new Main();
 
+  // console.dir(serverConfig);
   main.init(serverConfig);
 
   // const controlList = main.createServer(config.fp);

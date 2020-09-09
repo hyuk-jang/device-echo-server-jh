@@ -31,25 +31,30 @@ class AbstModel extends EventEmitter {
       return foundInstance.instance;
     }
 
+    this.dpcModel = BaseModel;
+
     // Strategy Pattern
     switch (protocolInfo.mainCategory) {
       case 'UPSAS':
-        this.model = new UPSAS(protocolInfo);
+        this.projectModel = new UPSAS(protocolInfo);
+        this.nodeDefKeyInfo = UPSAS.BASE_KEY;
         break;
       case 'FarmParallel':
-        this.model = new FarmParallel(protocolInfo);
+        this.projectModel = new FarmParallel(protocolInfo);
+        this.nodeDefKeyInfo = FarmParallel.BASE_KEY;
         break;
       case 'Sensor':
-        this.model = new Sensor(protocolInfo);
+        this.projectModel = new Sensor(protocolInfo);
+        this.nodeDefKeyInfo = Sensor.BASE_KEY;
         break;
       default:
-        this.model = {};
+        _.set(this, 'projectModel', new BaseModel[protocolInfo.mainCategory](protocolInfo));
+        _.set(this, 'nodeDefKeyInfo', BaseModel[protocolInfo.mainCategory].BASE_KEY);
         break;
     }
 
     // DPC 모델
-    this.device = this.model.device;
-    this.protocolConverter = this.model.protocolConverter;
+    this.protocolConverter = this.projectModel.protocolConverter;
 
     // 프로토콜 정보 정의
     this.protocolInfo = protocolInfo;
@@ -63,12 +68,19 @@ class AbstModel extends EventEmitter {
     // 장치들의 데이터를 취합하는 데이터 로거
     this.dataLoggerList = commonUtils.makeDataLoggerList(deviceMap);
 
+    this.initModel();
     // BU.CLIN(this);
     this.reload();
     setInterval(() => {
       this.reload();
-    }, 10000);
+    }, 1000 * 10);
   }
+
+  /**
+   * @interface
+   * 장치들의 초기값을 설정
+   */
+  initModel() {}
 
   /** 장치가 수치를 측정하는 센서이고  */
   reload() {
@@ -98,10 +110,16 @@ class AbstModel extends EventEmitter {
 
   /**
    *
-   * @param {string|number} dataloggerSerialNumber
+   * @param {string|number} dlSn Data Logger Serial Number
    */
-  findDataLogger(dataloggerSerialNumber) {
-    return _.find(this.dataLoggerList, { serialNumber: dataloggerSerialNumber });
+  findDataLogger(dlSn) {
+    // BU.CLIN(this.dataLoggerList);
+    // BU.CLI(dlSn);
+    dlSn = Buffer.isBuffer(dlSn) ? dlSn.toString() : dlSn;
+    // return _.find(this.dataLoggerList, dlInfo => {
+    //   return _.isEqual(dlInfo.serialNumber, dlSn);
+    // });
+    return _.find(this.dataLoggerList, { serialNumber: dlSn });
   }
 
   /**
@@ -121,5 +139,11 @@ class AbstModel extends EventEmitter {
   peelFrameMsg(msg) {
     return BaseModel.defaultWrapper.peelFrameMsg(this.protocolInfo, msg);
   }
+
+  /**
+   * DBS에서 요청한 명령
+   * @param {Buffer} bufData
+   */
+  onData(bufData) {}
 }
 module.exports = AbstModel;

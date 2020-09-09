@@ -8,6 +8,7 @@ module.exports = {
    * @return {mDeviceMap}
    */
   setRepeatNode(deviceMap = {}) {
+    // BU.CLIN(deviceMap)
     const { setInfo = {}, relationInfo: { placeRelationList = [] } = {} } = deviceMap;
 
     const { dataLoggerStructureList = [], nodeStructureList = [], repeatNodeList = [] } = setInfo;
@@ -31,6 +32,8 @@ module.exports = {
       });
     });
 
+    // BU.CLIN(dataLoggerStructureList, 1)
+    
     // 데이터 로거 재구성
     dataLoggerStructureList.forEach(dataLoggerDefInfo => {
       dataLoggerDefInfo.dataLoggerDeviceList.forEach(dataLoggerInfo => {
