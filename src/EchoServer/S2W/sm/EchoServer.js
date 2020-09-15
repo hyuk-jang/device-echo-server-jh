@@ -67,7 +67,12 @@ class EchoServer extends XbeeConverter {
         return results;
       }, Buffer.alloc(16, '0'));
 
-    return Buffer.concat([bufHeader, this.bufDataBattery, Buffer.from('A'), shutterDataList]);
+    return Buffer.concat([
+      bufHeader,
+      this.bufDataBattery,
+      Buffer.from('A'),
+      shutterDataList,
+    ]);
   }
 
   /**
@@ -77,22 +82,30 @@ class EchoServer extends XbeeConverter {
     // BU.CLIN(dlInfo);
     const bufHeader = Buffer.from([0x23, 0x30, 0x30, 0x30, 0x31, 0x30, 0x30, 0x31, 0x31]);
     const {
-      STATUS: { OFF, ON },
-    } = this.device.PUMP;
+      PUMP: {
+        STATUS: { OFF, ON },
+      },
+      VALVE: {
+        STATUS: { CLOSE, OPEN },
+      },
+    } = this.device;
 
     // FIXME: index에 맞는 장치가 정확히 세팅되어 있다고 가정함
     const pumpDataList = this.nodeList
       .filter(node => {
-        return dlInfo.nodeList.includes(node.nodeId) && node.classId === 'pump';
+        const { nodeId, classId } = node;
+        return dlInfo.nodeList.includes(nodeId) && ['pump', 'valve'].includes(classId);
       })
-      .sort((prevNode, nextNode) => prevNode.dlIdx - nextNode.dlIdx)
+      .sort((prevNode, nextNode) => prevNode.dIdx - nextNode.dIdx)
       .reduce((results, node, index) => {
         let deviceStatus;
         switch (node.data) {
           case OFF:
+          case CLOSE:
             deviceStatus = '0';
             break;
           case ON:
+          case OPEN:
             deviceStatus = '1';
             break;
           default:
@@ -103,9 +116,14 @@ class EchoServer extends XbeeConverter {
         results.write(deviceStatus, index);
 
         return results;
-      }, Buffer.alloc(3, '0'));
+      }, Buffer.alloc(5, '0'));
 
-    return Buffer.concat([bufHeader, this.bufDataBattery, Buffer.from('M'), pumpDataList]);
+    return Buffer.concat([
+      bufHeader,
+      this.bufDataBattery,
+      Buffer.from('M'),
+      pumpDataList,
+    ]);
   }
 
   /**
@@ -115,7 +133,7 @@ class EchoServer extends XbeeConverter {
    */
   controlShutter(rfData, dlInfo) {
     const {
-      STATUS: { OFF, ON },
+      STATUS: { CLOSE, OPEN },
     } = this.device.SHUTTER;
 
     const realCmd = rfData.slice(0, 4);
@@ -128,9 +146,9 @@ class EchoServer extends XbeeConverter {
 
     // 요청 명령이 닫는 명령이라면
     if (realCmd === '@crc') {
-      this.controlDevice(nodeInfo, OFF);
+      this.controlDevice(nodeInfo, CLOSE);
     } else if (realCmd === '@cro') {
-      this.controlDevice(nodeInfo, ON);
+      this.controlDevice(nodeInfo, OPEN);
     }
   }
 

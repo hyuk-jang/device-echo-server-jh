@@ -33,7 +33,7 @@ module.exports = {
     });
 
     // BU.CLIN(dataLoggerStructureList, 1)
-    
+
     // 데이터 로거 재구성
     dataLoggerStructureList.forEach(dataLoggerDefInfo => {
       dataLoggerDefInfo.dataLoggerDeviceList.forEach(dataLoggerInfo => {
@@ -113,6 +113,7 @@ module.exports = {
             isSensor: nodeClassInfo.is_sensor,
             targetCode: nodeInfo.target_code,
             dlIdx: nodeInfo.data_logger_index || 0,
+            dIdx: nodeInfo.data_index || 0,
             nodeId,
             data: null,
           };

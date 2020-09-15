@@ -10,6 +10,8 @@ class Model extends AbstModel {
   initModel() {
     const {
       pump,
+      nutrientValve,
+      wateringValve,
       shutter,
       outsideAirReh,
       soilReh,
@@ -33,7 +35,7 @@ class Model extends AbstModel {
 
     const { device } = new this.dpcModel.S2W();
 
-    const { PUMP, SHUTTER } = device;
+    const { PUMP, VALVE, SHUTTER } = device;
 
     this.device = device;
 
@@ -41,6 +43,10 @@ class Model extends AbstModel {
       switch (nodeInfo.defId) {
         case pump:
           nodeInfo.data = _.sample([PUMP.STATUS.OFF, PUMP.STATUS.ON]);
+          break;
+        case nutrientValve:
+        case wateringValve:
+          nodeInfo.data = _.sample([VALVE.STATUS.CLOSE, VALVE.STATUS.OPEN]);
           break;
         case shutter:
           nodeInfo.data = _.sample([SHUTTER.STATUS.CLOSE, SHUTTER.STATUS.OPEN]);

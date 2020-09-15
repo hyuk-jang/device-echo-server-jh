@@ -19,8 +19,8 @@ const BASE = {
 };
 
 const DATA_RANGE = {
-  TRUE: ['OPEN', 'OPENING', 'ON', '1', 'FOLD', 'AUTO'],
-  FALSE: ['CLOSE', 'CLOSING', 'OFF', '0', 'UNFOLD', 'MANUAL '],
+  TRUE: ['OPEN', 'OPENING', 'ON', '1', 'FOLD', 'AUTO', 'A'],
+  FALSE: ['CLOSE', 'CLOSING', 'OFF', '0', 'UNFOLD', 'MANUAL', 'M'],
 };
 
 const SENSOR_TYPE = {
