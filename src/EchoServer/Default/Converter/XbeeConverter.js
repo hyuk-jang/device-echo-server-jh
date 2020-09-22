@@ -96,7 +96,9 @@ module.exports = class extends DefaultConverter {
     const resFrameType = xbeeFrame.readUInt8(RES_FRAME_TYPE_INDEX);
     const destination64 = xbeeFrame.slice(RES_64BIT_ADDR, RES_64BIT_ADDR + 8);
 
-    const dataLoggerInfo = this.findDataLogger(destination64.toString('hex').toUpperCase());
+    const dataLoggerInfo = this.findDataLogger(
+      destination64.toString('hex').toUpperCase(),
+    );
 
     if (_.isEmpty(dataLoggerInfo)) {
       return;

@@ -206,37 +206,5 @@ class EchoServer extends DefaultConverter {
         break;
     }
   }
-
-  /**
-   * DBS에서 요청한 명령
-   * @param {Buffer} bufData
-   */
-  onData(bufData) {
-    BU.log(bufData);
-    const deviceData = this.peelFrameMsg(bufData);
-    BU.log(deviceData);
-
-    const STX = _.nth(deviceData, 0);
-    BU.CLI(STX);
-    if (STX !== 0x40) {
-      throw new Error('STX가 일치하지 않습니다.');
-    }
-
-    const strDeviceData = deviceData.toString();
-
-    const cmd = strDeviceData.slice(0, 4);
-
-    let decodingDataList;
-    switch (cmd) {
-      case '@srs':
-        decodingDataList = this.decodingTable.pump;
-        break;
-      case '@sts':
-        return this.getPump();
-        break;
-      default:
-        throw new Error(`productType: ${productType}은 Parsing 대상이 아닙니다.`);
-    }
-  }
 }
 module.exports = EchoServer;
