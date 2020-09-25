@@ -46,6 +46,16 @@ module.exports = class extends EventEmitter {
   }
 
   /**
+   * 장치 상태 변경 데이터가 들어왔을 경우
+   * @param {detailNodeInfo} nodeInfo
+   * @param {*} newData
+   */
+  controlDevice(nodeInfo, newData) {
+    nodeInfo.data = newData;
+    this.emitReload();
+  }
+
+  /**
    * DBS에서 요청한 명령
    * @param {Buffer} bufData
    */

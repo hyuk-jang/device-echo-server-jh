@@ -48,7 +48,7 @@ class EchoServer extends DefaultConverter {
     // FIXME: index에 맞는 장치가 정확히 세팅되어 있다고 가정함
     const shutterDataList = dlNodeList
       .filter(node => node.classId === 'shutter')
-      .sort((prevNode, nextNode) => prevNode.dlIdx - nextNode.dlIdx)
+      .sort((prevNode, nextNode) => prevNode.dIdx - nextNode.dIdx)
       .reduce((results, node, index) => {
         let deviceStatus;
         switch (node.data) {
@@ -122,7 +122,7 @@ class EchoServer extends DefaultConverter {
     return Buffer.concat([
       bufHeader,
       this.bufDataBattery,
-      Buffer.from('M'),
+      Buffer.from('A'),
       pumpDataList,
     ]);
   }
@@ -138,12 +138,12 @@ class EchoServer extends DefaultConverter {
     } = this.device.SHUTTER;
 
     const realCmd = rfData.slice(0, 4);
-    const nodeIndex = Number(rfData.slice(4, 6)) - 1;
+    const nodeIndex = Number(rfData.slice(4, 6));
 
     const nodeInfo = this.nodeList
       .filter(node => dlInfo.nodeList.includes(node.nodeId))
-      .sort((prevNode, nextNode) => prevNode.dlIdx - nextNode.dlIdx)
-      .find(node => node.dlIdx === nodeIndex);
+      .sort((prevNode, nextNode) => prevNode.dIdx - nextNode.dIdx)
+      .find(node => node.dIdx === nodeIndex);
 
     // 요청 명령이 닫는 명령이라면
     if (realCmd === '@crc') {
@@ -151,6 +151,8 @@ class EchoServer extends DefaultConverter {
     } else if (realCmd === '@cro') {
       this.controlDevice(nodeInfo, OPEN);
     }
+
+    return this.getShutter(dlInfo);
   }
 
   /**
@@ -165,7 +167,7 @@ class EchoServer extends DefaultConverter {
     } = this.device.PUMP;
 
     const realCmd = rfData.slice(0, 4);
-    const nodeIndex = Number(rfData.slice(4, 6)) - 1;
+    const nodeIndex = Number(rfData.slice(4, 6));
 
     const nodeInfo = this.nodeList
       .filter(node => dlInfo.nodeList.includes(node.nodeId))
@@ -173,38 +175,13 @@ class EchoServer extends DefaultConverter {
       .find(node => node.dIdx === nodeIndex);
 
     // 요청 명령이 닫는 명령이라면
-    if (realCmd === '@crc') {
+    if (realCmd === '@cpc') {
       this.controlDevice(nodeInfo, OFF);
-    } else if (realCmd === '@cro') {
+    } else if (realCmd === '@cpo') {
       this.controlDevice(nodeInfo, ON);
     }
-  }
 
-  /**
-   * Zigbee Receive Packet
-   * @param {dataLoggerInfo} dataLogger
-   * @param {Buffer} xbeeFrame
-   */
-  processTransmitRequest(dataLogger, xbeeFrame) {
-    const SPEC_DATA_IDX = 17;
-    const CRC_IDX = xbeeFrame.length - 1;
-
-    const rfData = xbeeFrame.slice(SPEC_DATA_IDX, CRC_IDX).toString();
-
-    const { prefix } = dataLogger;
-
-    switch (prefix) {
-      // 개폐기
-      case 'D_ST':
-        this.controlShutter(rfData, dataLogger);
-        return this.getShutter(dataLogger);
-      // 펌프
-      case 'D_P':
-        this.controlPump(rfData, dataLogger);
-        return this.getPump(dataLogger);
-      default:
-        break;
-    }
+    return this.getPump(dlInfo);
   }
 
   /**
@@ -212,30 +189,67 @@ class EchoServer extends DefaultConverter {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    BU.log(bufData);
+    // BU.log(bufData);
     const deviceData = this.peelFrameMsg(bufData);
-    BU.log(deviceData);
+    // BU.log(deviceData.toString());
 
-    const STX = _.nth(deviceData, 0);
-    BU.CLI(STX);
-    if (STX !== 0x40) {
-      throw new Error('STX가 일치하지 않습니다.');
-    }
+    try {
+      const STX = _.nth(deviceData, 0);
 
-    const strDeviceData = deviceData.toString();
+      if (STX !== 0x40) {
+        throw new Error('STX가 일치하지 않습니다.');
+      }
 
-    const cmd = strDeviceData.slice(0, 4);
+      const strDeviceData = deviceData.toString();
 
-    let decodingDataList;
-    switch (cmd) {
-      case '@srs':
-        decodingDataList = this.decodingTable.pump;
-        break;
-      case '@sts':
-        return this.getPump();
-        break;
-      default:
-        throw new Error(`productType: ${productType}은 Parsing 대상이 아닙니다.`);
+      const cmd = strDeviceData.slice(0, 4);
+
+      let dlInfo;
+
+      switch (cmd) {
+        case '@srs':
+        case '@cro':
+        case '@crc':
+          dlInfo = _.find(this.dataLoggerList, { serialNumber: '0013A2004190ED67' });
+          break;
+        case '@sts':
+        case '@cpo':
+        case '@cpc':
+          dlInfo = _.find(this.dataLoggerList, { serialNumber: '0013A2004190EDB7' });
+          break;
+        default:
+          break;
+      }
+
+      if (dlInfo === undefined) {
+        throw new Error('데이터로거 정보 없음');
+      }
+
+      let returnValue;
+      switch (cmd) {
+        case '@srs':
+          returnValue = this.getShutter(dlInfo);
+          break;
+        case '@cro':
+        case '@crc':
+          returnValue = this.controlShutter(strDeviceData, dlInfo);
+          break;
+        case '@sts':
+          returnValue = this.getPump(dlInfo);
+          break;
+        case '@cpo':
+        case '@cpc':
+          returnValue = this.controlPump(strDeviceData, dlInfo);
+          break;
+        default:
+          throw new Error(`cmd: ${cmd}은 Parsing 대상이 아닙니다.`);
+      }
+
+      returnValue = this.wrapFrameMsg(returnValue);
+
+      return returnValue;
+    } catch (error) {
+      // BU.error(error.message);
     }
   }
 }

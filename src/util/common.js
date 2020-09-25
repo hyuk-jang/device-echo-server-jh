@@ -11,7 +11,11 @@ module.exports = {
     // BU.CLIN(deviceMap)
     const { setInfo = {}, relationInfo: { placeRelationList = [] } = {} } = deviceMap;
 
-    const { dataLoggerStructureList = [], nodeStructureList = [], repeatNodeList = [] } = setInfo;
+    const {
+      dataLoggerStructureList = [],
+      nodeStructureList = [],
+      repeatNodeList = [],
+    } = setInfo;
 
     // 노드 목록 repeatNodeList 반영
     nodeStructureList.forEach(nodeClassInfo => {
@@ -26,13 +30,10 @@ module.exports = {
           if (fountDefInfo !== undefined) {
             nodeDefInfo.nodeList = fountDefInfo.nodeList;
           }
-
           // delete nodeDefInfo.repeatId;
         }
       });
     });
-
-    // BU.CLIN(dataLoggerStructureList, 1)
 
     // 데이터 로거 재구성
     dataLoggerStructureList.forEach(dataLoggerDefInfo => {
@@ -45,7 +46,9 @@ module.exports = {
             repeatCategory: 'prefix',
           }).nodeList;
 
-          dataLoggerInfo.nodeList = prefixNodeList.map(prefix => `${prefix}_${uniqNumber}`);
+          dataLoggerInfo.nodeList = prefixNodeList.map(
+            prefix => `${prefix}_${uniqNumber}`,
+          );
 
           // delete dataLoggerInfo.repeatId;
         }
@@ -56,7 +59,11 @@ module.exports = {
     placeRelationList.forEach(placeClassInfo => {
       placeClassInfo.defList.forEach(placeDefInfo => {
         placeDefInfo.placeList.forEach(placeInfo => {
-          const { repeatId = '', target_code: uniqNumber = '', nodeList = [] } = placeInfo;
+          const {
+            repeatId = '',
+            target_code: uniqNumber = '',
+            nodeList = [],
+          } = placeInfo;
           // repeatId가 있을 경우
           if (repeatId.length) {
             const prefixNodeList = _.find(repeatNodeList, {
@@ -88,7 +95,11 @@ module.exports = {
 
     const { setInfo = {}, relationInfo: { placeRelationList = [] } = {} } = deviceMap;
 
-    const { dataLoggerStructureList = [], nodeStructureList = [], repeatNodeList = [] } = setInfo;
+    const {
+      dataLoggerStructureList = [],
+      nodeStructureList = [],
+      repeatNodeList = [],
+    } = setInfo;
 
     nodeStructureList.forEach(nodeClassInfo => {
       // 단순 표기를 위한 node는 제외
@@ -131,7 +142,11 @@ module.exports = {
   makeDataLoggerList: (deviceMap = {}) => {
     const { setInfo = {}, relationInfo: { placeRelationList = [] } = {} } = deviceMap;
 
-    const { dataLoggerStructureList = [], nodeStructureList = [], repeatNodeList = [] } = setInfo;
+    const {
+      dataLoggerStructureList = [],
+      nodeStructureList = [],
+      repeatNodeList = [],
+    } = setInfo;
 
     /** @type {detailDataloggerInfo[]} */
     const returnList = [];
