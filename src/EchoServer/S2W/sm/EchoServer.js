@@ -4,10 +4,7 @@ const { BU } = require('base-util-jh');
 
 const Model = require('../Model');
 
-const protocol = require('./protocol');
-
 const DefaultConverter = require('../../Default/Converter/DefaultConverter');
-// const XbeeConverter = require('../../Default/Converter/XbeeConverter');
 
 class EchoServer extends DefaultConverter {
   /**
@@ -19,9 +16,6 @@ class EchoServer extends DefaultConverter {
     super(protocolInfo, deviceMap);
 
     this.model = new Model(protocolInfo, deviceMap);
-
-    this.decodingTable = protocol(this.protocolInfo);
-
     this.init(this.model);
 
     this.device = this.model.device;

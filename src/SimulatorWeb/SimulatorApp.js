@@ -51,7 +51,11 @@ class SimulatorApp {
    * @param {string} backgroudMap base64
    */
   setBackgroundMap(backgroudMap) {
-    _.set(this, 'deviceMap.drawInfo.frame.mapInfo.backgroundInfo.backgroundData', backgroudMap);
+    _.set(
+      this,
+      'deviceMap.drawInfo.frame.mapInfo.backgroundInfo.backgroundData',
+      backgroudMap,
+    );
   }
 
   init() {

@@ -15,6 +15,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
     <script src="/js/bootstrap.min.js"></script>
 
+    <link href="/css/template/svg.filter.css" rel="stylesheet" />
     <link href="/css/template/common.css" rel="stylesheet" />
     <link href="/css/template/dark-theme.css" rel="stylesheet" />
 
@@ -78,7 +79,9 @@
           <div class="" id="structure">
             <%- include("./plugInMapControlBox.ejs") %>
             <!-- SVG canvas -->
-            <div class="svg_area" id="canvas"></div>
+            <div class="svg_area" id="canvas">
+              <%- include('./filter.ejs') %> <%- include('./filter.btn.ejs') %>
+            </div>
           </div>
           <!-- Tables -->
           <div class="hidden" id="operStatusTable">
@@ -167,7 +170,12 @@
       var $nodeTableDom;
       var $nodeUpdateDom;
       //  자동 갱신될 명령 테이블, 노드 테이블 Dom Id
-      function initControlTableId(cmdTableDomId, cmdUpdateDomId, nodeTableDomId, nodeUpdateDomId) {
+      function initControlTableId(
+        cmdTableDomId,
+        cmdUpdateDomId,
+        nodeTableDomId,
+        nodeUpdateDomId,
+      ) {
         $cmdTableDom = $('#' + cmdTableDomId);
         $cmdUpdateDom = $('#' + cmdUpdateDomId);
         $nodeTableDom = $('#' + nodeTableDomId);
@@ -175,7 +183,12 @@
       }
 
       // 테이블 ID 정의
-      initControlTableId('cmdTableBody', 'cmdUpdateDate', 'nodeTableBody', 'nodeUpdateDate');
+      initControlTableId(
+        'cmdTableBody',
+        'cmdUpdateDate',
+        'nodeTableBody',
+        'nodeUpdateDate',
+      );
     </script>
 
     <!-- 제어 및 Socket.IO 이벤트 바인딩 -->
@@ -190,7 +203,9 @@
         // nodeList Handlebars compile
         const nodeTbodyTemplate = $('#nodeTableTemplate').html();
         const nodeTbodyBindTemplate = Handlebars.compile(nodeTbodyTemplate);
-        const nodeTableBody = nodeTbodyBindTemplate({ mdNodeStorage: mdNodeStorage.values() });
+        const nodeTableBody = nodeTbodyBindTemplate({
+          mdNodeStorage: mdNodeStorage.values(),
+        });
 
         $('#nodeTableBodyDom > tr ').empty();
         $('#nodeTableBodyDom').append(nodeTableBody);
@@ -203,7 +218,25 @@
     <!-- SVG Map 세팅 -->
     <script>
       initDrawSvg();
-      drawSvgBasePlace('canvas'); // 멥 그리기
+
+      // 캔버스 생성
+      const svgCanvas = SVG().addTo(`#canvas`).size('100%', '100%');
+      // SVG Canvas 속성 정의
+      svgCanvas.attr({
+        id: 'svgCanvas',
+        class: 'svg_map',
+        preserveAspectRatio: 'xMidYMin meet',
+      });
+
+      // defs Element를 SVG Element 자식 요소 최상위로 정의
+      svgCanvas.defs();
+      // string으로 변환하여 붙여넣음. Dom 요소로 붙여넣을 경우 동작하지 않음
+      $('defs').html($('#svgFilter').html() + $('#svgBtnFilter').html());
+      // id 중복을 막기위한 filter 요소 삭제
+      document.querySelector('#svgFilter').remove();
+      document.querySelector('#svgBtnFilter').remove();
+
+      drawSvgBasePlace(svgCanvas); // 멥 그리기
 
       // // FIXME: TEST 용
       // setTimeout(() => {
@@ -251,6 +284,21 @@
         // .val('control')
         .val('develop')
         .trigger('change');
+    </script>
+
+    <script>
+      mdNodeStorage.forEach(mdNodeInfo => {
+        // svg 클릭 이벤트 삭제
+        mdNodeInfo.svgEleBg.click(null);
+        mdNodeInfo.svgEleBg.click(() => {
+          const data = prompt('변경하고자 하는 값 입력');
+          socket.emit('changeNodeData', mdNodeInfo.nodeId, data);
+        });
+      });
+
+      // function reqSingleControl(nodeId, controlValue, deviceSetValue) {
+      //   socket.emit('reqSingleControl', nodeId, controlValue, deviceSetValue);
+      // }
     </script>
   </body>
 </html>
