@@ -93,7 +93,10 @@ class Control {
 
     // grab an arbitrary unused port.
     this.socketServer.listen(this.port, () => {
-      BU.log(`${this.getServerName()} opened this.socketServer on`, this.socketServer.address());
+      BU.log(
+        `${this.getServerName()} opened this.socketServer on`,
+        this.socketServer.address(),
+      );
     });
 
     this.socketServer.on('close', () => {
@@ -124,10 +127,12 @@ class Control {
     const EchoServer = require(path);
     // 에코서버 객체화
     const echoServer = new EchoServer(protocolInfo, deviceMap);
-    echoServer.init;
+    // echoServer.init;
 
     // 동일한 에코서버가 생성되었을 경우에는 추가하지 않음
-    const existEchoServer = _.find(this.echoServerList, eServer => _.isEqual(echoServer, eServer));
+    const existEchoServer = _.find(this.echoServerList, eServer =>
+      _.isEqual(echoServer, eServer),
+    );
     _.isEmpty(existEchoServer) && this.echoServerList.push(echoServer);
 
     return echoServer;
@@ -146,7 +151,11 @@ class Control {
    */
   spreadMsg(msg) {
     // BU.CLI(data);
-    const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(new Date(), '', 2)}.log`;
+    const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(
+      new Date(),
+      '',
+      2,
+    )}.log`;
     BU.appendFile(logPath, `onData : ${msg}`);
 
     // 응답 받을 데이터 배열
@@ -157,7 +166,7 @@ class Control {
     // Echo Server 중 요청한 명령에 대한 응답은 1개이어야만 함.
     this.echoServerList.forEach(echoServer => {
       // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
-      const echoData = echoServer.onData(msg);
+      const echoData = echoServer.onData(msg, this);
       if (_.isEmpty(echoData)) return false;
 
       // 데이터를 정상적으로 생성한 Echo Server의 생성 정보를 가져옴
@@ -185,7 +194,11 @@ class Control {
       const { echoData, echoName } = echoDataInfo;
       if (_.isEmpty(echoData) || _.isBoolean(echoData)) return;
 
-      const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(new Date(), '', 2)}.log`;
+      const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(
+        new Date(),
+        '',
+        2,
+      )}.log`;
       BU.appendFile(logPath, `${echoName} - echoData: ${echoData}`);
       socket.write(echoData);
     }, 0);

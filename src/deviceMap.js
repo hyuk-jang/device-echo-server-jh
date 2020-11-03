@@ -1,11 +1,7 @@
 /* eslint-disable global-require */
 module.exports = {
-  Inverter: {
-    'das_1.3': 'das_1.3',
-  },
-  UPSAS: {
-    muan6kW: require('./mapStorage/UPSAS/muan6kW'),
-    muan100kW: require('./mapStorage/UPSAS/muan100kW'),
+  ETC: {
+    solarIot: require('./mapStorage/ETC/solarIot'),
   },
   FP: {
     Naju: require('./mapStorage/FarmParallel/Naju.map'),
@@ -14,7 +10,14 @@ module.exports = {
     Ochang: require('./mapStorage/FarmParallel/Ochang.map'),
     Yeongheung: require('./mapStorage/FarmParallel/Yeongheung.map'),
   },
+  Inverter: {
+    'das_1.3': 'das_1.3',
+  },
   S2W: {
     grapeFarm: require('./mapStorage/S2W/grapeFarm.map'),
+  },
+  UPSAS: {
+    muan6kW: require('./mapStorage/UPSAS/muan6kW'),
+    muan100kW: require('./mapStorage/UPSAS/muan100kW'),
   },
 };

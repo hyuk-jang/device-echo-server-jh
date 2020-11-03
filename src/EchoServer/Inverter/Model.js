@@ -134,7 +134,9 @@ class Model extends BaseModel.Inverter {
     this.ds.sysSn = _.random(1, 9);
     this.ds.powerPvKw = this.ds.pvKw;
     this.ds.powerGridKw = _.divide(_.multiply(this.ds.gridRAmp, this.ds.gridRsVol), 1000);
-    this.ds.powerGridKw = this.isSingle ? this.ds.powerGridKw : this.ds.powerGridKw * ROOT_THREE;
+    this.ds.powerGridKw = this.isSingle
+      ? this.ds.powerGridKw
+      : this.ds.powerGridKw * ROOT_THREE;
     this.ds.powerDailyKwh = _.sum([10, this.index]);
     this.ds.powerCpKwh += _.multiply(this.cumulativeScale, this.ds.powerGridKw);
     this.ds.powerPf = _.multiply(_.divide(this.ds.powerGridKw, this.ds.powerPvKw), 100);

@@ -26,7 +26,7 @@ class Main {
    * @param {desConfig} desConfig
    */
   init(desConfig) {
-    const { dbcConnConfig, echoConfigList } = desConfig;
+    const { dbcConnConfig = {}, echoConfigList } = desConfig;
     // Site 단위 서버 생성
     this.createServer(echoConfigList);
 
@@ -99,18 +99,26 @@ class Main {
       echoServerList.forEach(echoServerConfing => {
         const {
           protocolConfig,
-          mapConfig: { mapId = '', projectId = '', simulatorPort = serverPort + 500 } = {},
+          mapConfig: {
+            mapId = '',
+            projectId = '',
+            simulatorPort = serverPort + 1000,
+          } = {},
         } = echoServerConfing;
 
         // 프로젝트 ID와 map Id 가 존재한다면 해당 map Path 지정
         const dMap =
-          mapId.length && projectId.length ? _.get(deviceMap, `${projectId}.${mapId}`) : undefined;
+          mapId.length && projectId.length
+            ? _.get(deviceMap, `${projectId}.${mapId}`)
+            : undefined;
 
         const echoServer = control.attachEchoServer(protocolConfig, dMap);
 
         // 맵 정보가 존재할 경우 에코서버와 통신할 시뮬레이터 웹 구동
         if (mapId.length && projectId.length) {
-          const simulatorEchoServer = Array.isArray(echoServer) ? echoServer[0] : echoServer;
+          const simulatorEchoServer = Array.isArray(echoServer)
+            ? echoServer[0]
+            : echoServer;
 
           const simulatorWeb = new SimulatorApp(simulatorPort, simulatorEchoServer);
           simulatorWeb.init();
