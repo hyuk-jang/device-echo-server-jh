@@ -56,7 +56,7 @@ class EchoServer extends DefaultConverter {
         results.write(deviceStatus, dlIdx);
 
         return results;
-      }, Buffer.alloc(16, '0'));
+      }, Buffer.alloc(8, '0'));
 
     return relayDataList;
   }
@@ -134,6 +134,7 @@ class EchoServer extends DefaultConverter {
       }
 
       returnValue = this.wrapFrameMsg(returnValue);
+      // BU.CLI(returnValue);
 
       return returnValue;
     } catch (error) {

@@ -32,7 +32,7 @@ module.exports = {
       serverPort: 15300,
       echoServerList: [
         {
-          protocolConfig: [protocolRelayJkNr, protocolBatSm],
+          protocolConfig: [protocolRelayJkNr],
           mapConfig: {
             projectId: 'ETC',
             mapId: 'solarIot',
@@ -55,19 +55,19 @@ module.exports = {
         },
       ],
     },
-    // {
-    //   siteId: 'battery',
-    //   siteName: '나주 태양광 IoT 소비전력 최적화',
-    //   serverPort: 15302,
-    //   echoServerList: [
-    //     {
-    //       protocolConfig: [protocolBatSm],
-    //       mapConfig: {
-    //         projectId: 'ETC',
-    //         mapId: 'solarIot',
-    //       },
-    //     },
-    //   ],
-    // },
+    {
+      siteId: 'battery',
+      siteName: '나주 태양광 IoT 소비전력 최적화',
+      serverPort: 15303,
+      echoServerList: [
+        {
+          protocolConfig: [protocolBatSm],
+          mapConfig: {
+            projectId: 'ETC',
+            mapId: 'solarIot',
+          },
+        },
+      ],
+    },
   ],
 };

@@ -41,8 +41,26 @@ module.exports = {
     positionInfo: {
       svgPlaceList: [
         {
-          id: 'DA',
-          name: '장치 영역',
+          id: 'DA_001',
+          name: '장치 영역_001',
+          point: [100, 50, 900, 150],
+          resourceId: 'deviceArea',
+        },
+        {
+          id: 'DA_002',
+          name: '장치 영역_002',
+          point: [100, 50, 900, 150],
+          resourceId: 'deviceArea',
+        },
+        {
+          id: 'DA_003',
+          name: '장치 영역_003',
+          point: [100, 50, 900, 150],
+          resourceId: 'deviceArea',
+        },
+        {
+          id: 'DA_004',
+          name: '장치 영역_004',
           point: [100, 50, 900, 150],
           resourceId: 'deviceArea',
         },
@@ -54,8 +72,8 @@ module.exports = {
           cursor: '',
           is_sensor: 1,
           resourceId: 'sensor',
-          placeId: 'DA',
-          point: [165.6, 60],
+          placeId: 'DA_001',
+          point: [100, 60],
         },
         {
           id: 'R_1',
@@ -63,8 +81,8 @@ module.exports = {
           cursor: 'pointer',
           is_sensor: 0,
           resourceId: 'cmdBtn',
-          placeId: 'DA',
-          point: [340.096, 60],
+          placeId: 'DA_001',
+          point: [264, 60],
         },
         {
           id: 'R_2',
@@ -72,17 +90,8 @@ module.exports = {
           cursor: 'pointer',
           is_sensor: 0,
           resourceId: 'cmdBtn',
-          placeId: 'DA',
-          point: [513.28, 60],
-        },
-        {
-          id: 'R_4',
-          name: 'Lv.4',
-          cursor: 'pointer',
-          is_sensor: 0,
-          resourceId: 'cmdBtn',
-          placeId: 'DA',
-          point: [690.4, 60],
+          placeId: 'DA_002',
+          point: [428, 60],
         },
         {
           id: 'R_3',
@@ -90,8 +99,17 @@ module.exports = {
           cursor: 'pointer',
           is_sensor: 0,
           resourceId: 'cmdBtn',
-          placeId: 'DA',
-          point: [690.4, 60],
+          placeId: 'DA_003',
+          point: [592, 60],
+        },
+        {
+          id: 'R_4',
+          name: 'Lv.4',
+          cursor: 'pointer',
+          is_sensor: 0,
+          resourceId: 'cmdBtn',
+          placeId: 'DA_004',
+          point: [756, 60],
         },
       ],
       svgCmdList: [],
@@ -132,7 +150,20 @@ module.exports = {
             option: { type: 'Buffer', data: [3] },
           },
           host: '192.168.0.153',
-          port: 15300,
+          port: 'COM3',
+        },
+      },
+      {
+        dccId: 'DCC_004',
+        connect_info: {
+          type: 'socket',
+          subType: 'parser',
+          addConfigInfo: {
+            parser: 'delimiterParser',
+            option: { type: 'Buffer', data: [3] },
+          },
+          host: '192.168.0.153',
+          port: 15303,
         },
       },
     ],
@@ -168,7 +199,7 @@ module.exports = {
         target_prefix: 'D_B_P',
         target_name: '배터리 로거',
         dataLoggerDeviceList: [
-          { dccId: 'DCC_003', dpcId: 'DPC_002', target_code: '003', nodeList: ['B_P'] },
+          { dccId: 'DCC_004', dpcId: 'DPC_002', target_code: '003', nodeList: ['B_P'] },
         ],
       },
     ],
@@ -176,6 +207,7 @@ module.exports = {
       {
         target_id: 'battery',
         target_name: '배터리',
+        data_unit: '%',
         is_sensor: 1,
         defList: [
           {
@@ -187,7 +219,7 @@ module.exports = {
                 target_code: '',
                 svgNodePosOpt: {
                   resourceId: 'sensor',
-                  axisScale: [0.1, 0.5],
+                  axisScale: [0, 0.5],
                   moveScale: [0, 0],
                 },
               },
@@ -210,28 +242,28 @@ module.exports = {
                 target_name: 'Lv.1',
                 data_logger_index: 0,
                 data_index: 1,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.366, 0.5] },
+                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.25, 0.5] },
               },
               {
                 target_code: '2',
                 target_name: 'Lv.2',
                 data_logger_index: 1,
                 data_index: 2,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.63, 0.5] },
-              },
-              {
-                target_code: '4',
-                target_name: 'Lv.4',
-                data_logger_index: 1,
-                data_index: 2,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.9, 0.5] },
+                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.5, 0.5] },
               },
               {
                 target_code: '3',
                 target_name: 'Lv.3',
                 data_logger_index: 0,
                 data_index: 1,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.9, 0.5] },
+                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.75, 0.5] },
+              },
+              {
+                target_code: '4',
+                target_name: 'Lv.4',
+                data_logger_index: 1,
+                data_index: 2,
+                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [1, 0.5] },
               },
             ],
           },
@@ -250,7 +282,59 @@ module.exports = {
             target_prefix: 'DA',
             placeList: [
               {
-                nodeList: ['R_1', 'R_2', 'R_3', 'R_4', 'B_P'],
+                target_code: '001',
+                nodeList: ['R_1', 'B_P'],
+                place_info: {
+                  thresholdConfigList: [
+                    {
+                      ndId: 'percentBattery',
+                      upperLimitValue: { value: 20 },
+                      lowerLimitValue: { value: 10 },
+                    },
+                  ],
+                },
+                svgPositionInfo: { resourceId: 'deviceArea', point: [100, 50] },
+              },
+              {
+                target_code: '002',
+                nodeList: ['R_2', 'B_P'],
+                place_info: {
+                  thresholdConfigList: [
+                    {
+                      ndId: 'percentBattery',
+                      upperLimitValue: { value: 30 },
+                      lowerLimitValue: { value: 20 },
+                    },
+                  ],
+                },
+                svgPositionInfo: { resourceId: 'deviceArea', point: [100, 50] },
+              },
+              {
+                target_code: '003',
+                nodeList: ['R_3', 'B_P'],
+                place_info: {
+                  thresholdConfigList: [
+                    {
+                      ndId: 'percentBattery',
+                      upperLimitValue: { value: 40 },
+                      lowerLimitValue: { value: 30 },
+                    },
+                  ],
+                },
+                svgPositionInfo: { resourceId: 'deviceArea', point: [100, 50] },
+              },
+              {
+                target_code: '004',
+                nodeList: ['R_4', 'B_P'],
+                place_info: {
+                  thresholdConfigList: [
+                    {
+                      ndId: 'percentBattery',
+                      upperLimitValue: { value: 50 },
+                      lowerLimitValue: { value: 40 },
+                    },
+                  ],
+                },
                 svgPositionInfo: { resourceId: 'deviceArea', point: [100, 50] },
               },
             ],
@@ -271,6 +355,38 @@ module.exports = {
             { enName: 'Off', krName: '정지', controlValue: 0 },
           ],
         },
+      },
+    ],
+    setCmdList: [
+      {
+        cmdId: 'closeAllDevice',
+        cmdName: '모든 장치 닫기',
+        trueNodeList: [],
+        falseNodeList: ['R_1', 'R_2', 'R_3', 'R_4'],
+      },
+      {
+        cmdId: 'onUpToLv1',
+        cmdName: 'Lv.1까지 가동',
+        trueNodeList: ['R_1'],
+        falseNodeList: ['R_2', 'R_3', 'R_4'],
+      },
+      {
+        cmdId: 'onUpToLv2',
+        cmdName: 'Lv.2까지 가동',
+        trueNodeList: ['R_1', 'R_2'],
+        falseNodeList: ['R_3', 'R_4'],
+      },
+      {
+        cmdId: 'onUpToLv3',
+        cmdName: 'Lv.3까지 가동',
+        trueNodeList: ['R_1', 'R_2', 'R_3'],
+        falseNodeList: ['R_4'],
+      },
+      {
+        cmdId: 'onUpToLv4',
+        cmdName: 'Lv.4까지 가동',
+        trueNodeList: ['R_1', 'R_2', 'R_3', 'R_4'],
+        falseNodeList: [],
       },
     ],
   },
