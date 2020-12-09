@@ -292,7 +292,9 @@
         mdNodeInfo.svgEleBg.click(null);
         mdNodeInfo.svgEleBg.click(() => {
           const data = prompt('변경하고자 하는 값 입력');
-          socket.emit('changeNodeData', mdNodeInfo.nodeId, data);
+          if (data !== null) {
+            socket.emit('changeNodeData', mdNodeInfo.nodeId, data);
+          }
         });
       });
 

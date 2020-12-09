@@ -35,9 +35,18 @@ class EchoServer extends DefaultConverter {
     /** @type {number} */
     const nData = nodeInfo.data;
 
-    const exp = nData >= 100 ? 1 : nData >= 10 ? 2 : 3;
+    let exp = 3;
+    // const exp = nData >= 100 ? 1 : nData >= 10 ? 2 : 3;
 
-    const battery = _.chain(nData)
+    if (nData >= 100) {
+      exp = 1;
+    } else if (nData >= 10) {
+      exp = 2;
+    } else {
+      exp = 3;
+    }
+
+    let battery = _.chain(nData)
       .multiply(10 ** exp)
       .round()
       .thru(cData => {
@@ -47,6 +56,12 @@ class EchoServer extends DefaultConverter {
       })
       .join('')
       .value();
+
+    if (_.toNumber(battery) <= 0) {
+      BU.logFile(nData);
+      BU.CLI(battery, nData);
+      battery = '0.000';
+    }
 
     return Buffer.concat([
       this.protocolConverter.STX,

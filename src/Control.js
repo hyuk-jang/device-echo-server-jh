@@ -54,7 +54,7 @@ class Control {
   createServer(parserInfo = {}) {
     this.socketServer = net
       .createServer(socket => {
-        BU.log(`${this.getServerName()}client is Connected ${this.port}`);
+        // BU.log(`${this.getServerName()}client is Connected ${this.port}`);
         // socket.end('goodbye\n');
         if (!_.isEmpty(parserInfo)) {
           let stream = null;

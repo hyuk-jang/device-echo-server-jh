@@ -17,7 +17,7 @@ module.exports = {
           id: 'cmdBtn',
           type: 'rect',
           elementDrawInfo: {
-            width: 144,
+            width: 136,
             height: 80,
             svgClass: ['lightGray', 'orange', 'red'],
             filterInfo: { filter: 'url(#deviceShadow)' },
@@ -29,7 +29,7 @@ module.exports = {
           id: 'sensor',
           type: 'rect',
           elementDrawInfo: {
-            width: 144,
+            width: 136,
             height: 80,
             color: ['#f0f0f0'],
             strokeInfo: { width: 0.7, color: '#000' },
@@ -73,7 +73,7 @@ module.exports = {
           is_sensor: 1,
           resourceId: 'sensor',
           placeId: 'DA_001',
-          point: [100, 60],
+          point: [119.92, 60],
         },
         {
           id: 'R_1',
@@ -82,7 +82,7 @@ module.exports = {
           is_sensor: 0,
           resourceId: 'cmdBtn',
           placeId: 'DA_001',
-          point: [264, 60],
+          point: [275.96, 60],
         },
         {
           id: 'R_2',
@@ -91,7 +91,7 @@ module.exports = {
           is_sensor: 0,
           resourceId: 'cmdBtn',
           placeId: 'DA_002',
-          point: [428, 60],
+          point: [432, 60],
         },
         {
           id: 'R_3',
@@ -100,7 +100,7 @@ module.exports = {
           is_sensor: 0,
           resourceId: 'cmdBtn',
           placeId: 'DA_003',
-          point: [592, 60],
+          point: [588.04, 60],
         },
         {
           id: 'R_4',
@@ -109,7 +109,7 @@ module.exports = {
           is_sensor: 0,
           resourceId: 'cmdBtn',
           placeId: 'DA_004',
-          point: [756, 60],
+          point: [744.08, 60],
         },
       ],
       svgCmdList: [],
@@ -123,21 +123,13 @@ module.exports = {
         connect_info: {
           type: 'socket',
           subType: 'parser',
-          addConfigInfo: { parser: 'byteLengthParser', option: 8 },
+          addConfigInfo: {
+            parser: 'readLineParser',
+            option: { type: 'Buffer', data: [44, 79, 75, 0] },
+          },
           hasOnDataClose: true,
-          host: '192.168.0.153',
-          port: 15300,
-        },
-      },
-      {
-        dccId: 'DCC_002',
-        connect_info: {
-          type: 'socket',
-          subType: 'parser',
-          addConfigInfo: { parser: 'byteLengthParser', option: 8 },
-          hasOnDataClose: true,
-          host: '192.168.0.153',
-          port: 15301,
+          host: '192.168.0.158',
+          port: 15800,
         },
       },
       {
@@ -146,10 +138,10 @@ module.exports = {
           type: 'socket',
           subType: 'parser',
           addConfigInfo: {
-            parser: 'delimiterParser',
-            option: { type: 'Buffer', data: [3] },
+            parser: 'readLineParser',
+            option: { type: 'Buffer', data: [44, 79, 75, 0] },
           },
-          host: '192.168.0.153',
+          host: '192.168.0.158',
           port: 'COM3',
         },
       },
@@ -162,36 +154,29 @@ module.exports = {
             parser: 'delimiterParser',
             option: { type: 'Buffer', data: [3] },
           },
-          host: '192.168.0.153',
-          port: 15303,
+          host: '192.168.0.158',
+          port: 15803,
         },
       },
     ],
     dpcConstructorList: [
       {
         dpcId: 'DPC_001',
-        protocol_info: { mainCategory: 'ETC', subCategory: 'JK_NR_2' },
+        protocol_info: { mainCategory: 'ETC', subCategory: 'Kincony' },
       },
       { dpcId: 'DPC_002', protocol_info: { mainCategory: 'ETC', subCategory: 'BatSm' } },
     ],
     dataLoggerStructureList: [
       {
-        target_prefix: 'D_JK',
-        target_name: '릴레이 로거(JK_NR_2)',
+        target_prefix: 'D_KIN',
+        target_name: '릴레이 로거(Kincony)',
         dataLoggerDeviceList: [
           {
             dccId: 'DCC_001',
             dpcId: 'DPC_001',
             target_code: '001',
-            target_name: 'Lv.1 ~ Lv.2',
-            nodeList: ['R_1', 'R_2'],
-          },
-          {
-            dccId: 'DCC_002',
-            dpcId: 'DPC_001',
-            target_code: '002',
-            target_name: 'Lv.3 ~ Lv.4',
-            nodeList: ['R_3', 'R_4'],
+            target_name: 'Lv.1 ~ Lv.4',
+            nodeList: ['R_1', 'R_2', 'R_3', 'R_4'],
           },
         ],
       },
@@ -216,10 +201,9 @@ module.exports = {
             target_prefix: 'B_P',
             nodeList: [
               {
-                target_code: '',
                 svgNodePosOpt: {
                   resourceId: 'sensor',
-                  axisScale: [0, 0.5],
+                  axisScale: [0.03, 0.5],
                   moveScale: [0, 0],
                 },
               },
@@ -242,7 +226,7 @@ module.exports = {
                 target_name: 'Lv.1',
                 data_logger_index: 0,
                 data_index: 1,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.25, 0.5] },
+                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.265, 0.5] },
               },
               {
                 target_code: '2',
@@ -254,16 +238,16 @@ module.exports = {
               {
                 target_code: '3',
                 target_name: 'Lv.3',
-                data_logger_index: 0,
-                data_index: 1,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.75, 0.5] },
+                data_logger_index: 2,
+                data_index: 3,
+                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.735, 0.5] },
               },
               {
                 target_code: '4',
                 target_name: 'Lv.4',
-                data_logger_index: 1,
-                data_index: 2,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [1, 0.5] },
+                data_logger_index: 3,
+                data_index: 4,
+                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.97, 0.5] },
               },
             ],
           },
@@ -288,8 +272,8 @@ module.exports = {
                   thresholdConfigList: [
                     {
                       ndId: 'percentBattery',
-                      upperLimitValue: { value: 20 },
-                      lowerLimitValue: { value: 10 },
+                      upperLimitValue: { value: 40 },
+                      lowerLimitValue: { value: 25 },
                     },
                   ],
                 },
@@ -302,8 +286,8 @@ module.exports = {
                   thresholdConfigList: [
                     {
                       ndId: 'percentBattery',
-                      upperLimitValue: { value: 30 },
-                      lowerLimitValue: { value: 20 },
+                      upperLimitValue: { value: 50 },
+                      lowerLimitValue: { value: 40 },
                     },
                   ],
                 },
@@ -316,8 +300,8 @@ module.exports = {
                   thresholdConfigList: [
                     {
                       ndId: 'percentBattery',
-                      upperLimitValue: { value: 40 },
-                      lowerLimitValue: { value: 30 },
+                      upperLimitValue: { value: 60 },
+                      lowerLimitValue: { value: 50 },
                     },
                   ],
                 },
@@ -330,8 +314,8 @@ module.exports = {
                   thresholdConfigList: [
                     {
                       ndId: 'percentBattery',
-                      upperLimitValue: { value: 50 },
-                      lowerLimitValue: { value: 40 },
+                      upperLimitValue: { value: 70 },
+                      lowerLimitValue: { value: 60 },
                     },
                   ],
                 },
@@ -351,8 +335,8 @@ module.exports = {
         singleMidCateCmdInfo: {
           scenarioMsg: '제어 동작을 선택하세요.',
           subCmdList: [
-            { enName: 'On', krName: '동작', controlValue: 1 },
-            { enName: 'Off', krName: '정지', controlValue: 0 },
+            { enName: 'ON', krName: '동작', controlValue: 1 },
+            { enName: 'OFF', krName: '정지', controlValue: 0 },
           ],
         },
       },

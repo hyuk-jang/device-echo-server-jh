@@ -12,6 +12,7 @@
   "pkg": {
     "assets": [
       "./src/**/*",
+      "./config/**/*",
       "../device-protocol-converter-jh/**/*"
     ]
   },

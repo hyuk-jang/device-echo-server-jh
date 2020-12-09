@@ -12,16 +12,11 @@ const protocolRelayJkNr = {
   cmdExecTimeoutMs: 1000 * 2,
 };
 
-/**
- *
- * @param {protocol_info} protocol
- * @param {*} deviceId 바꾸고자 하는 Device ID
- */
-function convertProtocolConfig(protocol, deviceId) {
-  const conProtocolInfo = { ...protocol };
-  conProtocolInfo.deviceId = deviceId;
-  return conProtocolInfo;
-}
+const protocolRelayKincony = {
+  mainCategory: 'ETC',
+  subCategory: 'Kincony',
+  cmdExecTimeoutMs: 1000 * 2,
+};
 
 /** @type {desConfig} */
 module.exports = {
@@ -32,11 +27,11 @@ module.exports = {
       serverPort: 15300,
       echoServerList: [
         {
-          protocolConfig: [protocolRelayJkNr],
+          protocolConfig: [protocolRelayKincony],
           mapConfig: {
             projectId: 'ETC',
             mapId: 'solarIot',
-            simulatorPort: 10001,
+            simulatorPort: 15353,
           },
         },
       ],

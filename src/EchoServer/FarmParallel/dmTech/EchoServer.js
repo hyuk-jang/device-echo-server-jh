@@ -40,7 +40,9 @@ class EchoServer extends Model {
     // BU.CLIS(registerAddr, dataLength);
 
     /** @type {detailNodeInfo[]} */
-    const foundNodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
+    const foundNodeList = dataLogger.nodeList.map(nodeId =>
+      _.find(this.nodeList, { nodeId }),
+    );
     // BU.CLI(foundNodeList);
 
     let decodingTable;
