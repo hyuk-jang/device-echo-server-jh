@@ -6,7 +6,7 @@ const { dpc } = require('../../module');
 
 const { BaseModel } = dpc;
 
-const { ESS, FarmParallel, Inverter, UPSAS, Sensor } = BaseModel;
+const { ESS, FarmParallel, Inverter, UPSAS, Sensor, NI } = BaseModel;
 
 const commonUtils = require('../../util/common');
 
@@ -47,8 +47,16 @@ class AbstModel extends EventEmitter {
         this.projectModel = new Sensor(protocolInfo);
         this.nodeDefKeyInfo = Sensor.BASE_KEY;
         break;
+      case 'NI':
+        this.projectModel = new NI(protocolInfo);
+        this.nodeDefKeyInfo = NI.BASE_KEY;
+        break;
       default:
-        _.set(this, 'projectModel', new BaseModel[protocolInfo.mainCategory](protocolInfo));
+        _.set(
+          this,
+          'projectModel',
+          new BaseModel[protocolInfo.mainCategory](protocolInfo),
+        );
         _.set(this, 'nodeDefKeyInfo', BaseModel[protocolInfo.mainCategory].BASE_KEY);
         break;
     }

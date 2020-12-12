@@ -93,7 +93,10 @@ class Control {
 
     // grab an arbitrary unused port.
     this.socketServer.listen(this.port, () => {
-      BU.log(`${this.getServerName()} opened this.socketServer on`, this.socketServer.address());
+      BU.log(
+        `${this.getServerName()} opened this.socketServer on`,
+        this.socketServer.address(),
+      );
     });
 
     this.socketServer.on('close', () => {
@@ -127,7 +130,9 @@ class Control {
     echoServer.init;
 
     // 동일한 에코서버가 생성되었을 경우에는 추가하지 않음
-    const existEchoServer = _.find(this.echoServerList, eServer => _.isEqual(echoServer, eServer));
+    const existEchoServer = _.find(this.echoServerList, eServer =>
+      _.isEqual(echoServer, eServer),
+    );
     _.isEmpty(existEchoServer) && this.echoServerList.push(echoServer);
 
     return echoServer;
@@ -146,7 +151,11 @@ class Control {
    */
   spreadMsg(msg) {
     // BU.CLI(data);
-    const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(new Date(), '', 2)}.log`;
+    const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(
+      new Date(),
+      '',
+      2,
+    )}.log`;
     BU.appendFile(logPath, `onData : ${msg}`);
 
     // 응답 받을 데이터 배열
@@ -185,7 +194,11 @@ class Control {
       const { echoData, echoName } = echoDataInfo;
       if (_.isEmpty(echoData) || _.isBoolean(echoData)) return;
 
-      const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(new Date(), '', 2)}.log`;
+      const logPath = `./log/echo/${this.siteId}/${BU.convertDateToText(
+        new Date(),
+        '',
+        2,
+      )}.log`;
       BU.appendFile(logPath, `${echoName} - echoData: ${echoData}`);
       socket.write(echoData);
     }, 0);

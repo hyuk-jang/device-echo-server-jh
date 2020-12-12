@@ -53,7 +53,10 @@ module.exports = class extends DefaultConverter {
     });
 
     // registerAddr가 0이 아닐수가 있기 때문에 데이터를 자름
-    const selectedDlDataList = dlDataList.slice(registerAddr, _.sum([registerAddr, dataLength]));
+    const selectedDlDataList = dlDataList.slice(
+      registerAddr,
+      _.sum([registerAddr, dataLength]),
+    );
     // 데이터를 Buffer에 추가
     const bodyBuffer = selectedDlDataList.reduce((buf, data) => {
       return Buffer.concat([

@@ -17,4 +17,7 @@ module.exports = {
   S2W: {
     grapeFarm: require('./mapStorage/S2W/grapeFarm.map'),
   },
+  NI: {
+    compressor: require('./mapStorage/NI/cDaq.map'),
+  },
 };

@@ -116,6 +116,7 @@ module.exports = {
             nodeId += `_${nodeInfo.target_code}`;
           }
 
+          /** @type {detailNodeInfo} */
           const detailNodeInfo = {
             classId: nodeClassInfo.target_id,
             className: nodeClassInfo.target_name,
@@ -125,6 +126,7 @@ module.exports = {
             targetCode: nodeInfo.target_code,
             dlIdx: nodeInfo.data_logger_index || 0,
             dIdx: nodeInfo.data_index || 0,
+            nodeType: nodeInfo.node_type,
             nodeId,
             data: null,
           };
