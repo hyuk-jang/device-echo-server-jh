@@ -27,7 +27,6 @@ class Main {
    */
   init(desConfig) {
     const { dbcConnConfig = {}, echoConfigList } = desConfig;
-    // BU.CLIS(dbcConnConfig, echoConfigList);
     // Site 단위 서버 생성
     this.createServer(echoConfigList);
 
@@ -103,7 +102,7 @@ class Main {
           mapConfig: {
             mapId = '',
             projectId = '',
-            simulatorPort = serverPort + 500,
+            simulatorPort = serverPort + 1000,
           } = {},
         } = echoServerConfing;
 

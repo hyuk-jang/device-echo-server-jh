@@ -1,4 +1,4 @@
 // eslint-disable-next-line import/no-dynamic-require
-const dynamicModule = require(`./${process.env.P_MAIN_ID}/${process.env.P_SUB_ID}`);
+const dynamicModule = require(`./${process.env.P_MAIN_ID}/${process.env.P_SUB_ID}.js`);
 
 module.exports = dynamicModule;

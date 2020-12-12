@@ -54,7 +54,7 @@ class Control {
   createServer(parserInfo = {}) {
     this.socketServer = net
       .createServer(socket => {
-        BU.log(`${this.getServerName()}client is Connected ${this.port}`);
+        // BU.log(`${this.getServerName()}client is Connected ${this.port}`);
         // socket.end('goodbye\n');
         if (!_.isEmpty(parserInfo)) {
           let stream = null;
@@ -127,7 +127,7 @@ class Control {
     const EchoServer = require(path);
     // 에코서버 객체화
     const echoServer = new EchoServer(protocolInfo, deviceMap);
-    echoServer.init;
+    // echoServer.init;
 
     // 동일한 에코서버가 생성되었을 경우에는 추가하지 않음
     const existEchoServer = _.find(this.echoServerList, eServer =>
@@ -166,7 +166,7 @@ class Control {
     // Echo Server 중 요청한 명령에 대한 응답은 1개이어야만 함.
     this.echoServerList.forEach(echoServer => {
       // Observer 패턴으로 요청한 데이터 리스트를 모두 삽입
-      const echoData = echoServer.onData(msg);
+      const echoData = echoServer.onData(msg, this);
       if (_.isEmpty(echoData)) return false;
 
       // 데이터를 정상적으로 생성한 Echo Server의 생성 정보를 가져옴

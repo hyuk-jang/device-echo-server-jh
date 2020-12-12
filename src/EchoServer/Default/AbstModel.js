@@ -6,7 +6,7 @@ const { dpc } = require('../../module');
 
 const { BaseModel } = dpc;
 
-const { ESS, FarmParallel, Inverter, UPSAS, Sensor, NI } = BaseModel;
+const { ETC, ESS, FarmParallel, Inverter, UPSAS, Sensor, NI } = BaseModel;
 
 const commonUtils = require('../../util/common');
 
@@ -35,6 +35,10 @@ class AbstModel extends EventEmitter {
 
     // Strategy Pattern
     switch (protocolInfo.mainCategory) {
+      case 'ETC':
+        this.projectModel = new ETC(protocolInfo);
+        this.nodeDefKeyInfo = ETC.BASE_KEY;
+        break;
       case 'UPSAS':
         this.projectModel = new UPSAS(protocolInfo);
         this.nodeDefKeyInfo = UPSAS.BASE_KEY;
@@ -99,7 +103,7 @@ class AbstModel extends EventEmitter {
         // if (nodeInfo.isSensor && _.isNumber(nodeInfo.data) && nodeInfo.data % 1 !== 0) {
         if (nodeInfo.isSensor && _.isNumber(nodeInfo.data)) {
           // 현재 값을 기준으로 95% ~ 105% 사이의 랜덤 값을 사용
-          nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.995, 1.005, true));
+          nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.99, 1.01, true));
         }
       });
 

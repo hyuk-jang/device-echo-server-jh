@@ -20,7 +20,9 @@ class EchoServer extends Model {
     this.isKwUnit = isKwUnit;
 
     // 기존에 객체에 생성되어 있는지 체크
-    const foundInstance = _.find(instanceList, insInfo => _.isEqual(insInfo.id, deviceId));
+    const foundInstance = _.find(instanceList, insInfo =>
+      _.isEqual(insInfo.id, deviceId),
+    );
 
     // 없다면 신규로 생성
     if (_.isEmpty(foundInstance)) {
@@ -152,7 +154,10 @@ class EchoServer extends Model {
       Buffer.from('419'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.powerGridKw * pvCurrentScale), 4),
+      this.protocolConverter.convertNumToBuf(
+        _.round(this.ds.powerGridKw * pvCurrentScale),
+        4,
+      ),
       this.DELIMETER,
       this.protocolConverter.convertNumToBuf(_.round(this.ds.powerCpKwh), 7),
       this.DELIMETER,
@@ -210,7 +215,11 @@ class EchoServer extends Model {
     // BU.CLI('bufData', bufData);
 
     const cmd = receiveBuffer.slice(
-      _.sum([this.HEADER_INFO.BYTE.SOP, this.HEADER_INFO.BYTE.CODE, this.HEADER_INFO.BYTE.ID]),
+      _.sum([
+        this.HEADER_INFO.BYTE.SOP,
+        this.HEADER_INFO.BYTE.CODE,
+        this.HEADER_INFO.BYTE.ID,
+      ]),
     );
 
     // 모델 데이터 변화
@@ -239,7 +248,11 @@ module.exports = EchoServer;
 if (require !== undefined && require.main === module) {
   console.log('__main__');
 
-  const echoServer = new EchoServer({ deviceId: '001', subCategory: 'das_1.3', option: true });
+  const echoServer = new EchoServer({
+    deviceId: '001',
+    subCategory: 'das_1.3',
+    option: true,
+  });
 
   echoServer.reload();
   let msg = echoServer.makeSystem();

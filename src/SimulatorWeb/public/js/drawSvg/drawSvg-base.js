@@ -38,7 +38,7 @@ const DRAW_TYPE = {
 const {
   drawInfo: {
     frame: {
-      mapInfo: { width: mapWidth, height: mapHeight, backgroundInfo },
+      mapInfo: { width: mapWidth, height: mapHeight, backgroundInfo = {} },
       svgModelResourceList,
     },
     positionInfo: { svgNodeList = [], svgPlaceList = [], svgCmdList = [] },
@@ -350,7 +350,7 @@ function initDrawSvg() {
 
   // 시나리오 명령
   scenarioCmdList.forEach(scenarioCmdInfo => {
-    const { scenarioId: cmdId, scenarioName: cmdName, svgNodePosOpt } = scenarioCmdInfo;
+    const { cmdId, cmdName, svgNodePosOpt } = scenarioCmdInfo;
 
     setCmdStorage('SCENARIO', cmdId, cmdName, svgNodePosOpt);
   });
@@ -445,7 +445,7 @@ function drawSvgElement(svgDrawInfo, drawType) {
 
   // 클래스를 지정한다면 Attr 추가
   if (defaultSvgClass) {
-    bgOption.class = defaultSvgClass;
+    bgOption.class = errColor;
   }
   // 필터 정보가 있다면 Attr 추가 정의
   _.forEach(filterInfo, (attrValue, attrKey) => {
@@ -671,14 +671,17 @@ function showNodeData(nodeId, data = '') {
         }
       } else {
         selectedColor = errColor;
+        selectedIndex = -1;
       }
     }
 
     // 배경 색상 변경
     selectedColor && svgEleBg.fill(selectedColor);
     // 데이터가 용이하고 class 가 존재할 경우 대체
-    if (isValidData && svgClass.length) {
-      svgEleBg.attr('class', svgClass[selectedIndex]);
+    if (svgClass.length) {
+      isValidData
+        ? svgEleBg.attr('class', svgClass[selectedIndex])
+        : svgEleBg.attr('class', errColor);
     }
     // 데이터 색상 변경
     svgEleData.font({ fill: selectedTxtColor });
