@@ -21,6 +21,69 @@ module.exports = class extends DefaultConverter {
   }
 
   /**
+   * FnCode 01, Read Coil. 순수 Spec Data 반환
+   * @param {dataLoggerInfo} dataLogger
+   * @param {Buffer} bufData
+   * @param {decodingProtocolInfo} decodingProtocolInfo 상속 객체에서 지정 필요
+   */
+  readCoil(dataLogger, bufData, decodingTable) {
+    const slaveAddr = bufData.readIntBE(0, 1);
+    const fnCode = bufData.readIntBE(1, 1);
+
+    const registerAddr = bufData.readInt16BE(2);
+    const dataLength = bufData.readInt16BE(4);
+
+    // Modbus Header
+    const header = Buffer.concat([
+      this.protocolConverter.convertNumToWriteInt(slaveAddr),
+      this.protocolConverter.convertNumToWriteInt(fnCode),
+    ]);
+
+    /** @type {detailNodeInfo[]} */
+    const nodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
+
+    /** @type {number[]} */
+    const dlDataList = decodingTable.decodingDataList.map(decodingInfo => {
+      const { key, scale = 1, fixed = 0 } = decodingInfo;
+      const nodeInfo = _.find(nodeList, { defId: key });
+      if (nodeInfo === undefined) {
+        return 0;
+      }
+
+      return _.round(_.divide(nodeInfo.data, scale), fixed);
+    });
+
+    // registerAddr가 0이 아닐수가 있기 때문에 데이터를 자름
+    const selectedDlDataList = dlDataList.slice(
+      registerAddr,
+      _.sum([registerAddr, dataLength]),
+    );
+    // 데이터를 Buffer에 추가
+    const bodyBuffer = selectedDlDataList.reduce((buf, data) => {
+      return Buffer.concat([
+        buf,
+        this.protocolConverter.convertNumToWriteInt(data, {
+          byteLength: 2,
+          isLE: false,
+        }),
+      ]);
+    }, Buffer.alloc(0));
+
+    let command = Buffer.concat([
+      header,
+      Buffer.alloc(1, selectedDlDataList.length * 2),
+      bodyBuffer,
+    ]);
+    // CRC 생성
+    if (this.isExistCrc) {
+      const crcBuf = this.protocolConverter.getModbusChecksum(command);
+      command = Buffer.concat([command, crcBuf]);
+    }
+
+    return command;
+  }
+
+  /**
    * FnCode 4
    * @param {dataLoggerInfo} dataLogger
    * @param {Buffer} bufData
@@ -104,6 +167,7 @@ module.exports = class extends DefaultConverter {
     }
 
     switch (fnCode) {
+      case 3:
       case 4:
         deviceData = this.readInputRegister(foundDataLogger, originalBufData);
         break;

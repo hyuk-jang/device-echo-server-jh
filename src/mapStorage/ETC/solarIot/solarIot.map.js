@@ -1,7 +1,11 @@
 module.exports = {
   drawInfo: {
     frame: {
-      mapInfo: { height: 200, width: 1000 },
+      mapInfo: {
+        height: 200,
+        width: 1000,
+        backgroundInfo: { backgroundData: 'red', backgroundPosition: [0, 0] },
+      },
       svgModelResourceList: [
         {
           id: 'deviceArea',
@@ -10,6 +14,7 @@ module.exports = {
             width: 800,
             height: 100,
             color: ['url(#bg-sky-1)'],
+            opacity: 1,
             filterInfo: { filter: 'url(#deviceShadow)' },
           },
         },
@@ -42,25 +47,25 @@ module.exports = {
       svgPlaceList: [
         {
           id: 'DA_001',
-          name: '장치 영역_001',
+          name: '장치 영역 001',
           point: [100, 50, 900, 150],
           resourceId: 'deviceArea',
         },
         {
           id: 'DA_002',
-          name: '장치 영역_002',
+          name: '장치 영역 002',
           point: [100, 50, 900, 150],
           resourceId: 'deviceArea',
         },
         {
           id: 'DA_003',
-          name: '장치 영역_003',
+          name: '장치 영역 003',
           point: [100, 50, 900, 150],
           resourceId: 'deviceArea',
         },
         {
           id: 'DA_004',
-          name: '장치 영역_004',
+          name: '장치 영역 004',
           point: [100, 50, 900, 150],
           resourceId: 'deviceArea',
         },
@@ -205,6 +210,7 @@ module.exports = {
                   resourceId: 'sensor',
                   axisScale: [0.03, 0.5],
                   moveScale: [0, 0],
+                  placeId: 'DA_001',
                 },
               },
             ],
@@ -226,28 +232,44 @@ module.exports = {
                 target_name: 'Lv.1',
                 data_logger_index: 0,
                 data_index: 1,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.265, 0.5] },
+                svgNodePosOpt: {
+                  resourceId: 'cmdBtn',
+                  axisScale: [0.265, 0.5],
+                  placeId: 'DA_001',
+                },
               },
               {
                 target_code: '2',
                 target_name: 'Lv.2',
                 data_logger_index: 1,
                 data_index: 2,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.5, 0.5] },
+                svgNodePosOpt: {
+                  resourceId: 'cmdBtn',
+                  axisScale: [0.5, 0.5],
+                  placeId: 'DA_002',
+                },
               },
               {
                 target_code: '3',
                 target_name: 'Lv.3',
                 data_logger_index: 2,
                 data_index: 3,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.735, 0.5] },
+                svgNodePosOpt: {
+                  resourceId: 'cmdBtn',
+                  axisScale: [0.735, 0.5],
+                  placeId: 'DA_003',
+                },
               },
               {
                 target_code: '4',
                 target_name: 'Lv.4',
                 data_logger_index: 3,
                 data_index: 4,
-                svgNodePosOpt: { resourceId: 'cmdBtn', axisScale: [0.97, 0.5] },
+                svgNodePosOpt: {
+                  resourceId: 'cmdBtn',
+                  axisScale: [0.97, 0.5],
+                  placeId: 'DA_004',
+                },
               },
             ],
           },

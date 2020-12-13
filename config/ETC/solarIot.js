@@ -31,7 +31,7 @@ module.exports = {
           mapConfig: {
             projectId: 'ETC',
             mapId: 'solarIot',
-            simulatorPort: 15353,
+            simulatorPort: process.env.SIMUL_PORT || 15353,
           },
         },
       ],

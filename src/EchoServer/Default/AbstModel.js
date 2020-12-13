@@ -6,7 +6,7 @@ const { dpc } = require('../../module');
 
 const { BaseModel } = dpc;
 
-const { ETC, ESS, FarmParallel, Inverter, UPSAS, Sensor, NI } = BaseModel;
+const { ETC, FarmParallel, UPSAS, Sensor, NI } = BaseModel;
 
 const commonUtils = require('../../util/common');
 

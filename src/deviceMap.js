@@ -1,5 +1,8 @@
 /* eslint-disable global-require */
 module.exports = {
+  STP: {
+    first: require('./mapStorage/STP/first'),
+  },
   ETC: {
     solarIot: require('./mapStorage/ETC/solarIot'),
   },
