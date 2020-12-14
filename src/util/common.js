@@ -2,6 +2,8 @@ const _ = require('lodash');
 
 const { BU } = require('base-util-jh');
 
+const { di } = require('../module');
+
 module.exports = {
   /**
    * @param {mDeviceMap} deviceMap
@@ -58,7 +60,8 @@ module.exports = {
     // 장소 재구성
     placeRelationList.forEach(placeClassInfo => {
       placeClassInfo.defList.forEach(placeDefInfo => {
-        placeDefInfo.placeList.forEach(placeInfo => {
+        const { placeList = [] } = placeDefInfo;
+        placeList.forEach(placeInfo => {
           const {
             repeatId = '',
             target_code: uniqNumber = '',
@@ -90,10 +93,10 @@ module.exports = {
    * @param {mDeviceMap} deviceMap
    * @return {detailNodeInfo[]}
    */
-  makeNodeList: (deviceMap = {}) => {
+  makeNodeList: deviceMap => {
     const returnList = [];
 
-    const { setInfo = {}, relationInfo: { placeRelationList = [] } = {} } = deviceMap;
+    const { setInfo, relationInfo: { placeRelationList = [] } = {} } = deviceMap;
 
     const {
       dataLoggerStructureList = [],
@@ -101,34 +104,58 @@ module.exports = {
       repeatNodeList = [],
     } = setInfo;
 
-    nodeStructureList.forEach(nodeClassInfo => {
+    nodeStructureList.forEach(nClassInfo => {
+      const {
+        defList: nodeDefList = [],
+        is_sensor: isSensor = 1,
+        target_id: ncId,
+        target_name: ncName,
+        data_unit: dataUnit,
+        operationStatusList = [],
+      } = nClassInfo;
+
       // 단순 표기를 위한 node는 제외
-      if (nodeClassInfo.is_sensor < 0) return false;
+      if (isSensor < 0) return false;
       // 노드 개요 목록 순회
-      nodeClassInfo.defList.forEach(nodeDefInfo => {
+      nodeDefList.forEach(nDefInfo => {
+        const {
+          nodeList = [],
+          target_id: ndId,
+          target_prefix: ndPrefix,
+          target_name: ndName = ncName,
+          repeatId,
+        } = nDefInfo;
+
         // repeatId가 있을 경우에는 무시
-        if (nodeDefInfo.repeatId) return false;
+        if (repeatId) return false;
         // 노드 목록 순회
-        nodeDefInfo.nodeList.forEach(nodeInfo => {
+        nodeList.forEach(nodeInfo => {
+          const {
+            target_code: nCode,
+            target_name: nName,
+            data_logger_index: dlIdx = 0,
+            data_index: dIdx = 0,
+            node_type: nType,
+            modbusInfo,
+          } = nodeInfo;
+
           // 노드 ID 정의
-          let nodeId = nodeDefInfo.target_prefix;
-          if (nodeInfo.target_code) {
-            nodeId += `_${nodeInfo.target_code}`;
-          }
+          const nodeId = `${ndPrefix}${nCode ? `_${nCode}` : ''}`;
 
           /** @type {detailNodeInfo} */
           const detailNodeInfo = {
-            classId: nodeClassInfo.target_id,
-            className: nodeClassInfo.target_name,
-            defId: nodeDefInfo.target_id,
-            defName: nodeDefInfo.target_name,
-            isSensor: nodeClassInfo.is_sensor,
-            targetCode: nodeInfo.target_code,
-            dlIdx: nodeInfo.data_logger_index || 0,
-            dIdx: nodeInfo.data_index || 0,
-            nodeType: nodeInfo.node_type,
+            classId: ncId,
+            className: ncName,
+            defId: ndId,
+            defName: ndName,
+            isSensor,
+            targetCode: nCode,
+            dlIdx,
+            dIdx,
+            nodeType: nType,
             nodeId,
             data: null,
+            modbusInfo,
           };
 
           returnList.push(detailNodeInfo);
@@ -142,10 +169,10 @@ module.exports = {
    * @return {detailDataloggerInfo[]}
    */
   makeDataLoggerList: (deviceMap = {}) => {
-    const { setInfo = {}, relationInfo: { placeRelationList = [] } = {} } = deviceMap;
+    const { setInfo, relationInfo: { placeRelationList = [] } = {} } = deviceMap;
 
     const {
-      dataLoggerStructureList = [],
+      dataLoggerStructureList,
       nodeStructureList = [],
       repeatNodeList = [],
     } = setInfo;
@@ -153,23 +180,34 @@ module.exports = {
     /** @type {detailDataloggerInfo[]} */
     const returnList = [];
     // 데이터 로거 대분류 구조 순회
-    dataLoggerStructureList.forEach(dataLoggerClassInfo => {
+    dataLoggerStructureList.forEach(dLClassInfo => {
+      const {
+        dataLoggerDeviceList = [],
+        target_name: className,
+        target_prefix: prefix,
+      } = dLClassInfo;
       // 데이터 로거 장치 목록 순회
-      dataLoggerClassInfo.dataLoggerDeviceList.forEach(dataLoggerDeviceInfo => {
+      dataLoggerDeviceList.forEach(dlDeviceInfo => {
+        const {
+          repeatId,
+          target_code: dlDeviceCode,
+          serial_number: serialNumber,
+          nodeList = [],
+        } = dlDeviceInfo;
         // repeatId가 있을 경우에는 무시
-        if (dataLoggerDeviceInfo.repeatId) return false;
+        if (repeatId) return false;
 
-        let dataLoggerId = dataLoggerClassInfo.target_prefix;
-        if (dataLoggerDeviceInfo.target_code.length) {
-          dataLoggerId += `_${dataLoggerDeviceInfo.target_code}`;
+        let dataLoggerId = prefix;
+        if (dlDeviceCode.length) {
+          dataLoggerId += `_${dlDeviceCode}`;
         }
 
         const detailDataloggerInfo = {
-          className: dataLoggerClassInfo.target_name,
-          prefix: dataLoggerClassInfo.target_prefix,
+          className,
+          prefix,
           dataLoggerId,
-          serialNumber: dataLoggerDeviceInfo.serial_number,
-          nodeList: dataLoggerDeviceInfo.nodeList,
+          serialNumber,
+          nodeList,
         };
         returnList.push(detailDataloggerInfo);
       });

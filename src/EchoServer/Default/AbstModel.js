@@ -6,7 +6,7 @@ const { dpc } = require('../../module');
 
 const { BaseModel } = dpc;
 
-const { ETC, FarmParallel, UPSAS, Sensor, NI } = BaseModel;
+const { ETC, FarmParallel, UPSAS, Sensor, STP, NI } = BaseModel;
 
 const commonUtils = require('../../util/common');
 
@@ -51,6 +51,11 @@ class AbstModel extends EventEmitter {
         this.projectModel = new Sensor(protocolInfo);
         this.nodeDefKeyInfo = Sensor.BASE_KEY;
         break;
+      case 'STP':
+        console.log(protocolInfo);
+        this.projectModel = new STP(protocolInfo);
+        this.nodeDefKeyInfo = STP.BASE_KEY;
+        break;
       case 'NI':
         this.projectModel = new NI(protocolInfo);
         this.nodeDefKeyInfo = NI.BASE_KEY;
@@ -80,6 +85,8 @@ class AbstModel extends EventEmitter {
     // 장치들의 데이터를 취합하는 데이터 로거
     this.dataLoggerList = commonUtils.makeDataLoggerList(deviceMap);
 
+    // console.log(this.dataLoggerList);
+
     this.initModel();
     // BU.CLIN(this);
     this.reload();
@@ -101,11 +108,13 @@ class AbstModel extends EventEmitter {
       this.nodeList.forEach(nodeInfo => {
         // 센서이고 현재 데이터가 숫자이면서 float형인 경우만 랜덤 수치를 적용
         // if (nodeInfo.isSensor && _.isNumber(nodeInfo.data) && nodeInfo.data % 1 !== 0) {
-        if (nodeInfo.isSensor && _.isNumber(nodeInfo.data)) {
+        if (nodeInfo.isSensor === 1 && _.isNumber(nodeInfo.data)) {
           // 현재 값을 기준으로 95% ~ 105% 사이의 랜덤 값을 사용
           nodeInfo.data = _.multiply(nodeInfo.data, _.random(0.99, 1.01, true));
         }
       });
+
+      // console.log(this.nodeList);
 
       this.emitReload();
     } catch (error) {

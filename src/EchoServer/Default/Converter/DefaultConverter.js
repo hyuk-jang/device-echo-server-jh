@@ -40,8 +40,50 @@ module.exports = class extends EventEmitter {
     this.reload = reload;
     this.wrapFrameMsg = wrapFrameMsg;
 
+    // console.log(this.nodeList);
+
+    this.setModbus();
+
     model.on('reload', () => {
       this.emit('reload');
+    });
+  }
+
+  setModbus() {
+    this.dataLoggerList.forEach(dlInfo => {
+      const { nodeList } = dlInfo;
+
+      const modbusStorage = Array(40000).fill(0);
+
+      dlInfo.modbusStorage = modbusStorage;
+
+      nodeList.forEach(nodeId => {
+        const nodeInfo = _.find(this.nodeList, { nodeId });
+
+        if (nodeInfo) {
+          const { modbusInfo } = nodeInfo;
+          if (modbusInfo) {
+            const { address, fnCode, dataLength } = modbusInfo;
+
+            let realAddr = 1;
+
+            switch (fnCode) {
+              case 1:
+                realAddr += address;
+                modbusStorage[realAddr] = nodeInfo;
+                break;
+              case 3:
+              case 4:
+                realAddr += address + 30000;
+                modbusStorage[realAddr] = nodeInfo;
+                break;
+
+              default:
+                break;
+            }
+          }
+        }
+      });
     });
   }
 

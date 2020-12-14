@@ -2,7 +2,7 @@ require('../config.guide');
 
 const protocolStp = {
   mainCategory: 'STP',
-  subCategory: 'first',
+  subCategory: 'JungHan',
   cmdExecTimeoutMs: 1000 * 2,
 };
 
@@ -17,8 +17,8 @@ module.exports = {
         {
           protocolConfig: [protocolStp],
           mapConfig: {
-            projectId: 'ETC',
-            mapId: 'solarIot',
+            projectId: 'STP',
+            mapId: 'first',
             simulatorPort: process.env.SIMUL_PORT || 10001,
           },
         },

@@ -85,7 +85,7 @@ module.exports = class extends DefaultConverter {
 
   /**
    * FnCode 4
-   * @param {detailDataloggerInfo} dataLogger
+   * @param {dataLoggerInfo} dataLogger
    * @param {Buffer} bufData
    * @param {decodingProtocolInfo} decodingProtocolInfo 상속 객체에서 지정 필요
    */
@@ -96,45 +96,14 @@ module.exports = class extends DefaultConverter {
     const registerAddr = bufData.readInt16BE(2);
     const dataLength = bufData.readInt16BE(4);
 
-    let currIndex = 0;
-
     // Modbus Header
     const header = Buffer.concat([
       this.protocolConverter.convertNumToWriteInt(slaveAddr),
       this.protocolConverter.convertNumToWriteInt(fnCode),
     ]);
 
-    console.log('registerAddr', registerAddr);
-
     /** @type {detailNodeInfo[]} */
     const nodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
-
-    // console.log(dataLogger);
-
-    const dataBuffer = Buffer.alloc(dataLength * 2, 0);
-
-    const { modbusStorage } = dataLogger;
-
-    // 시작주소로부터 길이만큼의 데이터를 추출
-    while (currIndex < dataLength) {
-      const targetIndex = 30001 + registerAddr + currIndex;
-      const { data, modbusInfo: { dataLength: dLength = 1 } = {} } = modbusStorage[
-        targetIndex
-      ];
-
-      console.log('@!#!@', data, targetIndex);
-
-      if (dLength === 1) {
-        dataBuffer.writeInt16BE(data, currIndex * 2);
-        currIndex += 1;
-      } else if (dLength === 2) {
-        dataBuffer.writeFloatBE(data, currIndex * 2);
-        currIndex += 2;
-      }
-    }
-    // dataBuffer.alloc(currIndex, )
-
-    console.log(dataBuffer);
 
     /** @type {number[]} */
     const dlDataList = decodingTable.decodingDataList.map(decodingInfo => {

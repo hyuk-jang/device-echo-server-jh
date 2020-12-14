@@ -121,7 +121,9 @@ class SocketClient extends AbstController {
         returnValue = _(receiveDataList)
           .reject(receiveData => _.isUndefined(receiveData))
           .head();
-        returnValue = Buffer.isBuffer(returnValue) ? returnValue : JSON.stringify(returnValue);
+        returnValue = Buffer.isBuffer(returnValue)
+          ? returnValue
+          : JSON.stringify(returnValue);
         break;
       case 'S':
         returnValue = this.echoServerFP.onData(bufData);
@@ -149,13 +151,21 @@ class SocketClient extends AbstController {
       client.on('data', data => {
         BU.CLI(this.configInfo.uuid, data);
         BU.appendFile(
-          `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(new Date(), '', 2)}.txt`,
+          `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(
+            new Date(),
+            '',
+            2,
+          )}.txt`,
           `onData : ${data}`,
         ).then(() => {
           const returnBuffer = this.dataParser(data);
           if (!_.isEmpty(returnBuffer)) {
             BU.appendFile(
-              `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(new Date(), '', 2)}.txt`,
+              `./log/fp/${this.configInfo.uuid}/${BU.convertDateToText(
+                new Date(),
+                '',
+                2,
+              )}.txt`,
               `writeData : ${returnBuffer}`,
             ).then(() => {
               setTimeout(() => {
@@ -233,7 +243,9 @@ class SocketServer {
     const server = net
       .createServer(socket => {
         // socket.end('goodbye\n');
-        console.log(`client is Connected ${this.port}\n addressInfo: ${socket.remoteAddress}`);
+        console.log(
+          `client is Connected ${this.port}\n addressInfo: ${socket.remoteAddress}`,
+        );
 
         // 인증 요청 코드 전송
         this.currentCMD = 'A';
@@ -249,7 +261,10 @@ class SocketServer {
             // Parser 가 ETX 까지 삭제하므로 끝에 붙임
             // data += this.defaultConverter.protocolConverter.ETX;
 
-            const decodingData = this.defaultWrapper.peelFrameMsg(this.protocolInfo, data);
+            const decodingData = this.defaultWrapper.peelFrameMsg(
+              this.protocolInfo,
+              data,
+            );
             // BU.CLI(decodingData);
 
             if (this.currentCMD === 'A') {
@@ -300,7 +315,10 @@ class SocketServer {
 
               this.inverterDcData = requestInverterMsg;
 
-              this.currentMsg = _.get(_.nth(this.inverterDcData, this.inverterIndexCMD), 'data');
+              this.currentMsg = _.get(
+                _.nth(this.inverterDcData, this.inverterIndexCMD),
+                'data',
+              );
               BU.CLI('인버터 데이터 요청 메시지 전송', this.currentMsg);
               socket.write(this.currentMsg);
             } else if (this.currentCMD === 'I') {
@@ -324,7 +342,10 @@ class SocketServer {
 
               if (this.inverterDcData.length !== this.inverterIndexCMD) {
                 BU.CLIS(this.inverterDcData, this.inverterIndexCMD);
-                this.currentMsg = _.get(_.nth(this.inverterDcData, this.inverterIndexCMD), 'data');
+                this.currentMsg = _.get(
+                  _.nth(this.inverterDcData, this.inverterIndexCMD),
+                  'data',
+                );
                 BU.CLI('인버터 데이터 요청 메시지 전송', this.currentMsg);
                 socket.write(this.currentMsg);
               } else {
