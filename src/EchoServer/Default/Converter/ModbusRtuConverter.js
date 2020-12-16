@@ -21,59 +21,50 @@ module.exports = class extends DefaultConverter {
   }
 
   /**
+   * FIXME: Read Coil 작업 필요
    * FnCode 01, Read Coil. 순수 Spec Data 반환
    * @param {dataLoggerInfo} dataLogger
    * @param {Buffer} bufData
-   * @param {decodingProtocolInfo} decodingProtocolInfo 상속 객체에서 지정 필요
    */
-  readCoil(dataLogger, bufData, decodingTable) {
+  readCoil(dataLogger, bufData) {
+    // BU.CLI(bufData);
     const slaveAddr = bufData.readIntBE(0, 1);
     const fnCode = bufData.readIntBE(1, 1);
-
     const registerAddr = bufData.readInt16BE(2);
     const dataLength = bufData.readInt16BE(4);
+
+    let currIndex = 0;
 
     // Modbus Header
     const header = Buffer.concat([
       this.protocolConverter.convertNumToWriteInt(slaveAddr),
       this.protocolConverter.convertNumToWriteInt(fnCode),
     ]);
+    // 데이터 길이는 요청 길이의 2배
+    const dataBuffer = Buffer.alloc(dataLength * 2, 0);
 
-    /** @type {detailNodeInfo[]} */
-    const nodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
+    const { modbusStorage } = dataLogger;
 
-    /** @type {number[]} */
-    const dlDataList = decodingTable.decodingDataList.map(decodingInfo => {
-      const { key, scale = 1, fixed = 0 } = decodingInfo;
-      const nodeInfo = _.find(nodeList, { defId: key });
-      if (nodeInfo === undefined) {
-        return 0;
+    // 시작주소로부터 길이만큼의 데이터를 추출
+    while (currIndex < dataLength) {
+      const targetIndex = 30001 + registerAddr + currIndex;
+      const { data, modbusInfo: { dataLength: dLength = 1 } = {} } = modbusStorage[
+        targetIndex
+      ];
+
+      // console.log(nodeId, data, targetIndex);
+      // FIXME: modbusStorage 추가 속성에 따라서 분기할 수 있는 로직 필요시 수정
+      if (dLength === 1) {
+        dataBuffer.writeInt16BE(data, currIndex * 2);
+        currIndex += 1;
+      } else if (dLength === 2) {
+        dataBuffer.writeFloatBE(data, currIndex * 2);
+        currIndex += 2;
       }
+    }
 
-      return _.round(_.divide(nodeInfo.data, scale), fixed);
-    });
+    let command = Buffer.concat([header, Buffer.alloc(1, dataBuffer.length), dataBuffer]);
 
-    // registerAddr가 0이 아닐수가 있기 때문에 데이터를 자름
-    const selectedDlDataList = dlDataList.slice(
-      registerAddr,
-      _.sum([registerAddr, dataLength]),
-    );
-    // 데이터를 Buffer에 추가
-    const bodyBuffer = selectedDlDataList.reduce((buf, data) => {
-      return Buffer.concat([
-        buf,
-        this.protocolConverter.convertNumToWriteInt(data, {
-          byteLength: 2,
-          isLE: false,
-        }),
-      ]);
-    }, Buffer.alloc(0));
-
-    let command = Buffer.concat([
-      header,
-      Buffer.alloc(1, selectedDlDataList.length * 2),
-      bodyBuffer,
-    ]);
     // CRC 생성
     if (this.isExistCrc) {
       const crcBuf = this.protocolConverter.getModbusChecksum(command);
@@ -87,10 +78,9 @@ module.exports = class extends DefaultConverter {
    * FnCode 4
    * @param {detailDataloggerInfo} dataLogger
    * @param {Buffer} bufData
-   * @param {decodingProtocolInfo} decodingProtocolInfo 상속 객체에서 지정 필요
    */
-  readInputRegister(dataLogger, bufData, decodingTable) {
-    BU.CLI(bufData);
+  readInputRegister(dataLogger, bufData) {
+    // BU.CLI(bufData);
     const slaveAddr = bufData.readIntBE(0, 1);
     const fnCode = bufData.readIntBE(1, 1);
     const registerAddr = bufData.readInt16BE(2);
@@ -103,14 +93,7 @@ module.exports = class extends DefaultConverter {
       this.protocolConverter.convertNumToWriteInt(slaveAddr),
       this.protocolConverter.convertNumToWriteInt(fnCode),
     ]);
-
-    // console.log('registerAddr', registerAddr);
-
-    /** @type {detailNodeInfo[]} */
-    const nodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
-
-    // console.log(_.map(nodeList, 'nodeId'));
-
+    // 데이터 길이는 요청 길이의 2배
     const dataBuffer = Buffer.alloc(dataLength * 2, 0);
 
     const { modbusStorage } = dataLogger;
@@ -118,14 +101,12 @@ module.exports = class extends DefaultConverter {
     // 시작주소로부터 길이만큼의 데이터를 추출
     while (currIndex < dataLength) {
       const targetIndex = 30001 + registerAddr + currIndex;
-      const {
-        nodeId,
-        data,
-        modbusInfo: { dataLength: dLength = 1 } = {},
-      } = modbusStorage[targetIndex];
+      const { data, modbusInfo: { dataLength: dLength = 1 } = {} } = modbusStorage[
+        targetIndex
+      ];
 
       // console.log(nodeId, data, targetIndex);
-
+      // FIXME: modbusStorage 추가 속성에 따라서 분기할 수 있는 로직 필요시 수정
       if (dLength === 1) {
         dataBuffer.writeInt16BE(data, currIndex * 2);
         currIndex += 1;
@@ -134,42 +115,9 @@ module.exports = class extends DefaultConverter {
         currIndex += 2;
       }
     }
-    // dataBuffer.alloc(currIndex, )
 
-    console.log(dataBuffer);
+    let command = Buffer.concat([header, Buffer.alloc(1, dataBuffer.length), dataBuffer]);
 
-    /** @type {number[]} */
-    const dlDataList = decodingTable.decodingDataList.map(decodingInfo => {
-      const { key, scale = 1, fixed = 0 } = decodingInfo;
-      const nodeInfo = _.find(nodeList, { defId: key });
-      if (nodeInfo === undefined) {
-        return 0;
-      }
-
-      return _.round(_.divide(nodeInfo.data, scale), fixed);
-    });
-
-    // registerAddr가 0이 아닐수가 있기 때문에 데이터를 자름
-    const selectedDlDataList = dlDataList.slice(
-      registerAddr,
-      _.sum([registerAddr, dataLength]),
-    );
-    // 데이터를 Buffer에 추가
-    const bodyBuffer = selectedDlDataList.reduce((buf, data) => {
-      return Buffer.concat([
-        buf,
-        this.protocolConverter.convertNumToWriteInt(data, {
-          byteLength: 2,
-          isLE: false,
-        }),
-      ]);
-    }, Buffer.alloc(0));
-
-    let command = Buffer.concat([
-      header,
-      Buffer.alloc(1, selectedDlDataList.length * 2),
-      bodyBuffer,
-    ]);
     // CRC 생성
     if (this.isExistCrc) {
       const crcBuf = this.protocolConverter.getModbusChecksum(command);

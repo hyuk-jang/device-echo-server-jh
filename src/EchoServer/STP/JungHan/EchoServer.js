@@ -23,7 +23,7 @@ class EchoServer extends ModbusRtuConverter {
 
     this.init(this.model);
 
-    this.isExistCrc = false;
+    this.isExistCrc = true;
 
     // console.log(this.nodeList);
   }
