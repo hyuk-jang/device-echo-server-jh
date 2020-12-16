@@ -104,12 +104,12 @@ module.exports = class extends DefaultConverter {
       this.protocolConverter.convertNumToWriteInt(fnCode),
     ]);
 
-    console.log('registerAddr', registerAddr);
+    // console.log('registerAddr', registerAddr);
 
     /** @type {detailNodeInfo[]} */
     const nodeList = dataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
 
-    // console.log(dataLogger);
+    // console.log(_.map(nodeList, 'nodeId'));
 
     const dataBuffer = Buffer.alloc(dataLength * 2, 0);
 
@@ -118,11 +118,13 @@ module.exports = class extends DefaultConverter {
     // 시작주소로부터 길이만큼의 데이터를 추출
     while (currIndex < dataLength) {
       const targetIndex = 30001 + registerAddr + currIndex;
-      const { data, modbusInfo: { dataLength: dLength = 1 } = {} } = modbusStorage[
-        targetIndex
-      ];
+      const {
+        nodeId,
+        data,
+        modbusInfo: { dataLength: dLength = 1 } = {},
+      } = modbusStorage[targetIndex];
 
-      console.log('@!#!@', data, targetIndex);
+      // console.log(nodeId, data, targetIndex);
 
       if (dLength === 1) {
         dataBuffer.writeInt16BE(data, currIndex * 2);
@@ -198,8 +200,6 @@ module.exports = class extends DefaultConverter {
       return;
     }
 
-    console.log(fnCode);
-
     switch (fnCode) {
       case 1:
         deviceData = this.readCoil(foundDataLogger, originalBufData);
@@ -212,13 +212,13 @@ module.exports = class extends DefaultConverter {
         break;
     }
 
+    // BU.CLI(deviceData);
+
     // 데이터가 없으면 반환
     if (_.isEmpty(deviceData)) return undefined;
 
     // Wrapping 처리
     const returnBuffer = this.wrapFrameMsg(deviceData);
-
-    // BU.CLIN(returnBuffer);
 
     return returnBuffer;
   }
