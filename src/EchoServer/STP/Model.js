@@ -70,7 +70,7 @@ class Model extends AbstModel {
           nodeInfo.data = _.random(200, 1200, true);
           break;
         case infoSysMode:
-          nodeInfo.data = _.sample([0, 1, 2]);
+          nodeInfo.data = _.sample(['0', '1', '2']);
           break;
         case infoSky:
         case infoSysOper:
@@ -80,7 +80,7 @@ class Model extends AbstModel {
         case ptc:
         case pumpOil:
         case pumpSw:
-          nodeInfo.data = _.sample([0, 1]);
+          nodeInfo.data = _.sample(['0', '1']);
           break;
         case pressureGaugePipe:
         case pressureGaugeSg:

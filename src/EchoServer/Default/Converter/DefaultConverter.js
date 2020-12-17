@@ -40,8 +40,6 @@ module.exports = class extends EventEmitter {
     this.reload = reload;
     this.wrapFrameMsg = wrapFrameMsg;
 
-    // console.log(this.nodeList);
-
     this.setModbus();
 
     model.on('reload', () => {
@@ -52,8 +50,8 @@ module.exports = class extends EventEmitter {
   setModbus() {
     this.dataLoggerList.forEach(dlInfo => {
       const { nodeList } = dlInfo;
-
-      const modbusStorage = Array(40000).fill(0);
+      // 모드 버스 레지스터 범위가 FC=03 기준 49999
+      const modbusStorage = Array(50000).fill(0);
 
       dlInfo.modbusStorage = modbusStorage;
 
@@ -73,6 +71,9 @@ module.exports = class extends EventEmitter {
                 modbusStorage[realAddr] = nodeInfo;
                 break;
               case 3:
+                realAddr += address + 40000;
+                modbusStorage[realAddr] = nodeInfo;
+                break;
               case 4:
                 realAddr += address + 30000;
                 modbusStorage[realAddr] = nodeInfo;
