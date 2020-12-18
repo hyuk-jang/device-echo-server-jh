@@ -30,9 +30,7 @@ const protocolSensor = {
  * @param {*} deviceId 바꾸고자 하는 Device ID
  */
 function convertProtocolConfig(protocol, deviceId) {
-  const conProtocolInfo = Object.assign(...protocol);
-  conProtocolInfo.deviceId = deviceId;
-  return conProtocolInfo;
+  return { ...protocol, deviceId };
 }
 
 /** @type {desConfig} */

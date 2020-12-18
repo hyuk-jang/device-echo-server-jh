@@ -2,8 +2,8 @@ module.exports = {
   drawInfo: {
     frame: {
       mapInfo: {
-        width: 1280,
-        height: 600,
+        width: 1600,
+        height: 786,
         backgroundInfo: { backgroundData: '/out/defaultMap', backgroundPosition: [0, 0] },
       },
       svgModelResourceList: [
@@ -11,8 +11,8 @@ module.exports = {
           id: 'imgPattern',
           type: 'image',
           elementDrawInfo: {
-            width: 192,
-            height: 102,
+            width: 240,
+            height: 133.62,
             color: ['/img/moduleWave'],
             opacity: 1,
             patternInfo: {
@@ -32,8 +32,8 @@ module.exports = {
           id: 'imgArea',
           type: 'rect',
           elementDrawInfo: {
-            width: 256,
-            height: 120,
+            width: 320,
+            height: 157.2,
             color: 'url(#bg-sky-1)',
             opacity: 1,
             filterInfo: { filter: 'url(#dropShadow)' },
@@ -44,8 +44,8 @@ module.exports = {
           id: 'deviceArea',
           type: 'rect',
           elementDrawInfo: {
-            width: 64,
-            height: 42,
+            width: 80,
+            height: 55.02,
             opacity: 0.5,
             filterInfo: { filter: 'url(#deviceShadow)' },
             color: [null],
@@ -56,8 +56,8 @@ module.exports = {
           id: 'tblAlarmCase3',
           type: 'rect',
           elementDrawInfo: {
-            width: 140.8,
-            height: 120,
+            width: 176,
+            height: 157.2,
             opacity: 0.5,
             filterInfo: { filter: 'url(#deviceShadow)' },
             insideInfo: {
@@ -86,14 +86,14 @@ module.exports = {
           id: 'tblAlarmCase3x3',
           type: 'rect',
           elementDrawInfo: {
-            width: 140.8,
-            height: 108,
+            width: 176,
+            height: 125.76,
             opacity: 0.5,
             filterInfo: { filter: 'url(#deviceShadow)' },
             insideInfo: {
               headerInfo: {
                 bgColor: 'purple',
-                shareRate: 0.2,
+                shareRate: 0.25,
                 fontSize: 12,
                 fontColor: 'white',
               },
@@ -118,8 +118,8 @@ module.exports = {
           id: 'tblSensorCase2',
           type: 'rect',
           elementDrawInfo: {
-            width: 140.8,
-            height: 72,
+            width: 176,
+            height: 94.32,
             opacity: 0.5,
             filterInfo: { filter: 'url(#deviceShadow)' },
             insideInfo: {
@@ -137,8 +137,8 @@ module.exports = {
                   rowsCount: 2,
                   strokeColor: 'white',
                   strokeWidth: 1,
-                  vStrokeScale: 0.6,
-                  titleInfo: { anchor: 'middle', xAxisScale: 0.3, fontColor: 'white' },
+                  vStrokeScale: 0.5,
+                  titleInfo: { anchor: 'middle', xAxisScale: 0.25, fontColor: 'white' },
                   dataInfo: { anchor: 'end', xAxisScale: 0.95 },
                 },
               },
@@ -150,8 +150,8 @@ module.exports = {
           id: 'tblSensorCase3',
           type: 'rect',
           elementDrawInfo: {
-            width: 140.8,
-            height: 96,
+            width: 176,
+            height: 125.76,
             opacity: 0.5,
             filterInfo: { filter: 'url(#deviceShadow)' },
             insideInfo: {
@@ -182,8 +182,8 @@ module.exports = {
           id: 'tblSensorCase4',
           type: 'rect',
           elementDrawInfo: {
-            width: 140.8,
-            height: 120,
+            width: 176,
+            height: 157.2,
             opacity: 0.5,
             filterInfo: { filter: 'url(#deviceShadow)' },
             insideInfo: {
@@ -213,8 +213,8 @@ module.exports = {
           id: 'tblSensorCase6',
           type: 'rect',
           elementDrawInfo: {
-            width: 140.8,
-            height: 168,
+            width: 176,
+            height: 220.08,
             opacity: 0.5,
             filterInfo: { filter: 'url(#deviceShadow)' },
             insideInfo: {
@@ -245,8 +245,8 @@ module.exports = {
           id: 'tblSensorCase7',
           type: 'rect',
           elementDrawInfo: {
-            width: 140.8,
-            height: 192,
+            width: 176,
+            height: 251.52,
             opacity: 0.5,
             filterInfo: { filter: 'url(#deviceShadow)' },
             insideInfo: {
@@ -277,10 +277,10 @@ module.exports = {
           id: 'cmdBtn',
           type: 'rect',
           elementDrawInfo: {
-            width: 64,
-            height: 42,
+            width: 80,
+            height: 55.02,
             opacity: 0.5,
-            color: ['lightgray', 'darkgreen'],
+            color: ['gray', 'darkgreen'],
             errColor: 'red',
             filterInfo: { filter: 'url(#deviceShadow)' },
             insideInfo: {
@@ -308,7 +308,7 @@ module.exports = {
         {
           id: 'sensorOdd',
           type: 'rect',
-          elementDrawInfo: { width: 153.6, height: 22.5, color: 'orange', opacity: 0.3 },
+          elementDrawInfo: { width: 192, height: 29.475, color: 'orange', opacity: 0.3 },
           textStyleInfo: {
             isHiddenTitle: 1,
             anchor: 'middle',
@@ -322,8 +322,8 @@ module.exports = {
           id: 'sensorEven',
           type: 'rect',
           elementDrawInfo: {
-            width: 153.6,
-            height: 22.5,
+            width: 192,
+            height: 29.475,
             color: 'white',
             errColor: 'white',
             opacity: 0.3,
@@ -344,91 +344,91 @@ module.exports = {
         {
           id: 'IMG_ENV',
           name: '이미지',
-          point: [256, 0, 448, 102],
+          point: [320, 0, 560, 133.62],
           resourceId: 'imgPattern',
         },
         {
           id: 'AREA_ALA_MOD_OT',
           name: '탱크 모드',
-          point: [1088, 360, 1228.8, 480],
+          point: [1376, 471.6, 1552, 628.8],
           resourceId: 'tblAlarmCase3',
         },
         {
           id: 'AREA_ALA_MOD_STE',
           name: '작동 모드',
-          point: [1088, 210, 1228.8, 330],
+          point: [1376, 275.1, 1552, 432.3],
           resourceId: 'tblAlarmCase3',
         },
         {
           id: 'AREA_ALA_BASE',
           name: '기본 정보',
-          point: [1088, 60, 1228.8, 168],
+          point: [1376, 110.04, 1552, 235.8],
           resourceId: 'tblAlarmCase3x3',
         },
         {
           id: 'AREA_ENV',
           name: '환경',
-          point: [870.4, 270, 1011.2, 366],
+          point: [1056, 448.02, 1232, 573.78],
           resourceId: 'tblSensorCase3',
         },
         {
           id: 'AREA_OP_0',
           name: '오일펌프 전류',
-          point: [512, 60, 652.8, 132],
+          point: [880, 117.9, 1056, 212.22],
           resourceId: 'tblSensorCase2',
         },
         {
           id: 'AREA_OP_1',
           name: '오일펌프 1',
-          point: [768, 60, 832, 102],
+          point: [720, 180.78, 800, 235.8],
           resourceId: 'deviceArea',
         },
         {
           id: 'AREA_OP_2',
           name: '오일펌프 2',
-          point: [768, 150, 832, 192],
+          point: [720, 251.52, 800, 306.54],
           resourceId: 'deviceArea',
         },
         {
           id: 'AREA_OT_1',
           name: '오일탱크 1',
-          point: [320, 270, 460.8, 342],
+          point: [528, 322.26, 704, 416.58],
           resourceId: 'tblSensorCase2',
         },
         {
           id: 'AREA_OT_2',
           name: '오일탱크 2',
-          point: [320, 360, 460.8, 432],
+          point: [528, 542.34, 704, 636.66],
           resourceId: 'tblSensorCase2',
         },
         {
           id: 'AREA_PTC',
           name: '집열기',
-          point: [704, 270, 844.8, 366],
+          point: [864, 448.02, 1040, 573.78],
           resourceId: 'tblSensorCase3',
         },
         {
           id: 'AREA_PTC_OPE',
           name: '집광기 작동 상태',
-          point: [908.8, 150, 972.8, 192],
+          point: [1216, 314.4, 1296, 369.42],
           resourceId: 'deviceArea',
         },
         {
           id: 'AREA_SG',
-          name: '스팀발생기',
-          point: [89.6, 240, 230.4, 408],
+          name: '증기발생기',
+          point: [96, 471.6, 272, 691.68],
           resourceId: 'tblSensorCase6',
         },
         {
           id: 'AREA_SG_OUT',
-          name: '스팀발생기 출구',
-          point: [64, 30, 204.8, 222],
+          name: '증기발생기 출구',
+          point: [48, 55.02, 224, 306.54],
           resourceId: 'tblSensorCase7',
         },
         {
           id: 'AREA_SW',
           name: '보충펌프 작동 상태',
-          point: [128, 432, 192, 474],
+          point: [320, 613.08, 400, 668.1],
           resourceId: 'deviceArea',
         },
       ],
@@ -441,7 +441,7 @@ module.exports = {
           resourceId: 'tblSensorCase2',
           placeId: 'AREA_OP_0',
           tblIndex: 0,
-          point: [512, 60],
+          point: [880, 117.9],
         },
         {
           id: 'AMP_OP_2',
@@ -451,7 +451,7 @@ module.exports = {
           resourceId: 'tblSensorCase2',
           placeId: 'AREA_OP_0',
           tblIndex: 1,
-          point: [512, 60],
+          point: [880, 117.9],
         },
         {
           id: 'FDVA_OT_1',
@@ -461,7 +461,7 @@ module.exports = {
           resourceId: 'tblSensorCase2',
           placeId: 'AREA_OT_1',
           tblIndex: 0,
-          point: [320, 270],
+          point: [528, 322.26],
         },
         {
           id: 'FDVA_OT_2',
@@ -471,7 +471,7 @@ module.exports = {
           resourceId: 'tblSensorCase2',
           placeId: 'AREA_OT_2',
           tblIndex: 0,
-          point: [320, 360],
+          point: [528, 542.34],
         },
         {
           id: 'FDVA_PTC',
@@ -481,7 +481,7 @@ module.exports = {
           resourceId: 'tblSensorCase3',
           placeId: 'AREA_PTC',
           tblIndex: 0,
-          point: [704, 270],
+          point: [864, 448.02],
         },
         {
           id: 'FDVA_SG',
@@ -491,7 +491,7 @@ module.exports = {
           resourceId: 'tblSensorCase6',
           placeId: 'AREA_SG',
           tblIndex: 0,
-          point: [89.6, 240],
+          point: [96, 471.6],
         },
         {
           id: 'FRCU_SG',
@@ -501,7 +501,7 @@ module.exports = {
           resourceId: 'tblSensorCase6',
           placeId: 'AREA_SG',
           tblIndex: 3,
-          point: [89.6, 240],
+          point: [96, 471.6],
         },
         {
           id: 'FRCU_PIP',
@@ -511,7 +511,7 @@ module.exports = {
           resourceId: 'tblSensorCase7',
           placeId: 'AREA_SG_OUT',
           tblIndex: 4,
-          point: [64, 30],
+          point: [48, 55.02],
         },
         {
           id: 'FRIN_SG',
@@ -521,7 +521,7 @@ module.exports = {
           resourceId: 'tblSensorCase6',
           placeId: 'AREA_SG',
           tblIndex: 4,
-          point: [89.6, 240],
+          point: [96, 471.6],
         },
         {
           id: 'FRIN_PIP',
@@ -531,7 +531,7 @@ module.exports = {
           resourceId: 'tblSensorCase7',
           placeId: 'AREA_SG_OUT',
           tblIndex: 3,
-          point: [64, 30],
+          point: [48, 55.02],
         },
         {
           id: 'FRIN_PIOP',
@@ -541,7 +541,7 @@ module.exports = {
           resourceId: 'tblSensorCase7',
           placeId: 'AREA_SG_OUT',
           tblIndex: 5,
-          point: [64, 30],
+          point: [48, 55.02],
         },
         {
           id: 'FRE_PIP',
@@ -551,7 +551,7 @@ module.exports = {
           resourceId: 'tblSensorCase7',
           placeId: 'AREA_SG_OUT',
           tblIndex: 2,
-          point: [64, 30],
+          point: [48, 55.02],
         },
         {
           id: 'IRR_ENV',
@@ -561,7 +561,7 @@ module.exports = {
           resourceId: 'tblSensorCase3',
           placeId: 'AREA_ENV',
           tblIndex: 2,
-          point: [870.4, 270],
+          point: [1056, 448.02],
         },
         {
           id: 'PRGA_SG',
@@ -571,7 +571,7 @@ module.exports = {
           resourceId: 'tblSensorCase6',
           placeId: 'AREA_SG',
           tblIndex: 5,
-          point: [89.6, 240],
+          point: [96, 471.6],
         },
         {
           id: 'PRGA_PIP',
@@ -581,7 +581,7 @@ module.exports = {
           resourceId: 'tblSensorCase7',
           placeId: 'AREA_SG_OUT',
           tblIndex: 1,
-          point: [64, 30],
+          point: [48, 55.02],
         },
         {
           id: 'SOL_ENV_1',
@@ -591,7 +591,7 @@ module.exports = {
           resourceId: 'tblSensorCase3',
           placeId: 'AREA_ENV',
           tblIndex: 1,
-          point: [870.4, 270],
+          point: [1056, 448.02],
         },
         {
           id: 'TEM_ENV',
@@ -601,7 +601,7 @@ module.exports = {
           resourceId: 'tblSensorCase3',
           placeId: 'AREA_ENV',
           tblIndex: 0,
-          point: [870.4, 270],
+          point: [1056, 448.02],
         },
         {
           id: 'TEM_OIL_1',
@@ -611,7 +611,7 @@ module.exports = {
           resourceId: 'tblSensorCase3',
           placeId: 'AREA_PTC',
           tblIndex: 1,
-          point: [704, 270],
+          point: [864, 448.02],
         },
         {
           id: 'TEM_OIL_2',
@@ -621,7 +621,7 @@ module.exports = {
           resourceId: 'tblSensorCase3',
           placeId: 'AREA_PTC',
           tblIndex: 2,
-          point: [704, 270],
+          point: [864, 448.02],
         },
         {
           id: 'TEM_OIL_3',
@@ -631,7 +631,7 @@ module.exports = {
           resourceId: 'tblSensorCase2',
           placeId: 'AREA_OT_1',
           tblIndex: 1,
-          point: [320, 270],
+          point: [528, 322.26],
         },
         {
           id: 'TEM_OIL_4',
@@ -641,7 +641,7 @@ module.exports = {
           resourceId: 'tblSensorCase2',
           placeId: 'AREA_OT_2',
           tblIndex: 1,
-          point: [320, 360],
+          point: [528, 542.34],
         },
         {
           id: 'TEM_OIL_5',
@@ -651,7 +651,7 @@ module.exports = {
           resourceId: 'tblSensorCase6',
           placeId: 'AREA_SG',
           tblIndex: 1,
-          point: [89.6, 240],
+          point: [96, 471.6],
         },
         {
           id: 'TEM_OIL_6',
@@ -661,7 +661,7 @@ module.exports = {
           resourceId: 'tblSensorCase6',
           placeId: 'AREA_SG',
           tblIndex: 2,
-          point: [89.6, 240],
+          point: [96, 471.6],
         },
         {
           id: 'TEM_STE',
@@ -671,7 +671,7 @@ module.exports = {
           resourceId: 'tblSensorCase7',
           placeId: 'AREA_SG_OUT',
           tblIndex: 0,
-          point: [64, 30],
+          point: [48, 55.02],
         },
         {
           id: 'TEM_UNI',
@@ -681,7 +681,7 @@ module.exports = {
           resourceId: 'tblSensorCase7',
           placeId: 'AREA_SG_OUT',
           tblIndex: 6,
-          point: [64, 30],
+          point: [48, 55.02],
         },
         {
           id: 'INF_SYOP',
@@ -691,7 +691,7 @@ module.exports = {
           resourceId: 'tblAlarmCase3x3',
           placeId: 'AREA_ALA_BASE',
           tblIndex: 0,
-          point: [1088, 60],
+          point: [1376, 110.04],
         },
         {
           id: 'INF_SKY',
@@ -701,7 +701,7 @@ module.exports = {
           resourceId: 'tblAlarmCase3x3',
           placeId: 'AREA_ALA_BASE',
           tblIndex: 1,
-          point: [1088, 60],
+          point: [1376, 110.04],
         },
         {
           id: 'INF_SYMO',
@@ -711,47 +711,47 @@ module.exports = {
           resourceId: 'tblAlarmCase3x3',
           placeId: 'AREA_ALA_BASE',
           tblIndex: 2,
-          point: [1088, 60],
+          point: [1376, 110.04],
         },
         {
           id: 'MOD_OT_1',
-          name: '1#오일탱크 열저장 설정 요구에 부합됨',
+          name: '1#오일탱크 열저장 설정 부합',
           cursor: '',
           is_sensor: 1,
           resourceId: 'tblAlarmCase3',
           placeId: 'AREA_ALA_MOD_OT',
           tblIndex: 0,
-          point: [1088, 360],
+          point: [1376, 471.6],
         },
         {
           id: 'MOD_OT_2',
-          name: '2#오일탱크 열저장 설정 요구에 부합됨',
+          name: '2#오일탱크 열저장 설정 부합',
           cursor: '',
           is_sensor: 1,
           resourceId: 'tblAlarmCase3',
           placeId: 'AREA_ALA_MOD_OT',
           tblIndex: 1,
-          point: [1088, 360],
+          point: [1376, 471.6],
         },
         {
           id: 'MOD_OT_3',
-          name: '1#탱크가 열방출 허용 온도에 도달함',
+          name: '1#탱크가 열방출 허용 온도 도달',
           cursor: '',
           is_sensor: 1,
           resourceId: 'tblAlarmCase3',
           placeId: 'AREA_ALA_MOD_OT',
           tblIndex: 2,
-          point: [1088, 360],
+          point: [1376, 471.6],
         },
         {
           id: 'MOD_OT_4',
-          name: '2#탱크가 열방출 허용 온도에 도달함',
+          name: '2#탱크가 열방출 허용 온도 도달',
           cursor: '',
           is_sensor: 1,
           resourceId: 'tblAlarmCase3',
           placeId: 'AREA_ALA_MOD_OT',
           tblIndex: 3,
-          point: [1088, 360],
+          point: [1376, 471.6],
         },
         {
           id: 'MOD_STE_1',
@@ -761,7 +761,7 @@ module.exports = {
           resourceId: 'tblAlarmCase3',
           placeId: 'AREA_ALA_MOD_STE',
           tblIndex: 0,
-          point: [1088, 210],
+          point: [1376, 275.1],
         },
         {
           id: 'MOD_STE_2',
@@ -771,7 +771,7 @@ module.exports = {
           resourceId: 'tblAlarmCase3',
           placeId: 'AREA_ALA_MOD_STE',
           tblIndex: 1,
-          point: [1088, 210],
+          point: [1376, 275.1],
         },
         {
           id: 'MOD_STE_3',
@@ -781,7 +781,7 @@ module.exports = {
           resourceId: 'tblAlarmCase3',
           placeId: 'AREA_ALA_MOD_STE',
           tblIndex: 2,
-          point: [1088, 210],
+          point: [1376, 275.1],
         },
         {
           id: 'MOD_STE_4',
@@ -791,7 +791,7 @@ module.exports = {
           resourceId: 'tblAlarmCase3',
           placeId: 'AREA_ALA_MOD_STE',
           tblIndex: 3,
-          point: [1088, 210],
+          point: [1376, 275.1],
         },
         {
           id: 'PUM_OIL_1',
@@ -800,7 +800,7 @@ module.exports = {
           is_sensor: 2,
           resourceId: 'cmdBtn',
           placeId: 'AREA_OP_1',
-          point: [768, 60],
+          point: [720, 180.78],
         },
         {
           id: 'PUM_OIL_2',
@@ -809,7 +809,7 @@ module.exports = {
           is_sensor: 2,
           resourceId: 'cmdBtn',
           placeId: 'AREA_OP_2',
-          point: [768, 150],
+          point: [720, 251.52],
         },
         {
           id: 'PUM_SW',
@@ -818,7 +818,7 @@ module.exports = {
           is_sensor: 2,
           resourceId: 'cmdBtn',
           placeId: 'AREA_SW',
-          point: [128, 432],
+          point: [320, 613.08],
         },
         {
           id: 'PTC',
@@ -827,7 +827,7 @@ module.exports = {
           is_sensor: 2,
           resourceId: 'cmdBtn',
           placeId: 'AREA_PTC_OPE',
-          point: [908.8, 150],
+          point: [1216, 314.4],
         },
       ],
       svgCmdList: [],
@@ -887,6 +887,7 @@ module.exports = {
               'INF_SYOP',
               'INF_SKY',
               'INF_SYMO',
+              'INF_USOP',
               'MOD_OT_1',
               'MOD_OT_2',
               'MOD_OT_3',
@@ -1441,7 +1442,7 @@ module.exports = {
             nodeList: [
               {
                 target_code: '1',
-                target_name: '1#오일탱크 열저장 설정 요구에 부합됨',
+                target_name: '1#오일탱크 열저장 설정 부합',
                 data_logger_index: 0,
                 note: 'M116',
                 modbusInfo: { fnCode: 1, address: 116 },
@@ -1453,7 +1454,7 @@ module.exports = {
               },
               {
                 target_code: '2',
-                target_name: '2#오일탱크 열저장 설정 요구에 부합됨',
+                target_name: '2#오일탱크 열저장 설정 부합',
                 data_logger_index: 1,
                 note: 'M117',
                 modbusInfo: { fnCode: 1, address: 117 },
@@ -1465,7 +1466,7 @@ module.exports = {
               },
               {
                 target_code: '3',
-                target_name: '1#탱크가 열방출 허용 온도에 도달함',
+                target_name: '1#탱크가 열방출 허용 온도 도달',
                 data_logger_index: 2,
                 note: 'M118',
                 modbusInfo: { fnCode: 1, address: 118 },
@@ -1477,7 +1478,7 @@ module.exports = {
               },
               {
                 target_code: '4',
-                target_name: '2#탱크가 열방출 허용 온도에 도달함',
+                target_name: '2#탱크가 열방출 허용 온도 도달',
                 data_logger_index: 3,
                 note: 'M119',
                 modbusInfo: { fnCode: 1, address: 119 },
@@ -1617,7 +1618,7 @@ module.exports = {
             placeList: [
               {
                 nodeList: [],
-                svgPositionInfo: { resourceId: 'imgPattern', point: [256, 0] },
+                svgPositionInfo: { resourceId: 'imgPattern', point: [320, 0] },
               },
             ],
           },
@@ -1636,13 +1637,19 @@ module.exports = {
                 target_code: 'OT',
                 target_name: '탱크 모드',
                 nodeList: ['MOD_OT_1', 'MOD_OT_2', 'MOD_OT_3', 'MOD_OT_4'],
-                svgPositionInfo: { resourceId: 'tblAlarmCase3', point: [1088, 360] },
+                svgPositionInfo: {
+                  resourceId: 'tblAlarmCase3',
+                  point: [1376, 471.59999999999997],
+                },
               },
               {
                 target_code: 'STE',
                 target_name: '작동 모드',
                 nodeList: ['MOD_STE_1', 'MOD_STE_2', 'MOD_STE_3', 'MOD_STE_4'],
-                svgPositionInfo: { resourceId: 'tblAlarmCase3', point: [1088, 210] },
+                svgPositionInfo: {
+                  resourceId: 'tblAlarmCase3',
+                  point: [1376, 275.09999999999997],
+                },
               },
             ],
           },
@@ -1653,7 +1660,7 @@ module.exports = {
             placeList: [
               {
                 nodeList: ['INF_SYMO', 'INF_SKY', 'INF_SYOP'],
-                svgPositionInfo: { resourceId: 'tblAlarmCase3x3', point: [1088, 60] },
+                svgPositionInfo: { resourceId: 'tblAlarmCase3x3', point: [1376, 110.04] },
               },
             ],
           },
@@ -1669,10 +1676,7 @@ module.exports = {
             placeList: [
               {
                 nodeList: ['IRR_ENV', 'SOL_ENV_1', 'TEM_ENV'],
-                svgPositionInfo: {
-                  resourceId: 'tblSensorCase3',
-                  point: [870.4000000000001, 270],
-                },
+                svgPositionInfo: { resourceId: 'tblSensorCase3', point: [1056, 448.02] },
               },
             ],
           },
@@ -1690,19 +1694,22 @@ module.exports = {
                 target_code: '0',
                 target_name: '오일펌프 전류',
                 nodeList: ['AMP_OP_1', 'AMP_OP_2'],
-                svgPositionInfo: { resourceId: 'tblSensorCase2', point: [512, 60] },
+                svgPositionInfo: {
+                  resourceId: 'tblSensorCase2',
+                  point: [880.0000000000001, 117.89999999999999],
+                },
               },
               {
                 target_code: '1',
                 target_name: '오일펌프 1',
                 nodeList: ['PUM_OIL_1'],
-                svgPositionInfo: { resourceId: 'deviceArea', point: [768, 60] },
+                svgPositionInfo: { resourceId: 'deviceArea', point: [720, 180.78] },
               },
               {
                 target_code: '2',
                 target_name: '오일펌프 2',
                 nodeList: ['PUM_OIL_2'],
-                svgPositionInfo: { resourceId: 'deviceArea', point: [768, 150] },
+                svgPositionInfo: { resourceId: 'deviceArea', point: [720, 251.52] },
               },
             ],
           },
@@ -1720,12 +1727,15 @@ module.exports = {
               {
                 target_code: '1',
                 nodeList: ['TEM_OIL_3', 'FDVA_OT_1'],
-                svgPositionInfo: { resourceId: 'tblSensorCase2', point: [320, 270] },
+                svgPositionInfo: { resourceId: 'tblSensorCase2', point: [528, 322.26] },
               },
               {
                 target_code: '2',
                 nodeList: ['TEM_OIL_4', 'FDVA_OT_2'],
-                svgPositionInfo: { resourceId: 'tblSensorCase2', point: [320, 360] },
+                svgPositionInfo: {
+                  resourceId: 'tblSensorCase2',
+                  point: [528, 542.3399999999999],
+                },
               },
             ],
           },
@@ -1752,7 +1762,7 @@ module.exports = {
             placeList: [
               {
                 nodeList: ['FDVA_PTC', 'TEM_OIL_1', 'TEM_OIL_2'],
-                svgPositionInfo: { resourceId: 'tblSensorCase3', point: [704, 270] },
+                svgPositionInfo: { resourceId: 'tblSensorCase3', point: [864, 448.02] },
               },
             ],
           },
@@ -1773,7 +1783,10 @@ module.exports = {
             placeList: [
               {
                 nodeList: ['PTC'],
-                svgPositionInfo: { resourceId: 'deviceArea', point: [908.8, 150] },
+                svgPositionInfo: {
+                  resourceId: 'deviceArea',
+                  point: [1216, 314.40000000000003],
+                },
               },
             ],
           },
@@ -1781,14 +1794,14 @@ module.exports = {
       },
       {
         target_id: 'sgArea',
-        target_name: '스팀발생기',
+        target_name: '증기발생기',
         defList: [
           {
             target_id: 'sgArea',
             target_prefix: 'AREA_SG',
             placeList: [
               {
-                target_name: '스팀발생기',
+                target_name: '증기발생기',
                 nodeList: [
                   'FDVA_SG',
                   'TEM_OIL_5',
@@ -1799,14 +1812,14 @@ module.exports = {
                 ],
                 svgPositionInfo: {
                   resourceId: 'tblSensorCase6',
-                  point: [89.60000000000001, 240],
+                  point: [96, 471.59999999999997],
                 },
               },
             ],
           },
           {
             target_id: 'sgOutletArea',
-            target_name: '스팀발생기 출구',
+            target_name: '증기발생기 출구',
             target_prefix: 'AREA_SG_OUT',
             placeList: [
               {
@@ -1819,7 +1832,7 @@ module.exports = {
                   'FRIN_PIOP',
                   'TEM_UNI',
                 ],
-                svgPositionInfo: { resourceId: 'tblSensorCase7', point: [64, 30] },
+                svgPositionInfo: { resourceId: 'tblSensorCase7', point: [48, 55.02] },
               },
             ],
           },
@@ -1836,7 +1849,7 @@ module.exports = {
             placeList: [
               {
                 nodeList: ['PUM_SW'],
-                svgPositionInfo: { resourceId: 'deviceArea', point: [128, 432] },
+                svgPositionInfo: { resourceId: 'deviceArea', point: [320, 613.08] },
               },
             ],
           },
@@ -1853,15 +1866,26 @@ module.exports = {
       },
     ],
     convertRelationList: [
+      { nDefId: 'infoSky', convertInfo: { 0: '흐린 날씨', 1: '맑은 날씨' } },
       {
-        nDefId: 'operStsMode',
+        nDefId: 'infoSysMode',
         convertInfo: {
           0: '로컬모드 운행중',
           1: '타이머모드 운행중',
           2: '원격모드 운행중',
         },
       },
-      { nDefId: 'isModeSysOper', convertInfo: { 0: '시스템 OFF', 1: '시스템 ON' } },
+      {
+        nDefId: 'infoUseOp',
+        convertInfo: { 0: '오일펌프 2 사용 중', 1: '오일펌프 1 사용 중' },
+      },
+      { nDefId: 'infoSysOper', convertInfo: { 0: '시스템 OFF', 1: '시스템 ON' } },
+      {
+        nDefId: ['modeOt', 'modeSteam'],
+        isNodeNameUse: true,
+        convertInfo: { 0: false, 1: true },
+      },
+      { nDefId: ['pumpOil', 'pumpSw', 'ptc'], convertInfo: { 0: 'OFF', 1: 'ON' } },
     ],
   },
   controlInfo: {

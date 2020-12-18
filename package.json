@@ -12,9 +12,7 @@
   "pkg": {
     "assets": [
       "./src/**/*",
-      "./config/**/*",
-      "../device-protocol-converter-jh/**/*",
-      "../default-intelligence/**/*"
+      "./config/**/*"
     ]
   },
   "scripts": {
@@ -32,7 +30,6 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "docdash": "^1.2.0",
-    "dotenv": "^8.2.0",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -45,6 +42,7 @@
     "prettier": "^2.1.1"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "base-util-jh": "^1.2.8",
     "bluebird": "^3.7.2",
     "default-intelligence": "^0.1.8",

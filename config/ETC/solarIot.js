@@ -6,12 +6,6 @@ const protocolBatSm = {
   cmdExecTimeoutMs: 1000 * 2,
 };
 
-const protocolRelayJkNr = {
-  mainCategory: 'ETC',
-  subCategory: 'JK_NR_2',
-  cmdExecTimeoutMs: 1000 * 2,
-};
-
 const protocolRelayKincony = {
   mainCategory: 'ETC',
   subCategory: 'Kincony',
@@ -32,20 +26,6 @@ module.exports = {
             projectId: 'ETC',
             mapId: 'solarIot',
             simulatorPort: process.env.SIMUL_PORT || 15353,
-          },
-        },
-      ],
-    },
-    {
-      siteId: 'relay_2',
-      siteName: '나주 태양광 IoT 소비전력 최적화',
-      serverPort: 15301,
-      echoServerList: [
-        {
-          protocolConfig: [protocolRelayJkNr],
-          mapConfig: {
-            projectId: 'ETC',
-            mapId: 'solarIot',
           },
         },
       ],

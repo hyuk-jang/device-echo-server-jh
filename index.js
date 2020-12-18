@@ -11,14 +11,14 @@ module.exports = Control;
 
 // if __main process
 if (require !== undefined && require.main === module) {
-  let serverConfig;
+  const serverConfig = config;
 
-  if (process.env.NODE_ENV === 'production') {
-    const serverPath = path.join(process.cwd(), 'server.config');
-    serverConfig = require(serverPath);
-  } else {
-    serverConfig = config;
-  }
+  // if (process.env.NODE_ENV === 'production') {
+  //   const serverPath = path.join(process.cwd(), 'server.config');
+  //   serverConfig = require(serverPath);
+  // } else {
+  // serverConfig = config;
+  // }
 
   // console.log(process.env);
 

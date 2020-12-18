@@ -32,17 +32,6 @@ const protocolSensorSm = {
   cmdExecTimeoutMs: 1000 * 2,
 };
 
-/**
- *
- * @param {protocol_info} protocol
- * @param {*} deviceId 바꾸고자 하는 Device ID
- */
-function convertProtocolConfig(protocol, deviceId) {
-  const conProtocolInfo = { ...protocol };
-  conProtocolInfo.deviceId = deviceId;
-  return conProtocolInfo;
-}
-
 /** @type {desConfig} */
 module.exports = {
   dbcConnConfig: {

@@ -288,14 +288,29 @@
 
     <script>
       mdNodeStorage.forEach(mdNodeInfo => {
+        const { svgEleBg, svgEleData, nodeId } = mdNodeInfo;
         // svg 클릭 이벤트 삭제
-        mdNodeInfo.svgEleBg.click(null);
-        mdNodeInfo.svgEleBg.click(() => {
-          const data = prompt('변경하고자 하는 값 입력');
-          if (data !== null) {
-            socket.emit('changeNodeData', mdNodeInfo.nodeId, data);
-          }
-        });
+
+        if (svgEleBg !== undefined) {
+          svgEleBg.click(null);
+
+          svgEleBg.click(() => {
+            console.log(mdNodeInfo);
+            const data = prompt('변경하고자 하는 값 입력');
+            if (data !== null) {
+              socket.emit('changeNodeData', nodeId, data);
+            }
+          });
+        } else {
+          svgEleData.click(() => {
+            console.log(mdNodeInfo);
+            console.log('nodeId', nodeId);
+            const data = prompt('변경하고자 하는 값 입력');
+            if (data !== null) {
+              socket.emit('changeNodeData', nodeId, data);
+            }
+          });
+        }
       });
 
       // function reqSingleControl(nodeId, controlValue, deviceSetValue) {
