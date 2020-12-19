@@ -40,7 +40,7 @@
   <body>
     <div id="wrap" class="wrap">
       <!--메인-->
-      <div class="container_body">
+      <div id="container_body" class="container_body">
         <div class="container_row navi">
           <div class="user_box ml_2rem" id="operationMode">
             <span class="search_title">제어 모드: </span>
@@ -286,25 +286,17 @@
         .trigger('change');
     </script>
 
+    <!-- 사용자 데이터 변경 처리 -->
     <script>
+      // 노드 클릭 이벤트 설정
       mdNodeStorage.forEach(mdNodeInfo => {
         const { svgEleBg, svgEleData, nodeId } = mdNodeInfo;
-        // svg 클릭 이벤트 삭제
 
         if (svgEleBg !== undefined) {
+          // svg 클릭 이벤트 삭제
           svgEleBg.click(null);
 
           svgEleBg.click(() => {
-            console.log(mdNodeInfo);
-            const data = prompt('변경하고자 하는 값 입력');
-            if (data !== null) {
-              socket.emit('changeNodeData', nodeId, data);
-            }
-          });
-        } else {
-          svgEleData.click(() => {
-            console.log(mdNodeInfo);
-            console.log('nodeId', nodeId);
             const data = prompt('변경하고자 하는 값 입력');
             if (data !== null) {
               socket.emit('changeNodeData', nodeId, data);
@@ -313,9 +305,56 @@
         }
       });
 
-      // function reqSingleControl(nodeId, controlValue, deviceSetValue) {
-      //   socket.emit('reqSingleControl', nodeId, controlValue, deviceSetValue);
-      // }
+      // 테이블 클릭 이벤트 설정
+      mdPlaceStorage.forEach(mdPlaceInfo => {
+        const { svgEleBg, svgEleTbls = [], placeName, nodeList = [] } = mdPlaceInfo;
+        // 하부 Node 데이터가 존재할 경우
+        if (svgEleTbls.length) {
+          // 데이터 영역 클릭 이벤트
+          svgEleBg.click(() => {
+            const dynamicTblDom = $('#dialog-tbl-template').html();
+            const dynamicTblTemplate = Handlebars.compile(dynamicTblDom);
+            // 실제로 그리는 순서에 맞게 데이터 가져옴
+            const resultTempalte = dynamicTblTemplate({
+              mdNodeList: svgEleTbls.map(({ nodeId }) => mdNodeStorage.get(nodeId)),
+            });
+
+            $('#form').html(resultTempalte);
+
+            // Dialog 메시지를 생성하여 dialog title, 버튼 정보 전송
+            $('#dialog-form').dialog({
+              width: 300,
+              modal: true,
+              title: placeName,
+              open: function () {
+                $('.ui-widget-overlay').bind('click', () => {
+                  $(this).dialog('close');
+                });
+              },
+              buttons: {
+                변경: function () {
+                  $('#dialog-form fieldset')
+                    .find('input')
+                    .map((idx, dom) => {
+                      const data = $(dom).val();
+                      const nodeId = $(dom).data('nodeId');
+                      if (data.length) {
+                        socket.emit('changeNodeData', nodeId, data);
+                      }
+                    });
+                  $(this).dialog('close');
+                },
+                취소: function () {
+                  $(this).dialog('close');
+                },
+              },
+            });
+          });
+        }
+      });
+    </script>
+    <script>
+      $('#container_body').removeClass('hidden');
     </script>
   </body>
 </html>
