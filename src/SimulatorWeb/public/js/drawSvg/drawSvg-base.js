@@ -1050,7 +1050,7 @@ function showNodeData(nodeId, data = '') {
 
     return false;
   } catch (e) {
-    console.error(nodeId, e.message);
+    // console.error(nodeId, e.message);
   }
 }
 

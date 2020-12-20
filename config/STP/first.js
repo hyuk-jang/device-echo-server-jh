@@ -12,7 +12,7 @@ module.exports = {
     {
       siteId: 'jechun',
       siteName: '집광형 태양열 통합관리시스템',
-      serverPort: 15300,
+      serverPort: process.env.ECHO_PORT_1 || 15301,
       echoServerList: [
         {
           protocolConfig: [protocolStp],
