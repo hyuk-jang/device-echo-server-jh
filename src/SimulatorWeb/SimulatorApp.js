@@ -32,6 +32,22 @@ class SimulatorApp {
     app.set('view engine', 'ejs');
     app.set('views', path.join(__dirname, '/views'));
 
+    // 맵 이미지
+    app.use(
+      '/map',
+      express.static(
+        path.join(
+          process.cwd(),
+          ...['maps', process.env.SOURCE_PATH, process.env.SOURCE_FILE].filter(
+            pjId => typeof pjId === 'string' && pjId.length,
+          ),
+        ),
+        {
+          extensions: ['jpg', 'png', 'gif'],
+        },
+      ),
+    );
+
     this.app = app;
 
     this.echoServer = echoServer;

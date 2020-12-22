@@ -84,10 +84,10 @@ class Model extends AbstModel {
           break;
         case pressureGaugePipe:
         case pressureGaugeSg:
-          nodeInfo.data = _.random(20, 200, true);
+          nodeInfo.data = _.random(0, 20, true);
           break;
         case solarEnv:
-          nodeInfo.data = _.random(400, 1200, true);
+          nodeInfo.data = _.random(0, 1200, true);
           break;
         case tempEnv:
           nodeInfo.data = _.random(5, 35, true);
@@ -95,7 +95,7 @@ class Model extends AbstModel {
         case tempOil:
         case tempSteam:
         case tempUnit:
-          nodeInfo.data = _.random(100, 350, true);
+          nodeInfo.data = _.random(0, 250, true);
           break;
         default:
           break;
