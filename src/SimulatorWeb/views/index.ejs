@@ -289,6 +289,28 @@
 
     <!-- 사용자 데이터 변경 처리 -->
     <script>
+      var dialog, form;
+
+      // 테이블 형태 데이터 변경 시(Jquery UI dialog-form)
+      function changeTableData() {
+        $('#dialog-form fieldset')
+          .find('input')
+          .map((idx, dom) => {
+            const data = $(dom).val();
+            const nodeId = $(dom).data('nodeId');
+            if (data.length) {
+              var pattern = /^[-]?\d+(?:[.]\d+)?$/;
+
+              if (pattern.test(data)) {
+                socket.emit('changeNodeData', nodeId, Number(data));
+              } else {
+                socket.emit('changeNodeData', nodeId, data);
+              }
+            }
+          });
+        $(dialog).dialog('close');
+      }
+
       // 노드 클릭 이벤트 설정
       mdNodeStorage.forEach(mdNodeInfo => {
         const { svgEleBg, svgEleData, nodeId } = mdNodeInfo;
@@ -323,7 +345,7 @@
             $('#form').html(resultTempalte);
 
             // Dialog 메시지를 생성하여 dialog title, 버튼 정보 전송
-            $('#dialog-form').dialog({
+            dialog = $('#dialog-form').dialog({
               width: 300,
               modal: true,
               title: placeName,
@@ -333,28 +355,17 @@
                 });
               },
               buttons: {
-                변경: function () {
-                  $('#dialog-form fieldset')
-                    .find('input')
-                    .map((idx, dom) => {
-                      const data = $(dom).val();
-                      const nodeId = $(dom).data('nodeId');
-                      if (data.length) {
-                        var pattern = /^[-]?\d+(?:[.]\d+)?$/;
-
-                        if (pattern.test(data)) {
-                          socket.emit('changeNodeData', nodeId, Number(data));
-                        } else {
-                          socket.emit('changeNodeData', nodeId, data);
-                        }
-                      }
-                    });
-                  $(this).dialog('close');
-                },
+                변경: changeTableData,
                 취소: function () {
                   $(this).dialog('close');
                 },
               },
+            });
+
+            // 사용자가 엔터 및 submit 액션을 취했을 경우
+            form = dialog.find('form').on('submit', function (event) {
+              event.preventDefault();
+              changeTableData();
             });
           });
         }

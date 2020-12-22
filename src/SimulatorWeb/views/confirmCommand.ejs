@@ -16,7 +16,7 @@
   }
 </style>
 <div id="dialog-form" class="dialogTbl" title="">
-  <div id="form"></div>
+  <form id="form"></form>
 </div>
 
 <script id="dialog-tbl-template" type="template">
@@ -30,6 +30,8 @@
         data-node-id="{{ nodeId }}"
         value="{{ nodeData }}"
       />
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
     {{/mdNodeList}}
 
   </fieldset>

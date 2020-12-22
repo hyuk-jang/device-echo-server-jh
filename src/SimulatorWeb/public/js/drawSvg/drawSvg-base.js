@@ -990,7 +990,7 @@ function showNodeData(nodeId, data = '') {
 
     // 옵저버에게 전파
     mdNodeInfo.observerList.forEach(ob => {
-      console.log(nodeId, data);
+      // console.log(nodeId, data);
       _.get(ob, 'notifyNodeData') && ob.notifyNodeData(mdNodeInfo);
     });
 

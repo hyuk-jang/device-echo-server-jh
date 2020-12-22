@@ -3,8 +3,6 @@ const express = require('express');
 const path = require('path');
 
 // http server를 socket.io server로 upgrade한다
-const ejs = require('ejs');
-
 const http = require('http');
 const SocketIO = require('socket.io');
 
@@ -22,13 +20,10 @@ class SimulatorApp {
     /** @type {mDeviceMap} */
     this.deviceMap = echoServer.deviceMap;
 
-    // BU.CLIN(echoServer.deviceMap);
-
     const app = express();
 
     app.use(express.static(path.join(__dirname, '/public')));
 
-    // app.engine('html', ejs.renderFile);
     app.set('view engine', 'ejs');
     app.set('views', path.join(__dirname, '/views'));
 
@@ -36,7 +31,7 @@ class SimulatorApp {
     app.use(
       '/map',
       express.static(
-        path.resolve(
+        path.join(
           __dirname,
           ...['..', '..', 'maps', process.env.P_MAIN_ID, process.env.P_SUB_ID].filter(
             pjId => typeof pjId === 'string' && pjId.length,
@@ -62,18 +57,6 @@ class SimulatorApp {
     echoServer.on('reload', () => this.emitNodeList());
   }
 
-  /**
-   * Map 배경 이미지
-   * @param {string} backgroudMap base64
-   */
-  setBackgroundMap(backgroudMap) {
-    _.set(
-      this,
-      'deviceMap.drawInfo.frame.mapInfo.backgroundInfo.backgroundData',
-      backgroudMap,
-    );
-  }
-
   init() {
     console.log('Simulator Init', this.appPort);
 
@@ -82,7 +65,6 @@ class SimulatorApp {
     this.app.get('/', (req, res) => {
       res.render('./index', {
         map: this.deviceMap,
-        backgroudMap: this.backgroudMap,
       });
     });
 
