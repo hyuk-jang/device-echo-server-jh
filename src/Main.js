@@ -98,6 +98,7 @@ class Main {
 
       echoServerList.forEach(echoServerConfing => {
         const {
+          map = {},
           protocolConfig,
           mapConfig: {
             mapId = '',
@@ -107,10 +108,11 @@ class Main {
         } = echoServerConfing;
 
         // 프로젝트 ID와 map Id 가 존재한다면 해당 map Path 지정
-        const dMap =
-          mapId.length && projectId.length
-            ? _.get(deviceMap, `${projectId}.${mapId}`)
-            : undefined;
+        const dMap = _.isEmpty(map) ? undefined : map;
+        // console.dir(dMap);
+        // mapId.length && projectId.length
+        //   ? _.get(deviceMap, `${projectId}.${mapId}`)
+        //   : undefined;
 
         const echoServer = control.attachEchoServer(protocolConfig, dMap);
 

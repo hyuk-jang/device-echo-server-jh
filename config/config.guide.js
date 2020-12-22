@@ -20,6 +20,7 @@
 
 /**
  * @typedef {Object} echoServerConfig
+ * @property {mDeviceMap} map
  * @property {protocol_info} protocolConfig
  * @property {mapConfig=} mapConfig
  */

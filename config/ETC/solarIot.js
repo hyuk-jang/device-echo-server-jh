@@ -1,3 +1,5 @@
+const defaultMap = require('../../maps/ETC/solarIot/defaultMap');
+
 require('../config.guide');
 
 const protocolBatSm = {
@@ -21,6 +23,7 @@ module.exports = {
       serverPort: 15300,
       echoServerList: [
         {
+          map: defaultMap,
           protocolConfig: [protocolRelayKincony],
           mapConfig: {
             projectId: 'ETC',
@@ -36,6 +39,7 @@ module.exports = {
       serverPort: 15303,
       echoServerList: [
         {
+          map: defaultMap,
           protocolConfig: [protocolBatSm],
           mapConfig: {
             projectId: 'ETC',

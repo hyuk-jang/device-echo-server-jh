@@ -1,3 +1,5 @@
+const defaultMap = require('../../maps/solar2way/grapeFarm/defaultMap');
+
 const protocolKdxInv = {
   mainCategory: 'Inverter',
   subCategory: 'KDX_300',
@@ -44,6 +46,7 @@ module.exports = {
       serverPort: 9001,
       echoServerList: [
         {
+          map: defaultMap,
           protocolConfig: [protocolSensorSer, protocolSensorSm],
           mapConfig: {
             projectId: 'S2W',

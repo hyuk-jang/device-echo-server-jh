@@ -160,6 +160,7 @@
 
     <!-- Map 데이터를 기반으로 SVG를 생성 및 관리할 Module -->
     <script src="/js/drawSvg/drawSvg-base.js"></script>
+    <script src="/js/drawSvg/drawTriggerImg.js"></script>
 
     <!-- Default Setting -->
     <script>
@@ -339,7 +340,13 @@
                       const data = $(dom).val();
                       const nodeId = $(dom).data('nodeId');
                       if (data.length) {
-                        socket.emit('changeNodeData', nodeId, data);
+                        var pattern = /^[-]?\d+(?:[.]\d+)?$/;
+
+                        if (pattern.test(data)) {
+                          socket.emit('changeNodeData', nodeId, Number(data));
+                        } else {
+                          socket.emit('changeNodeData', nodeId, data);
+                        }
                       }
                     });
                   $(this).dialog('close');

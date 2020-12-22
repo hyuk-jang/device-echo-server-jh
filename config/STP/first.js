@@ -1,3 +1,5 @@
+const defaultMap = require('../../maps/STP/first/defaultMap');
+
 require('../config.guide');
 
 const protocolStp = {
@@ -15,6 +17,7 @@ module.exports = {
       serverPort: process.env.ECHO_PORT_1 || 15301,
       echoServerList: [
         {
+          map: defaultMap,
           protocolConfig: [protocolStp],
           mapConfig: {
             projectId: 'STP',

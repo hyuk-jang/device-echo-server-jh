@@ -36,9 +36,9 @@ class SimulatorApp {
     app.use(
       '/map',
       express.static(
-        path.join(
-          process.cwd(),
-          ...['maps', process.env.SOURCE_PATH, process.env.SOURCE_FILE].filter(
+        path.resolve(
+          __dirname,
+          ...['..', '..', 'maps', process.env.P_MAIN_ID, process.env.P_SUB_ID].filter(
             pjId => typeof pjId === 'string' && pjId.length,
           ),
         ),
