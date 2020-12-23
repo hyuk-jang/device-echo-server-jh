@@ -47,7 +47,7 @@ class Model extends AbstModel {
     this.nodeList.forEach(nodeInfo => {
       switch (nodeInfo.defId) {
         case ampOp:
-          nodeInfo.data = _.random(5, 30, true);
+          nodeInfo.data = _.random(10, 30, true);
           break;
         case fdValveOt:
         case fdValvePtc:
@@ -56,7 +56,7 @@ class Model extends AbstModel {
           break;
         case frCumPipe:
         case frCumSg:
-          nodeInfo.data = _.random(1000, 2000, true);
+          nodeInfo.data = _.random(1000, 3000, true);
           break;
         case frInsPipe:
         case frInsPipeOper:
@@ -64,10 +64,10 @@ class Model extends AbstModel {
           nodeInfo.data = _.random(10, 100, true);
           break;
         case frequencyPipe:
-          nodeInfo.data = _.random(60, 70, true);
+          nodeInfo.data = _.random(58, 65, true);
           break;
         case irradianceEnv:
-          nodeInfo.data = _.random(200, 1200, true);
+          nodeInfo.data = _.random(5, 30, true);
           break;
         case infoSysMode:
           nodeInfo.data = _.sample(['0', '1', '2']);
@@ -84,10 +84,10 @@ class Model extends AbstModel {
           break;
         case pressureGaugePipe:
         case pressureGaugeSg:
-          nodeInfo.data = _.random(0, 20, true);
+          nodeInfo.data = _.random(5, 20, true);
           break;
         case solarEnv:
-          nodeInfo.data = _.random(0, 1200, true);
+          nodeInfo.data = _.random(100, 1200, true);
           break;
         case tempEnv:
           nodeInfo.data = _.random(5, 35, true);
@@ -95,7 +95,7 @@ class Model extends AbstModel {
         case tempOil:
         case tempSteam:
         case tempUnit:
-          nodeInfo.data = _.random(0, 250, true);
+          nodeInfo.data = _.random(30, 250, true);
           break;
         default:
           break;
