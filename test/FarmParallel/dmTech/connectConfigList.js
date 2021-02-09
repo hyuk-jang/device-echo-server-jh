@@ -1,5 +1,3 @@
-const deviceMap = require('../../../src/deviceMap');
-
 const host = 'localhost';
 // const host = 'fp.smsoft.co.kr';
 const port = 8001;

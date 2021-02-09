@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 const net = require('net');
 const eventToPromise = require('event-to-promise');
 const _ = require('lodash');
@@ -5,8 +6,6 @@ const { BU } = require('base-util-jh');
 // require('../../../src/inverter/das_1.3/EchoServer');
 
 const { di, dpc } = require('../../../src/module');
-
-const deviceMap = require('../../../src/deviceMap');
 
 const { MainConverter, BaseModel } = dpc;
 
