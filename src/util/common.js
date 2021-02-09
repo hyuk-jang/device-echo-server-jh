@@ -2,8 +2,6 @@ const _ = require('lodash');
 
 const { BU } = require('base-util-jh');
 
-const { di } = require('../module');
-
 module.exports = {
   /**
    * @param {mDeviceMap} deviceMap

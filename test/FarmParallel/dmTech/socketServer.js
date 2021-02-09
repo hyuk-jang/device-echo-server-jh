@@ -6,8 +6,6 @@ const { BU } = require('base-util-jh');
 const Control = require('../../../src/Control');
 const { di, dpc } = require('../../../src/module');
 
-const deviceMap = require('../../../src/deviceMap');
-
 const { MainConverter } = dpc;
 
 const EchoServer = require('../../../src/EchoServer/FarmParallel/dmTech/EchoServer');
@@ -49,7 +47,10 @@ async function startTest() {
   // BU.CLI(mainConverter);
   // BU.CLI(echoServer);
   // BU.CLI(echoServer.device);
-  let cmdList = mainConverter.generationCommand({ key: echoServer.device.DEFAULT.KEY, value: 2 });
+  let cmdList = mainConverter.generationCommand({
+    key: echoServer.device.DEFAULT.KEY,
+    value: 2,
+  });
   let writeMsg = _.head(cmdList).data;
   BU.CLI(writeMsg);
 

@@ -11,7 +11,6 @@ const {
 
 const Control = require('./Control');
 // 프로젝트 별 사이트에서 사용하고 있는 Map 정보를 동적으로 불러오기 위함
-const deviceMap = require('./deviceMap');
 
 const SimulatorApp = require('./SimulatorWeb/SimulatorApp');
 

@@ -359,7 +359,9 @@ class EchoServer extends Model {
     const deviceHex = [0x30, 0x30];
 
     const nodeWL = _.find(nodeList, { defId: this.device.WATER_LEVEL.KEY });
-    const nodeMRTList = _.filter(nodeList, { defId: this.device.MODULE_REAR_TEMPERATURE.KEY });
+    const nodeMRTList = _.filter(nodeList, {
+      defId: this.device.MODULE_REAR_TEMPERATURE.KEY,
+    });
 
     let tempData;
 
@@ -368,9 +370,13 @@ class EchoServer extends Model {
     const bufDataWL = this.protocolConverter.convertNumToBuf(tempData, 3);
 
     // 모듈 후면 온도
-    tempData = _.isEmpty(_.nth(nodeMRTList, 0)) ? 0 : _.round(_.nth(nodeMRTList, 0).data, 1);
+    tempData = _.isEmpty(_.nth(nodeMRTList, 0))
+      ? 0
+      : _.round(_.nth(nodeMRTList, 0).data, 1);
     const bufDataMRT001 = this.protocolConverter.convertNumToBuf(tempData, 6);
-    tempData = _.isEmpty(_.nth(nodeMRTList, 1)) ? 0 : _.round(_.nth(nodeMRTList, 1).data, 1);
+    tempData = _.isEmpty(_.nth(nodeMRTList, 1))
+      ? 0
+      : _.round(_.nth(nodeMRTList, 1).data, 1);
     const bufDataMRT002 = this.protocolConverter.convertNumToBuf(tempData, 6);
 
     return Buffer.concat([
@@ -429,7 +435,9 @@ class EchoServer extends Model {
     }
 
     // BU.CLI(foundDataLogger.nodeList)
-    const foundNodeList = foundDataLogger.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
+    const foundNodeList = foundDataLogger.nodeList.map(nodeId =>
+      _.find(this.nodeList, { nodeId }),
+    );
     // BU.CLI(foundNodeList);
 
     let findDevice;
@@ -461,7 +469,7 @@ class EchoServer extends Model {
         break;
       case 'D_GR':
         dataLoggerData = this.getGroundRelay(findDevice, foundNodeList);
-        BU.CLI(dataLoggerData);
+        // BU.CLI(dataLoggerData);
         break;
       default:
         break;
@@ -478,58 +486,9 @@ class EchoServer extends Model {
       data: dataLoggerData,
     };
 
-    BU.CLI(returnValue);
+    // BU.CLI(returnValue);
 
     return returnValue;
   }
 }
 module.exports = EchoServer;
-
-// if __main process
-if (require !== undefined && require.main === module) {
-  console.log('__main__');
-
-  const deviceMap = require('../../deviceMap');
-
-  const echoServer = new EchoServer(
-    {
-      deviceId: '001',
-      mainCategory: 'UPSAS',
-      subCategory: 'das_1.3',
-    },
-    deviceMap.UPSAS.muan6kW,
-  );
-
-  echoServer.reload();
-  // 수문
-  let msg = echoServer.onData({
-    destination64: '0013A20040F7ACC8',
-    data: '@cgo',
-  });
-
-  // 밸브
-  msg = echoServer.onData({
-    destination64: '0013A20040F7B47F',
-    data: '@cvo',
-  });
-
-  // 게이트형 밸브
-  msg = echoServer.onData({
-    destination64: '0013A20040F7AB81',
-    data: '@cvo',
-  });
-  BU.CLI(msg.toString());
-
-  // 펌프
-  msg = echoServer.onData({
-    destination64: '0013A20040F7B446',
-    data: '@cpo',
-  });
-
-  // 육상 모듈
-  msg = echoServer.onData({
-    destination64: '0013A20040F7AB86',
-    data: '@sts',
-  });
-  BU.CLI(msg.toString());
-}

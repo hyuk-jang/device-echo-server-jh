@@ -72,30 +72,3 @@ class EchoServer {
   }
 }
 module.exports = EchoServer;
-
-// if __main process
-if (require !== undefined && require.main === module) {
-  console.log('__main__');
-
-  const deviceMap = require('../../../deviceMap');
-
-  const protocolInfo = {
-    deviceId: '001',
-    mainCategory: 'FarmParallel',
-    subCategory: 'dmTech',
-  };
-
-  const echoServer = new EchoServer(protocolInfo, deviceMap.FP.YeongSanPo);
-
-  const mainConverter = new MainConverter(protocolInfo);
-  mainConverter.setProtocolConverter();
-  BU.CLI(echoServer.device.DEFAULT.COMMAND.STATUS);
-  let cmdList = mainConverter.generationCommand(echoServer.device.DEFAULT.COMMAND.STATUS);
-  let result = echoServer.onData(_.head(cmdList).data);
-  BU.CLI(result);
-  cmdList = mainConverter.generationCommand(echoServer.device.LUX.COMMAND.STATUS);
-  result = echoServer.onData(_.head(cmdList).data);
-  BU.CLI(result);
-
-  // echoServer.reload();
-}

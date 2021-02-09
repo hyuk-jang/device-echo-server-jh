@@ -2,7 +2,6 @@ const _ = require('lodash');
 const split = require('split');
 const { BU } = require('base-util-jh');
 const net = require('net');
-const deviceMapInfo = require('./deviceMap');
 
 /** @type {{id: number, instance: Control}[]} */
 const instanceList = [];
@@ -26,7 +25,6 @@ class Control {
     this.siteName = siteName;
 
     this.returnData;
-    this.deviceMapInfo = deviceMapInfo;
 
     /** @type {net.Socket} */
     this.socketServer;

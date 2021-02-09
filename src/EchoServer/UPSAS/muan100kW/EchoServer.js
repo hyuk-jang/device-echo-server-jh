@@ -415,7 +415,9 @@ class EchoServer extends Model {
     // BU.CLIN(dataLoggerInfo);
 
     // BU.CLI(foundDataLogger.nodeList)
-    const dlNodeList = dataLoggerInfo.nodeList.map(nodeId => _.find(this.nodeList, { nodeId }));
+    const dlNodeList = dataLoggerInfo.nodeList.map(nodeId =>
+      _.find(this.nodeList, { nodeId }),
+    );
     // BU.CLI(dlNodeList);
 
     let nodeInfo;
@@ -463,66 +465,3 @@ class EchoServer extends Model {
   }
 }
 module.exports = EchoServer;
-
-// if __main process
-if (require !== undefined && require.main === module) {
-  console.log('__main__');
-
-  const deviceMap = require('../../../deviceMap');
-
-  const echoServer = new EchoServer(
-    {
-      deviceId: '001',
-      mainCategory: 'UPSAS',
-      subCategory: 'muan100kW',
-    },
-    deviceMap.UPSAS.muan100kW,
-  );
-
-  echoServer.reload();
-  // 수문
-  const msg = echoServer.onData({
-    destination64: '0013A20040E58A22',
-    data: '@cto',
-  });
-
-  // 밸브
-  echoServer.msg = echoServer.onData({
-    destination64: '0013A2004190EC8A',
-    data: '@cto04',
-  });
-  // BU.CLI(echoServer.msg);
-  // 펌프
-  echoServer.msg = echoServer.onData({
-    destination64: '0013A2004190EC6B',
-    data: '@cto07',
-  });
-  // BU.CLI(echoServer.msg);
-
-  // 센서
-  echoServer.msg = echoServer.onData({
-    destination64: '0013A20040E589FC',
-    data: '@sts',
-  });
-  BU.CLI(echoServer.msg.data.toString());
-
-  // // 게이트형 밸브
-  // msg = echoServer.onData({
-  //   destination64: '0013A20040F7AB81',
-  //   data: '@cto',
-  // });
-  // BU.CLI(msg.toString());
-
-  // // 펌프
-  // msg = echoServer.onData({
-  //   destination64: '0013A20040F7B446',
-  //   data: '@cto',
-  // });
-
-  // // 육상 모듈
-  // msg = echoServer.onData({
-  //   destination64: '0013A20040F7AB86',
-  //   data: '@sts',
-  // });
-  // BU.CLI(msg.toString());
-}

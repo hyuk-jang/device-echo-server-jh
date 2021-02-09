@@ -6,8 +6,6 @@ const Control = require('../../../src/Control');
 
 const { di, dpc } = require('../../../src/module');
 
-const deviceMap = require('../../../src/deviceMap');
-
 const SimulatorWeb = require('../../../src/SimulatorWeb');
 
 function operationServer() {

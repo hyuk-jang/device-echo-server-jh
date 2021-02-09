@@ -1,0 +1,40 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>Hello</div>
+
+    <form id="id_1" action="">
+      <input type="text" name="step_1" value="1" />
+      <input type="text" name="step_2" value="2" />
+      <input type="text" name="step_3" value="3" />
+      <input type="text" name="step_4" value="4" />
+      <input type="text" name="step_5" value="5" />
+    </form>
+    <form id="id_2" action="">
+      <input type="text" name="step_6" value="6" />
+      <input type="text" name="step_7" value="7" />
+      <input type="text" name="step_8" value="8" />
+      <input type="text" name="step_9" value="9" />
+      <input type="text" name="step_10" value="10" />
+    </form>
+    <input id="submit" type="submit" value="전송" />
+  </body>
+
+  <script>
+    // document.querySelectorAll('form').forEach(dom => {});
+
+    document.querySelector('#submit').addEventListener('click', () => {
+      console.log('hi');
+      // dom.submit(function (event) {
+      //   event.preventDefault();
+      // });
+      console.log('hi');
+      const form1 = document.querySelector('#id_1');
+      console.dir(form1);
+    });
+  </script>
+</html>
