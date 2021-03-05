@@ -14,6 +14,7 @@ const grapeFarm = require('./S2W/grapeFarm');
 const first = require('./STP/first');
 // 수중 태양광
 const upsas = require('./upsas/upsas');
+const smRooftop = require('./upsas/smRooftop');
 
 switch (process.env.P_MAIN_ID) {
   case 'ETC':
@@ -32,7 +33,14 @@ switch (process.env.P_MAIN_ID) {
     dynamicModule = first;
     break;
   case 'upsas':
-    dynamicModule = upsas;
+    switch (process.env.P_SUB_ID) {
+      case 'smRooftop':
+        dynamicModule = smRooftop;
+        break;
+      default:
+        dynamicModule = upsas;
+        break;
+    }
     break;
 
   default:

@@ -20,7 +20,9 @@ class EchoServer extends Model {
     this.isKwUnit = isKwUnit;
 
     // 기존에 객체에 생성되어 있는지 체크
-    const foundInstance = _.find(instanceList, insInfo => _.isEqual(insInfo.id, deviceId));
+    const foundInstance = _.find(instanceList, insInfo =>
+      _.isEqual(insInfo.id, deviceId),
+    );
 
     // 없다면 신규로 생성
     if (_.isEmpty(foundInstance)) {
@@ -94,7 +96,15 @@ class EchoServer extends Model {
     // 체크섬 계산
     const expectChecksum = this.protocolConverter.getBufferCheckSum(realBody);
     // 완전한 응답 프레임 생성
-    return Buffer.concat([this.ACK, dialing, CMD, addr, dataBody, expectChecksum, this.EOT]);
+    return Buffer.concat([
+      this.ACK,
+      dialing,
+      CMD,
+      addr,
+      dataBody,
+      expectChecksum,
+      this.EOT,
+    ]);
   }
 
   /**
@@ -108,7 +118,10 @@ class EchoServer extends Model {
   }
 
   convertDecToBuf(dsData, dataLength = 4, scale = 1, fixed = 0) {
-    return this.protocolConverter.convertNumToHexToBuf(_.round(dsData * scale, fixed), dataLength);
+    return this.protocolConverter.convertNumToHexToBuf(
+      _.round(dsData * scale, fixed),
+      dataLength,
+    );
   }
 
   // 시스템 메시지 반환
@@ -191,9 +204,13 @@ class EchoServer extends Model {
       }
       // 체크섬 계산
 
-      const expectChecksum = this.protocolConverter.getBufferCheckSum(receiveBuffer.slice(1, 10));
+      const expectChecksum = this.protocolConverter.getBufferCheckSum(
+        receiveBuffer.slice(1, 10),
+      );
       if (!_.isEqual(expectChecksum, checkSum)) {
-        throw new Error(`Not Matching onChecksum: ${checkSum}, expected: ${expectChecksum}`);
+        throw new Error(
+          `Not Matching onChecksum: ${checkSum}, expected: ${expectChecksum}`,
+        );
       }
 
       // Frame제거한 데이터 저장
@@ -237,11 +254,17 @@ module.exports = EchoServer;
 if (require !== undefined && require.main === module) {
   console.log('__main__');
 
-  const echoServer = new EchoServer({ deviceId: '01', subCategory: 'hexTriple', option: true });
+  const echoServer = new EchoServer({
+    deviceId: '01',
+    subCategory: 'hexTriple',
+    option: true,
+  });
 
   echoServer.reload();
 
-  const responeFrame = echoServer.onData(Buffer.from('053031523030353030373031646604', 'hex'));
+  const responeFrame = echoServer.onData(
+    Buffer.from('053031523030353030373031646604', 'hex'),
+  );
 
   BU.CLI(responeFrame);
 

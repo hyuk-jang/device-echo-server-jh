@@ -183,9 +183,8 @@ class EchoServer extends DefaultConverter {
    * @param {Buffer} bufData
    */
   onData(bufData) {
-    // BU.log(bufData);
+    // WrappingFrame 제거 (없으면 제거하지 않고 그대로 반환)
     const deviceData = this.peelFrameMsg(bufData);
-    // BU.log(deviceData.toString());
 
     try {
       const STX = _.nth(deviceData, 0);

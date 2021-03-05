@@ -20,7 +20,9 @@ class EchoServer extends Model {
     this.isKwUnit = isKwUnit;
 
     // 기존에 객체에 생성되어 있는지 체크
-    const foundInstance = _.find(instanceList, insInfo => _.isEqual(insInfo.id, deviceId));
+    const foundInstance = _.find(instanceList, insInfo =>
+      _.isEqual(insInfo.id, deviceId),
+    );
 
     // 없다면 신규로 생성
     if (_.isEmpty(foundInstance)) {
