@@ -1,4 +1,4 @@
-const defaultMap = require('../../maps/upsas/smRoofTop/defaultMap');
+const defaultMap = require('../../maps/UPSAS/smRoofTop/defaultMap');
 
 require('../config.guide');
 
