@@ -78,7 +78,7 @@ class SimulatorApp {
    * @param {Object} httpServer
    */
   setSocketIO(httpServer) {
-    this.io = new SocketIO(this.server);
+    this.io = SocketIO(this.server);
 
     this.io.on('connection', socket => {
       this.ioSocketList.push(socket);

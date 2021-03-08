@@ -23,10 +23,10 @@ function operationServer() {
       amount: 33.3,
     },
   };
-  const control = new Control(9005);
+  const control = new Control(15301);
 
   const protocolList = [];
-  for (let index = 0; index < 13; index += 1) {
+  for (let index = 1; index < 2; index += 1) {
     const cloneProtocolInfo = _.clone(protocolInfo);
     cloneProtocolInfo.deviceId = _.padStart(_.toString(index), 3, '00');
 

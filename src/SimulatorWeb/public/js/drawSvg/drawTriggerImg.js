@@ -1,6 +1,4 @@
 /* eslint-disable max-classes-per-file */
-var _ = _;
-
 /**
  * @interface
  * 명령 달성 목표가 생성될 때 마다 객체를 생성.
@@ -235,7 +233,8 @@ class ThreImgGoal extends ThreImgComponent {
   /** 표현식으로 임계치를 체크할 경우 */
   isReachExpression() {
     const expressResult = this.expressionFn(..._.map(this.nodeList, 'nodeData'));
-    return this.isReachNumGoal(expressResult);
+
+    return expressResult;
   }
 
   /**
@@ -305,31 +304,38 @@ class ThreImgStorage extends ThreImgComponent {
 
     /** @type {ThreImgGoal[][]} */
     this.threImgGroupGoals = [];
-
+    // FIXME: LimitTimer에 관해서는 별다른 이슈가 없을 것으로 보여져서 구현하지 않음
     this.threImgLimitTimer;
     this.successor;
 
     this.limitTimeCalcUnit = 1000;
 
-    this.triggerImgSvg;
+    this.triggerImgSvgList = [];
   }
 
-  drawTriggerImg() {
-    const {
-      filePath,
-      position = [0, 0],
-      size = [],
-      opacity = 0.6,
-    } = this.mImgTriggerInfo;
-
+  /**
+   *
+   * @param {mFilePathInfo} filePathInfo
+   */
+  drawTriggerImg(filePathInfo) {
     // 그리기
+    const {
+      fileFullPathList = [],
+      position = [0, 0],
+      size = ['100%', '100%'],
+      opacity = 1,
+    } = filePathInfo;
 
-    this.triggerImgSvg = this.svgCanvas
-      .image(filePath)
-      .opacity(opacity)
-      .size(...size)
-      .move(...position)
-      .attr('display', 'none');
+    fileFullPathList.forEach(fullFilePath => {
+      this.triggerImgSvgList.push(
+        this.svgCanvas
+          .image(fullFilePath)
+          .opacity(opacity)
+          .size(...size)
+          .move(...position)
+          .attr('display', 'none'),
+      );
+    });
   }
 
   /**
@@ -337,7 +343,9 @@ class ThreImgStorage extends ThreImgComponent {
    * @param {csCmdGoalContraintInfo} triggerGoalInfo
    */
   initThreImg(triggerGoalInfo = this.triggerGoalInfo) {
-    this.drawTriggerImg();
+    this.mImgTriggerInfo.filePathInfoList.forEach(filePathInfo =>
+      this.drawTriggerImg(filePathInfo),
+    );
 
     const { goalDataList = [], limitTimeSec } = triggerGoalInfo;
 
@@ -471,9 +479,13 @@ class ThreImgStorage extends ThreImgComponent {
     if (this.isThreImgClear()) {
       this.threImgLimitTimer && clearTimeout(this.threImgLimitTimer);
 
-      this.triggerImgSvg.attr('display', 'block');
+      this.triggerImgSvgList.forEach(triggerImgSvg =>
+        triggerImgSvg.attr('display', 'block'),
+      );
     } else {
-      this.triggerImgSvg.attr('display', 'none');
+      this.triggerImgSvgList.forEach(triggerImgSvg =>
+        triggerImgSvg.attr('display', 'none'),
+      );
     }
   }
 }

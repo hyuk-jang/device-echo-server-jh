@@ -31,7 +31,7 @@ function operationServer() {
     const cloneProtocolInfo = _.clone(protocolInfo);
 
     const buf = Buffer.allocUnsafe(1);
-    buf.writeIntLE(index);
+    buf.writeIntLE(index, 0, 1);
     cloneProtocolInfo.deviceId = buf.toString();
 
     protocolList.push(cloneProtocolInfo);

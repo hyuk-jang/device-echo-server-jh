@@ -70,7 +70,10 @@ class EchoServer extends Model {
       calcChecksum += num;
     });
 
-    return this.protocolConverter.convertNumToBuf(calcChecksum, 2);
+    return this.protocolConverter.convertNumToStrToBuf(calcChecksum, {
+      byteLength: 2,
+      toStringRadix: 10,
+    });
   }
 
   // 시스템 메시지 반환
@@ -79,11 +82,17 @@ class EchoServer extends Model {
       Buffer.from('017'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.ds.sysIsSingle ? 1 : 3, 1),
+      this.protocolConverter.convertNumToStrToBuf(this.ds.sysIsSingle ? 1 : 3, {
+        byteLength: 1,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.sysCapaKw * 10), 4),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.sysCapaKw * 10), {
+        byteLength: 4,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.sysLineVoltage), 3),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.sysLineVoltage), {
+        byteLength: 3,
+      }),
       this.DELIMETER,
     ];
 
@@ -98,17 +107,30 @@ class EchoServer extends Model {
       // Buffer.from('128'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.pvVol), 3),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.pvVol), {
+        byteLength: 3,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.pvAmp * 10), 4),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.pvAmp * 10), {
+        byteLength: 4,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.pvKw * pvCurrentScale), 4),
+      this.protocolConverter.convertNumToStrToBuf(
+        _.round(this.ds.pvKw * pvCurrentScale),
+        {
+          byteLength: 4,
+          toStringRadix: 10,
+        },
+      ),
       this.DELIMETER,
-      // this.protocolConverter.convertNumToBuf(_.round(this.ds.powerCpKwh / _.random(0.1, 0.2)), 7),
+      // this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.powerCpKwh / _.random(0.1, 0.2)), 7),
       // this.DELIMETER
     ];
 
     const resBuf = Buffer.concat(_.concat(this.RES_HEAD, dataBody));
+    BU.error(resBuf);
     return this.wrapFrameMsg(Buffer.concat([resBuf, this.calcChecksum(dataBody)]));
   }
 
@@ -117,13 +139,25 @@ class EchoServer extends Model {
       Buffer.from('222'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridRsVol), 3),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.gridRsVol), {
+        byteLength: 3,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridStVol), 3),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.gridStVol), {
+        byteLength: 3,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridTrVol), 3),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.gridTrVol), {
+        byteLength: 3,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridLf * 10), 3),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.gridLf * 10), {
+        byteLength: 3,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
     ];
 
@@ -136,11 +170,20 @@ class EchoServer extends Model {
       Buffer.from('321'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridRAmp * 10), 4),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.gridRAmp * 10), {
+        byteLength: 4,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridSAmp * 10), 4),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.gridSAmp * 10), {
+        byteLength: 4,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.gridTAmp * 10), 4),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.gridTAmp * 10), {
+        byteLength: 4,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
     ];
 
@@ -154,12 +197,18 @@ class EchoServer extends Model {
       Buffer.from('419'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(
+      this.protocolConverter.convertNumToStrToBuf(
         _.round(this.ds.powerGridKw * pvCurrentScale),
-        4,
+        {
+          byteLength: 4,
+          toStringRadix: 10,
+        },
       ),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(_.round(this.ds.powerCpKwh), 7),
+      this.protocolConverter.convertNumToStrToBuf(_.round(this.ds.powerCpKwh), {
+        byteLength: 7,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
     ];
 
@@ -172,12 +221,21 @@ class EchoServer extends Model {
       Buffer.from('612'),
       this.dialing,
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.ds.operIsError, 1),
+      this.protocolConverter.convertNumToStrToBuf(this.ds.operIsError, {
+        byteLength: 1,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(this.ds.operIsRun ? 0 : 1, 1),
+      this.protocolConverter.convertNumToStrToBuf(this.ds.operIsRun ? 0 : 1, {
+        byteLength: 1,
+        toStringRadix: 10,
+      }),
       this.DELIMETER,
-      this.protocolConverter.convertNumToBuf(2, 1),
-      // this.protocolConverter.convertNumToBuf(_.random(0, 9), 1),
+      this.protocolConverter.convertNumToStrToBuf(2, {
+        byteLength: 1,
+        toStringRadix: 10,
+      }),
+      // this.protocolConverter.convertNumToStrToBuf(_.random(0, 9), 1),
       this.DELIMETER,
     ];
 
@@ -190,14 +248,14 @@ class EchoServer extends Model {
    * @param {Buffer} receiveBuffer
    */
   onData(receiveBuffer) {
-    // BU.CLI(this.dialing, bufData);
+    // BU.CLI(receiveBuffer);
     receiveBuffer = this.peelFrameMsg(receiveBuffer);
     // BU.CLI(bufData);
     const SOP = Buffer.from([_.head(receiveBuffer)]);
 
     // SOP 일치 여부 체크
     if (!_.isEqual(SOP, Buffer.from('^'))) {
-      // BU.CLI(`Not Matching SOP expect: ${this.SOP} res: ${SOP}`);
+      BU.CLI(`Not Matching SOP expect: ${this.SOP} res: ${SOP}`);
       return;
     }
 
@@ -211,8 +269,6 @@ class EchoServer extends Model {
     if (!_.isEqual(dialing, this.dialing)) {
       return;
     }
-
-    // BU.CLI('bufData', bufData);
 
     const cmd = receiveBuffer.slice(
       _.sum([
